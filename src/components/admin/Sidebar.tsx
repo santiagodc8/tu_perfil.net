@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -23,11 +24,17 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-64 bg-primary min-h-screen flex flex-col">
+    <aside className="w-64 bg-surface-header min-h-screen flex flex-col">
       <div className="p-6">
         <Link href="/admin" className="block">
-          <h1 className="text-xl font-bold text-white">TuPerfil.net</h1>
-          <span className="text-xs text-gray-400">Panel de Administración</span>
+          <Image
+            src="/logo_texto.png"
+            alt="TuPerfil.net"
+            width={365}
+            height={130}
+            className="h-8 w-auto mb-1"
+          />
+          <span className="text-xs text-silver">Panel de Administración</span>
         </Link>
       </div>
 

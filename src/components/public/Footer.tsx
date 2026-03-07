@@ -1,18 +1,23 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Category } from "@/types";
 
 export default function Footer({ categories }: { categories: Category[] }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary text-gray-400">
-      <div className="container-custom py-10">
+    <footer className="bg-surface-footer text-gray-400">
+      <div className="container-custom py-8 sm:py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Sobre nosotros */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-3">
-              TuPerfil<span className="text-accent">.net</span>
-            </h3>
+            <Image
+              src="/logo_texto.png"
+              alt="TuPerfil.net"
+              width={365}
+              height={130}
+              className="h-9 w-auto mb-3"
+            />
             <p className="text-sm leading-relaxed">
               Portal de noticias regional. Información veraz y oportuna sobre
               política, judicial, salud, deportes y más.
@@ -22,12 +27,12 @@ export default function Footer({ categories }: { categories: Category[] }) {
           {/* Categorias */}
           <div>
             <h4 className="text-white font-semibold mb-3">Categorías</h4>
-            <ul className="space-y-1.5">
+            <ul className="space-y-2">
               {categories.map((cat) => (
                 <li key={cat.id}>
                   <Link
                     href={`/${cat.slug}`}
-                    className="text-sm hover:text-white transition"
+                    className="text-sm hover:text-white transition inline-block py-0.5"
                   >
                     {cat.name}
                   </Link>
@@ -39,14 +44,14 @@ export default function Footer({ categories }: { categories: Category[] }) {
           {/* Contacto y redes */}
           <div>
             <h4 className="text-white font-semibold mb-3">Contacto</h4>
-            <ul className="space-y-1.5 text-sm">
+            <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/contacto" className="hover:text-white transition">
+                <Link href="/contacto" className="hover:text-white transition inline-block py-0.5">
                   Formulario de contacto
                 </Link>
               </li>
               <li>
-                <Link href="/acerca-de" className="hover:text-white transition">
+                <Link href="/acerca-de" className="hover:text-white transition inline-block py-0.5">
                   Acerca de nosotros
                 </Link>
               </li>
@@ -57,7 +62,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-primary hover:text-white transition"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -68,7 +73,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-primary hover:text-white transition"
                 aria-label="Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

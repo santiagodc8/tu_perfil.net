@@ -22,6 +22,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
   const [content, setContent] = useState(article?.content ?? "");
   const [imageUrl, setImageUrl] = useState(article?.image_url ?? null);
   const [published, setPublished] = useState(article?.published ?? false);
+  const [featured, setFeatured] = useState(article?.featured ?? false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -68,6 +69,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           image_url: imageUrl || null,
           category_id: categoryId,
           published,
+          featured,
         })
         .eq("id", article.id);
 
@@ -95,6 +97,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
         image_url: imageUrl || null,
         category_id: categoryId,
         published,
+        featured,
         author_id: user.id,
       });
 
@@ -119,7 +122,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
 
       {/* Titulo */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-body mb-1">
           Título de la noticia
         </label>
         <input
@@ -127,19 +130,19 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Escribe el título aquí..."
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none text-lg"
+          className="w-full px-4 py-3 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-lg"
         />
       </div>
 
       {/* Categoria */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-body mb-1">
           Categoría
         </label>
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none bg-white"
+          className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none bg-surface-card"
         >
           <option value="">Selecciona una categoría</option>
           {categories.map((cat) => (
@@ -152,7 +155,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
 
       {/* Imagen */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-body mb-1">
           Imagen principal
         </label>
         <ImageUpload imageUrl={imageUrl} onUpload={setImageUrl} />
@@ -160,41 +163,71 @@ export default function ArticleForm({ article }: ArticleFormProps) {
 
       {/* Contenido */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-body mb-1">
           Contenido
         </label>
         <RichTextEditor content={content} onChange={setContent} />
       </div>
 
-      {/* Publicar toggle + boton */}
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-        <label className="flex items-center gap-3 cursor-pointer">
-          <div className="relative">
-            <input
-              type="checkbox"
-              checked={published}
-              onChange={(e) => setPublished(e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-300 peer-checked:bg-green-500 rounded-full transition" />
-            <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow peer-checked:translate-x-5 transition" />
-          </div>
-          <span className="text-sm font-medium text-gray-700">
-            {published ? "Publicada" : "Borrador"}
-          </span>
-        </label>
+      {/* Toggles + boton */}
+      <div className="flex items-center justify-between pt-4 border-t border-surface-border">
+        <div className="flex items-center gap-6">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={published}
+                onChange={(e) => setPublished(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-green-500 rounded-full transition" />
+              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
+            </div>
+            <span className="text-sm font-medium text-body">
+              {published ? "Publicada" : "Borrador"}
+            </span>
+          </label>
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-accent hover:bg-accent-dark text-white font-bold text-lg px-8 py-3 rounded-xl transition disabled:opacity-50 shadow-lg shadow-accent/20"
-        >
-          {saving
-            ? "Guardando..."
-            : isEditing
-            ? "Guardar cambios"
-            : "Publicar noticia"}
-        </button>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={featured}
+                onChange={(e) => setFeatured(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-amber-500 rounded-full transition" />
+              <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
+            </div>
+            <span className="text-sm font-medium text-body">
+              {featured ? "Destacada" : "Normal"}
+            </span>
+          </label>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {isEditing && (
+            <a
+              href={`/admin/preview/${article.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 rounded-xl border-2 border-surface-border text-body font-semibold hover:border-primary hover:text-primary transition text-lg"
+            >
+              Vista previa
+            </a>
+          )}
+          <button
+            type="submit"
+            disabled={saving}
+            className="bg-primary hover:bg-primary-dark text-white font-bold text-lg px-8 py-3 rounded-xl transition disabled:opacity-50 shadow-lg shadow-primary/20"
+          >
+            {saving
+              ? "Guardando..."
+              : isEditing
+              ? "Guardar cambios"
+              : "Publicar noticia"}
+          </button>
+        </div>
       </div>
     </form>
   );

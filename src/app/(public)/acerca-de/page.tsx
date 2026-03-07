@@ -7,13 +7,13 @@ export const metadata: Metadata = {
 
 export default function AcercaDePage() {
   return (
-    <div className="container-custom py-6">
+    <div className="container-custom py-4 sm:py-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-heading mb-6">
           Acerca de TuPerfil.net
         </h1>
 
-        <div className="prose prose-lg max-w-none prose-headings:text-gray-900">
+        <div className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-heading prose-a:text-primary">
           <p>
             <strong>TuPerfil.net</strong> es un portal de noticias dedicado a
             informar con veracidad y oportunidad sobre los acontecimientos más

@@ -121,54 +121,55 @@ export default async function NoticiaPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="container-custom py-6">
+      <article className="container-custom py-4 sm:py-6">
         <div className="max-w-3xl mx-auto">
           {/* Category + date */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             {article.category && (
               <span
-                className="text-xs font-semibold px-3 py-1 rounded-full text-white"
+                className="text-[11px] sm:text-xs font-semibold px-2.5 py-1 rounded-full text-white"
                 style={{ backgroundColor: article.category.color }}
               >
                 {article.category.name}
               </span>
             )}
-            <time className="text-sm text-gray-400">
+            <time className="text-xs sm:text-sm text-muted">
               {formatDate(article.created_at)}
             </time>
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-heading leading-tight mb-4 sm:mb-6">
             {article.title}
           </h1>
 
           {/* Share */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <ShareButtons title={article.title} url={articleUrl} />
           </div>
 
           {/* Image */}
           {article.image_url && (
-            <div className="relative aspect-video rounded-xl overflow-hidden mb-8">
+            <div className="relative aspect-video rounded-lg sm:rounded-xl overflow-hidden mb-6 sm:mb-8 -mx-4 sm:mx-0">
               <Image
                 src={article.image_url}
                 alt={article.title}
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
           )}
 
           {/* Content */}
           <div
-            className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-a:text-accent hover:prose-a:text-accent-dark"
+            className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-heading prose-a:text-primary hover:prose-a:text-primary-hover prose-img:rounded-lg"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
           {/* Share bottom */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-surface-border">
             <ShareButtons title={article.title} url={articleUrl} />
           </div>
         </div>

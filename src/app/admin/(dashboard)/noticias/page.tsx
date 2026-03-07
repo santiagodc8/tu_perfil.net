@@ -10,6 +10,7 @@ interface ArticleRow {
   id: string;
   title: string;
   published: boolean;
+  featured: boolean;
   views: number;
   created_at: string;
   category: { name: string; color: string } | null;
@@ -23,7 +24,7 @@ export default function NoticiasPage() {
   async function fetchArticles() {
     const { data } = await supabase
       .from("articles")
-      .select("id, title, published, views, created_at, category:categories(name, color)")
+      .select("id, title, published, featured, views, created_at, category:categories(name, color)")
       .order("created_at", { ascending: false })
       .returns<ArticleRow[]>();
     setArticles(data ?? []);
@@ -47,22 +48,22 @@ export default function NoticiasPage() {
       <div className="p-6 space-y-4">
         <Link
           href="/admin/noticias/nueva"
-          className="inline-block bg-accent hover:bg-accent-dark text-white font-semibold px-6 py-2.5 rounded-lg transition"
+          className="inline-block bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2.5 rounded-lg transition"
         >
           + Nueva noticia
         </Link>
 
-        <div className="bg-white rounded-xl border border-gray-200">
+        <div className="bg-surface-card rounded-xl border border-surface-border">
           {loading ? (
-            <div className="p-6 text-center text-gray-400">Cargando...</div>
+            <div className="p-6 text-center text-muted">Cargando...</div>
           ) : articles.length === 0 ? (
-            <div className="p-6 text-center text-gray-400">
+            <div className="p-6 text-center text-muted">
               No hay noticias todavía.
             </div>
           ) : (
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 text-left text-sm text-gray-500">
+                <tr className="border-b border-surface-border text-left text-sm text-muted">
                   <th className="px-6 py-3 font-medium">Título</th>
                   <th className="px-6 py-3 font-medium">Categoría</th>
                   <th className="px-6 py-3 font-medium">Estado</th>
@@ -71,16 +72,21 @@ export default function NoticiasPage() {
                   <th className="px-6 py-3 font-medium">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-surface-border">
                 {articles.map((article) => (
-                  <tr key={article.id} className="hover:bg-gray-50">
+                  <tr key={article.id} className="hover:bg-surface">
                     <td className="px-6 py-3">
-                      <Link
-                        href={`/admin/noticias/${article.id}`}
-                        className="text-sm font-medium text-gray-900 hover:text-accent"
-                      >
-                        {article.title}
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        {article.featured && (
+                          <span className="text-amber-500 flex-shrink-0" title="Destacada">&#9733;</span>
+                        )}
+                        <Link
+                          href={`/admin/noticias/${article.id}`}
+                          className="text-sm font-medium text-heading hover:text-primary"
+                        >
+                          {article.title}
+                        </Link>
+                      </div>
                     </td>
                     <td className="px-6 py-3">
                       {article.category && (
@@ -103,23 +109,31 @@ export default function NoticiasPage() {
                         {article.published ? "Publicada" : "Borrador"}
                       </span>
                     </td>
-                    <td className="px-6 py-3 text-sm text-gray-500">
+                    <td className="px-6 py-3 text-sm text-muted">
                       {article.views}
                     </td>
-                    <td className="px-6 py-3 text-sm text-gray-500">
+                    <td className="px-6 py-3 text-sm text-muted">
                       {formatDateShort(article.created_at)}
                     </td>
                     <td className="px-6 py-3">
                       <div className="flex items-center gap-3">
+                        <a
+                          href={`/admin/preview/${article.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-muted hover:text-blue-500"
+                        >
+                          Preview
+                        </a>
                         <Link
                           href={`/admin/noticias/${article.id}`}
-                          className="text-sm text-gray-400 hover:text-accent"
+                          className="text-sm text-muted hover:text-primary"
                         >
                           Editar
                         </Link>
                         <button
                           onClick={() => handleDelete(article.id)}
-                          className="text-sm text-gray-400 hover:text-red-500"
+                          className="text-sm text-muted hover:text-red-500"
                         >
                           Eliminar
                         </button>

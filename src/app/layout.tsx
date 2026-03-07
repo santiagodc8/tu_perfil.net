@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     locale: "es_ES",
     siteName: "TuPerfil.net",
   },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

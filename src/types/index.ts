@@ -15,6 +15,7 @@ export interface Article {
   image_url: string | null;
   category_id: string;
   published: boolean;
+  featured: boolean;
   views: number;
   created_at: string;
   updated_at: string;

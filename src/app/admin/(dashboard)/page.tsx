@@ -41,21 +41,21 @@ export default async function AdminDashboard() {
         {/* Boton crear noticia */}
         <Link
           href="/admin/noticias/nueva"
-          className="block w-full bg-accent hover:bg-accent-dark text-white text-center text-lg font-bold py-4 rounded-xl transition shadow-lg shadow-accent/20"
+          className="block w-full bg-primary hover:bg-primary-dark text-white text-center text-lg font-bold py-4 rounded-xl transition shadow-lg shadow-primary/20"
         >
           + CREAR NUEVA NOTICIA
         </Link>
 
         {/* Estadisticas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl p-6 border border-gray-200">
-            <p className="text-sm text-gray-500">Total de noticias</p>
+          <div className="bg-surface-card rounded-xl p-6 border border-surface-border">
+            <p className="text-sm text-muted">Total de noticias</p>
             <p className="text-3xl font-bold text-primary mt-1">
               {totalArticles ?? 0}
             </p>
           </div>
-          <div className="bg-white rounded-xl p-6 border border-gray-200">
-            <p className="text-sm text-gray-500">Noticias este mes</p>
+          <div className="bg-surface-card rounded-xl p-6 border border-surface-border">
+            <p className="text-sm text-muted">Noticias este mes</p>
             <p className="text-3xl font-bold text-primary mt-1">
               {monthArticles ?? 0}
             </p>
@@ -63,18 +63,18 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Noticias recientes */}
-        <div className="bg-white rounded-xl border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-900">Noticias recientes</h3>
+        <div className="bg-surface-card rounded-xl border border-surface-border">
+          <div className="px-6 py-4 border-b border-surface-border flex items-center justify-between">
+            <h3 className="font-semibold text-heading">Noticias recientes</h3>
             <Link
               href="/admin/noticias"
-              className="text-sm text-accent hover:underline"
+              className="text-sm text-primary hover:underline"
             >
               Ver todas
             </Link>
           </div>
           {recentArticles && recentArticles.length > 0 ? (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-surface-border">
               {recentArticles.map((article) => (
                 <li key={article.id} className="px-6 py-3 flex items-center justify-between">
                   <div className="flex items-center gap-3 min-w-0">
@@ -86,7 +86,7 @@ export default async function AdminDashboard() {
                     <div className="min-w-0">
                       <Link
                         href={`/admin/noticias/${article.id}`}
-                        className="text-sm font-medium text-gray-900 hover:text-accent truncate block"
+                        className="text-sm font-medium text-heading hover:text-primary truncate block"
                       >
                         {article.title}
                       </Link>
@@ -99,7 +99,7 @@ export default async function AdminDashboard() {
                             {article.category.name}
                           </span>
                         )}
-                        <span className="text-xs text-gray-400">
+                        <span className="text-xs text-muted">
                           {formatDateShort(article.created_at)}
                         </span>
                       </div>
@@ -107,7 +107,7 @@ export default async function AdminDashboard() {
                   </div>
                   <Link
                     href={`/admin/noticias/${article.id}`}
-                    className="text-sm text-gray-400 hover:text-accent ml-4 flex-shrink-0"
+                    className="text-sm text-muted hover:text-primary ml-4 flex-shrink-0"
                   >
                     Editar
                   </Link>
@@ -115,7 +115,7 @@ export default async function AdminDashboard() {
               ))}
             </ul>
           ) : (
-            <div className="px-6 py-8 text-center text-gray-400">
+            <div className="px-6 py-8 text-center text-muted">
               No hay noticias todavía. ¡Crea la primera!
             </div>
           )}

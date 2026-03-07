@@ -10,14 +10,26 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#1a1a2e",
-          light: "#16213e",
-          dark: "#0f0f1a",
+          DEFAULT: "#E30613",
+          hover: "#FF1A2A",
+          dark: "#B00510",
         },
+        silver: "#C0C0C0",
+        surface: {
+          DEFAULT: "#F5F5F5",
+          card: "#FFFFFF",
+          header: "#1A1A1A",
+          footer: "#111111",
+          border: "#E2E2E2",
+        },
+        heading: "#111111",
+        body: "#333333",
+        muted: "#888888",
+        // Legacy aliases for accent (used throughout components)
         accent: {
-          DEFAULT: "#e94560",
-          light: "#ff6b81",
-          dark: "#c0392b",
+          DEFAULT: "#E30613",
+          light: "#FF1A2A",
+          dark: "#B00510",
         },
       },
       fontFamily: {

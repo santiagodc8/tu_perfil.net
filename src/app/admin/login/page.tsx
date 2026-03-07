@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -37,8 +38,15 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
+            <Image
+              src="/logo.png"
+              alt="TuPerfil.net"
+              width={80}
+              height={80}
+              className="mx-auto mb-3 w-16 h-auto"
+            />
             <h1 className="text-2xl font-bold text-primary">TuPerfil.net</h1>
-            <p className="text-gray-500 mt-1">Panel de Administración</p>
+            <p className="text-muted mt-1">Panel de Administración</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -61,7 +69,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                 placeholder="tu@email.com"
               />
             </div>
@@ -79,7 +87,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
                 placeholder="••••••••"
               />
             </div>
@@ -87,7 +95,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-2.5 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primary hover:bg-primary-hover text-white font-semibold py-2.5 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>

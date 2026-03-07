@@ -6,7 +6,12 @@
 
 @layer base {
   body {
-    @apply font-sans text-gray-900 bg-white antialiased;
+    @apply font-sans text-body bg-surface antialiased;
+  }
+
+  /* Better tap targets on mobile */
+  button, a {
+    @apply touch-manipulation;
   }
 }
 
@@ -22,6 +27,13 @@
 }
 
 .tiptap p.is-editor-empty:first-child::before {
-  @apply text-gray-400 float-left h-0 pointer-events-none;
+  @apply text-muted float-left h-0 pointer-events-none;
   content: attr(data-placeholder);
+}
+
+/* Smooth scroll on mobile */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

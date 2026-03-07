@@ -39,9 +39,9 @@ export default async function BuscarPage({
   }
 
   return (
-    <div className="container-custom py-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
+    <div className="container-custom py-4 sm:py-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-heading mb-4">
           Buscar noticias
         </h1>
 
@@ -51,11 +51,11 @@ export default async function BuscarPage({
             type="text"
             defaultValue={query}
             placeholder="Escribe tu búsqueda..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+            className="flex-1 px-4 py-3 border border-surface-border rounded-l-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
           <button
             type="submit"
-            className="px-6 py-3 bg-accent text-white font-semibold rounded-r-lg hover:bg-accent-dark transition"
+            className="px-5 sm:px-6 py-3 bg-primary text-white font-semibold rounded-r-lg hover:bg-primary-hover active:bg-primary-dark transition"
           >
             Buscar
           </button>
@@ -63,20 +63,20 @@ export default async function BuscarPage({
       </div>
 
       {query && (
-        <p className="text-gray-500 mb-6">
+        <p className="text-muted mb-6 text-sm sm:text-base">
           {articles.length} {articles.length === 1 ? "resultado" : "resultados"}{" "}
-          para <span className="font-semibold text-gray-900">&ldquo;{query}&rdquo;</span>
+          para <span className="font-semibold text-heading">&ldquo;{query}&rdquo;</span>
         </p>
       )}
 
       {articles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {articles.map((article) => (
             <ArticleCard key={article.slug} {...article} />
           ))}
         </div>
       ) : query ? (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-muted">
           No se encontraron noticias para esta búsqueda.
         </div>
       ) : null}

@@ -87,14 +87,14 @@ export default function CategoriasPage() {
         {/* Formulario */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl border border-gray-200 p-6"
+          className="bg-surface-card rounded-xl border border-surface-border p-6"
         >
-          <h3 className="font-semibold text-gray-900 mb-4">
+          <h3 className="font-semibold text-heading mb-4">
             {editingId ? "Editar categoría" : "Nueva categoría"}
           </h3>
           <div className="flex gap-3 items-end">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 Nombre
               </label>
               <input
@@ -103,24 +103,24 @@ export default function CategoriasPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ej: Perfil Político"
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none"
+                className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-body mb-1">
                 Color
               </label>
               <input
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="w-12 h-[42px] border border-gray-300 rounded-lg cursor-pointer"
+                className="w-12 h-[42px] border border-surface-border rounded-lg cursor-pointer"
               />
             </div>
             <button
               type="submit"
               disabled={saving}
-              className="bg-accent hover:bg-accent-dark text-white font-semibold px-6 py-2.5 rounded-lg transition disabled:opacity-50"
+              className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2.5 rounded-lg transition disabled:opacity-50"
             >
               {saving ? "..." : editingId ? "Guardar" : "Crear"}
             </button>
@@ -128,7 +128,7 @@ export default function CategoriasPage() {
               <button
                 type="button"
                 onClick={handleCancelEdit}
-                className="px-4 py-2.5 text-gray-500 hover:text-gray-700 transition"
+                className="px-4 py-2.5 text-muted hover:text-body transition"
               >
                 Cancelar
               </button>
@@ -137,15 +137,15 @@ export default function CategoriasPage() {
         </form>
 
         {/* Listado */}
-        <div className="bg-white rounded-xl border border-gray-200">
+        <div className="bg-surface-card rounded-xl border border-surface-border">
           {loading ? (
-            <div className="p-6 text-center text-gray-400">Cargando...</div>
+            <div className="p-6 text-center text-muted">Cargando...</div>
           ) : categories.length === 0 ? (
-            <div className="p-6 text-center text-gray-400">
+            <div className="p-6 text-center text-muted">
               No hay categorías. Crea la primera arriba.
             </div>
           ) : (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-surface-border">
               {categories.map((cat) => (
                 <li
                   key={cat.id}
@@ -157,10 +157,10 @@ export default function CategoriasPage() {
                       style={{ backgroundColor: cat.color }}
                     />
                     <div>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm font-medium text-heading">
                         {cat.name}
                       </span>
-                      <span className="text-xs text-gray-400 ml-2">
+                      <span className="text-xs text-muted ml-2">
                         /{cat.slug}
                       </span>
                     </div>
@@ -168,13 +168,13 @@ export default function CategoriasPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleEdit(cat)}
-                      className="text-sm text-gray-400 hover:text-accent transition"
+                      className="text-sm text-muted hover:text-primary transition"
                     >
                       Editar
                     </button>
                     <button
                       onClick={() => handleDelete(cat.id)}
-                      className="text-sm text-gray-400 hover:text-red-500 transition"
+                      className="text-sm text-muted hover:text-red-500 transition"
                     >
                       Eliminar
                     </button>

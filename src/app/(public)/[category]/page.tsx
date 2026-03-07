@@ -67,19 +67,19 @@ export default async function CategoryPage({
   const totalPages = Math.ceil((count ?? 0) / ARTICLES_PER_PAGE);
 
   return (
-    <div className="container-custom py-6">
+    <div className="container-custom py-4 sm:py-6">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
           <span
-            className="w-1.5 h-8 rounded-full"
+            className="w-1 sm:w-1.5 h-6 sm:h-8 rounded-full"
             style={{ backgroundColor: category.color }}
           />
-          <h1 className="text-3xl font-extrabold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-heading">
             {category.name}
           </h1>
         </div>
-        <p className="text-gray-500">
+        <p className="text-muted text-sm sm:text-base">
           {count ?? 0} {(count ?? 0) === 1 ? "noticia" : "noticias"}
         </p>
       </div>
@@ -87,7 +87,7 @@ export default async function CategoryPage({
       {/* Articles grid */}
       {articles && articles.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {articles.map((article) => (
               <ArticleCard
                 key={article.slug}
@@ -103,7 +103,7 @@ export default async function CategoryPage({
           />
         </>
       ) : (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-muted">
           No hay noticias en esta categoría todavía.
         </div>
       )}

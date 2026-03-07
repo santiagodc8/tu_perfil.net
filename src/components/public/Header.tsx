@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Category } from "@/types";
 
 export default function Header({ categories }: { categories: Category[] }) {
@@ -15,16 +16,23 @@ export default function Header({ categories }: { categories: Category[] }) {
   });
 
   return (
-    <header className="bg-primary text-white">
-      {/* Top bar */}
-      <div className="container-custom py-2 text-xs text-gray-400 hidden sm:block">
+    <header className="bg-surface-header text-white sticky top-0 z-40">
+      {/* Top bar - hidden on mobile */}
+      <div className="container-custom py-1.5 text-xs text-gray-400 hidden sm:block border-b border-white/10">
         <span className="capitalize">{today}</span>
       </div>
 
       {/* Main header */}
-      <div className="container-custom py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          TuPerfil<span className="text-accent">.net</span>
+      <div className="container-custom py-3 sm:py-4 flex items-center justify-between gap-4">
+        <Link href="/" className="flex-shrink-0">
+          <Image
+            src="/logo_texto.png"
+            alt="TuPerfil.net"
+            width={365}
+            height={130}
+            className="h-9 sm:h-11 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop search */}
@@ -37,7 +45,7 @@ export default function Header({ categories }: { categories: Category[] }) {
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-accent hover:bg-accent-dark rounded-r-lg text-sm font-medium transition"
+            className="px-4 py-2 bg-primary hover:bg-primary-hover rounded-r-lg text-sm font-medium transition"
           >
             Buscar
           </button>
@@ -46,7 +54,7 @@ export default function Header({ categories }: { categories: Category[] }) {
         {/* Mobile menu toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden p-2 text-gray-300 hover:text-white"
+          className="md:hidden p-2 -mr-2 text-gray-300 hover:text-white active:bg-white/10 rounded-lg"
           aria-label="Menú"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,11 +70,11 @@ export default function Header({ categories }: { categories: Category[] }) {
       {/* Navigation */}
       <nav className="border-t border-white/10">
         <div className={`container-custom ${menuOpen ? "block" : "hidden"} md:block`}>
-          <ul className="flex flex-col md:flex-row md:items-center gap-0 md:gap-1 py-2 md:py-0">
+          <ul className="flex flex-col md:flex-row md:items-center gap-0 md:gap-0.5 py-1 md:py-0 -mx-2 md:mx-0">
             <li>
               <Link
                 href="/"
-                className="block px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition"
+                className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
                 onClick={() => setMenuOpen(false)}
               >
                 Inicio
@@ -76,7 +84,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               <li key={cat.id}>
                 <Link
                   href={`/${cat.slug}`}
-                  className="block px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition"
+                  className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
                   onClick={() => setMenuOpen(false)}
                 >
                   {cat.name}
@@ -86,7 +94,7 @@ export default function Header({ categories }: { categories: Category[] }) {
             <li>
               <Link
                 href="/contacto"
-                className="block px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition"
+                className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
                 onClick={() => setMenuOpen(false)}
               >
                 Contacto
@@ -95,17 +103,17 @@ export default function Header({ categories }: { categories: Category[] }) {
           </ul>
 
           {/* Mobile search */}
-          <form action="/buscar" className="md:hidden pb-3 px-4">
+          <form action="/buscar" className="md:hidden pb-3 px-2">
             <div className="flex">
               <input
                 name="q"
                 type="text"
                 placeholder="Buscar noticias..."
-                className="flex-1 px-4 py-2 rounded-l-lg bg-white/10 text-white placeholder-gray-400 text-sm focus:outline-none"
+                className="flex-1 px-4 py-2.5 rounded-l-lg bg-white/10 text-white placeholder-gray-400 text-sm focus:outline-none"
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-accent rounded-r-lg text-sm font-medium"
+                className="px-5 py-2.5 bg-primary rounded-r-lg text-sm font-medium active:bg-primary-dark"
               >
                 Buscar
               </button>

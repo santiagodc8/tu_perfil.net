@@ -5,14 +5,14 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
   const encodedTitle = encodeURIComponent(title);
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-gray-500 font-medium">Compartir:</span>
+    <div className="flex items-center gap-2 sm:gap-3">
+      <span className="text-sm text-muted font-medium hidden sm:inline">Compartir:</span>
 
       <a
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-9 h-9 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 transition"
+        className="w-9 h-9 sm:w-9 sm:h-9 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 active:bg-green-700 transition"
         aria-label="Compartir en WhatsApp"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -24,7 +24,7 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition"
+        className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition"
         aria-label="Compartir en Facebook"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-9 h-9 flex items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition"
+        className="w-9 h-9 flex items-center justify-center rounded-full bg-heading text-white hover:bg-body active:bg-black transition"
         aria-label="Compartir en Twitter"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
