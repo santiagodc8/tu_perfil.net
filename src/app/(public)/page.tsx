@@ -1,3 +1,5 @@
+export const revalidate = 60; // Revalidar cada 60 segundos
+
 import { createClient } from "@/lib/supabase/server";
 import HeroCarousel from "@/components/public/HeroCarousel";
 import CategorySection from "@/components/public/CategorySection";

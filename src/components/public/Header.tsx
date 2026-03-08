@@ -25,12 +25,22 @@ export default function Header({ categories }: { categories: Category[] }) {
       {/* Main header */}
       <div className="container-custom py-3 sm:py-4 flex items-center justify-between gap-4">
         <Link href="/" className="flex-shrink-0">
+          {/* Mobile logo */}
           <Image
-            src="/logo_texto.png"
+            src="/logo-header-mobile@2x.png"
             alt="TuPerfil.net"
-            width={365}
-            height={130}
-            className="h-9 sm:h-11 w-auto"
+            width={320}
+            height={100}
+            className="h-9 w-auto sm:hidden"
+            priority
+          />
+          {/* Desktop logo */}
+          <Image
+            src="/logo-header@2x.png"
+            alt="TuPerfil.net"
+            width={500}
+            height={150}
+            className="hidden sm:block h-11 w-auto"
             priority
           />
         </Link>

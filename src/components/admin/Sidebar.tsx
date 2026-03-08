@@ -28,10 +28,10 @@ export default function Sidebar() {
       <div className="p-6">
         <Link href="/admin" className="block">
           <Image
-            src="/logo_texto.png"
+            src="/logo-footer.png"
             alt="TuPerfil.net"
-            width={365}
-            height={130}
+            width={200}
+            height={60}
             className="h-8 w-auto mb-1"
           />
           <span className="text-xs text-silver">Panel de Administración</span>

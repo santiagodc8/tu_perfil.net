@@ -12,11 +12,11 @@ export default function Footer({ categories }: { categories: Category[] }) {
           {/* Sobre nosotros */}
           <div>
             <Image
-              src="/logo_texto.png"
+              src="/logo-footer.png"
               alt="TuPerfil.net"
-              width={365}
-              height={130}
-              className="h-9 w-auto mb-3"
+              width={200}
+              height={60}
+              className="h-8 w-auto mb-3"
             />
             <p className="text-sm leading-relaxed">
               Portal de noticias regional. Información veraz y oportuna sobre

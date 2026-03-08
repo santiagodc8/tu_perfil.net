@@ -1,3 +1,5 @@
+export const revalidate = 3600; // Revalidar cada 1 hora
+
 import { createClient } from "@/lib/supabase/server";
 import Header from "@/components/public/Header";
 import Footer from "@/components/public/Footer";

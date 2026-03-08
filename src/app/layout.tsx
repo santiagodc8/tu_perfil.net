@@ -13,11 +13,20 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: "TuPerfil.net",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TuPerfil.net — Portal de Noticias",
+      },
+    ],
   },
   icons: {
     icon: "/favicon.ico",
-    apple: "/logo.png",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

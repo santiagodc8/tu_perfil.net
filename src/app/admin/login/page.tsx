@@ -39,10 +39,10 @@ export default function LoginPage() {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <Image
-              src="/logo.png"
+              src="/logo-icon-120.png"
               alt="TuPerfil.net"
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               className="mx-auto mb-3 w-16 h-auto"
             />
             <h1 className="text-2xl font-bold text-primary">TuPerfil.net</h1>

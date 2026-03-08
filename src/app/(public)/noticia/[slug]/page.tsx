@@ -1,11 +1,13 @@
+export const revalidate = 300; // Revalidar cada 5 minutos
+
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { formatDate } from "@/lib/utils";
 import ShareButtons from "@/components/public/ShareButtons";
 import RelatedArticles from "@/components/public/RelatedArticles";
+import ViewCounter from "@/components/public/ViewCounter";
 
 interface ArticleDetail {
   id: string;
@@ -78,13 +80,6 @@ export default async function NoticiaPage({
 
   if (!article) notFound();
 
-  // Incrementar vistas con admin client (bypasses RLS)
-  const adminClient = createAdminClient();
-  await adminClient
-    .from("articles")
-    .update({ views: article.views + 1 })
-    .eq("id", article.id);
-
   // Noticias relacionadas (misma categoria, excluyendo la actual)
   const { data: relatedData } = await supabase
     .from("articles")
@@ -116,6 +111,7 @@ export default async function NoticiaPage({
 
   return (
     <>
+      <ViewCounter articleId={article.id} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
