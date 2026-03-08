@@ -10,6 +10,7 @@ interface ArticleRow {
   id: string;
   title: string;
   published: boolean;
+  published_at: string | null;
   featured: boolean;
   views: number;
   created_at: string;
@@ -24,7 +25,7 @@ export default function NoticiasPage() {
   async function fetchArticles() {
     const { data } = await supabase
       .from("articles")
-      .select("id, title, published, featured, views, created_at, category:categories(name, color)")
+      .select("id, title, published, published_at, featured, views, created_at, category:categories(name, color)")
       .order("created_at", { ascending: false })
       .returns<ArticleRow[]>();
     setArticles(data ?? []);
@@ -99,15 +100,29 @@ export default function NoticiasPage() {
                       )}
                     </td>
                     <td className="px-6 py-3">
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full ${
-                          article.published
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
-                        }`}
-                      >
-                        {article.published ? "Publicada" : "Borrador"}
-                      </span>
+                      {(() => {
+                        const isScheduled =
+                          article.published &&
+                          article.published_at &&
+                          new Date(article.published_at) > new Date();
+                        return (
+                          <span
+                            className={`text-xs font-medium px-2 py-1 rounded-full ${
+                              isScheduled
+                                ? "bg-blue-100 text-blue-700"
+                                : article.published
+                                ? "bg-green-100 text-green-700"
+                                : "bg-yellow-100 text-yellow-700"
+                            }`}
+                          >
+                            {isScheduled
+                              ? "Programada"
+                              : article.published
+                              ? "Publicada"
+                              : "Borrador"}
+                          </span>
+                        );
+                      })()}
                     </td>
                     <td className="px-6 py-3 text-sm text-muted">
                       {article.views}

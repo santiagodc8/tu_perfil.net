@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { formatDate } from "@/lib/utils";
+import { formatDate, BLUR_DATA_URL } from "@/lib/utils";
 
 interface PreviewArticle {
   id: string;
@@ -93,6 +93,8 @@ export default async function PreviewPage({
               fill
               className="object-cover"
               priority
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           </div>
         )}

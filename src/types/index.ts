@@ -15,11 +15,13 @@ export interface Article {
   image_url: string | null;
   category_id: string;
   published: boolean;
+  published_at: string | null;
   featured: boolean;
   views: number;
   created_at: string;
   updated_at: string;
   author_id: string;
+  author_name: string;
   // Joined
   category?: Category;
 }
@@ -31,4 +33,13 @@ export interface Contact {
   message: string;
   read: boolean;
   created_at: string;
+}
+
+export interface BreakingNews {
+  id: string;
+  text: string;
+  link: string | null;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
 }

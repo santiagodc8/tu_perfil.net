@@ -9,6 +9,7 @@ const navItems = [
   { href: "/admin", label: "Inicio", icon: "🏠" },
   { href: "/admin/noticias", label: "Noticias", icon: "📰" },
   { href: "/admin/categorias", label: "Categorías", icon: "📂" },
+  { href: "/admin/ultima-hora", label: "Última Hora", icon: "🚨" },
   { href: "/admin/mensajes", label: "Mensajes", icon: "✉️" },
 ];
 

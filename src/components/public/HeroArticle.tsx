@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { formatDate } from "@/lib/utils";
+import { smartDate, BLUR_DATA_URL } from "@/lib/utils";
 
 interface HeroArticleProps {
   title: string;
@@ -22,6 +22,8 @@ export default function HeroArticle({ title, slug, excerpt, image_url, created_a
             fill
             className="object-cover group-hover:scale-105 transition duration-500"
             priority
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-light" />
@@ -45,7 +47,7 @@ export default function HeroArticle({ title, slug, excerpt, image_url, created_a
             {excerpt}
           </p>
           <time className="text-xs text-gray-400 mt-3 block">
-            {formatDate(created_at)}
+            {smartDate(created_at)}
           </time>
         </div>
       </article>

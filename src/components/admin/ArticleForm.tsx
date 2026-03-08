@@ -18,11 +18,18 @@ export default function ArticleForm({ article }: ArticleFormProps) {
   const isEditing = !!article;
 
   const [title, setTitle] = useState(article?.title ?? "");
+  const [authorName, setAuthorName] = useState(article?.author_name ?? "Redacción TuPerfil.net");
   const [categoryId, setCategoryId] = useState(article?.category_id ?? "");
   const [content, setContent] = useState(article?.content ?? "");
   const [imageUrl, setImageUrl] = useState(article?.image_url ?? null);
   const [published, setPublished] = useState(article?.published ?? false);
   const [featured, setFeatured] = useState(article?.featured ?? false);
+  const [scheduled, setScheduled] = useState(!!article?.published_at);
+  const [publishedAt, setPublishedAt] = useState(
+    article?.published_at
+      ? new Date(article.published_at).toISOString().slice(0, 16)
+      : ""
+  );
   const [categories, setCategories] = useState<Category[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -57,20 +64,28 @@ export default function ArticleForm({ article }: ArticleFormProps) {
 
     const slug = generateSlug(title);
     const excerpt = extractExcerpt(content);
+    const publishDate =
+      published && scheduled && publishedAt
+        ? new Date(publishedAt).toISOString()
+        : null;
+
+    const articleData = {
+      title: title.trim(),
+      slug,
+      content,
+      excerpt,
+      image_url: imageUrl || null,
+      category_id: categoryId,
+      author_name: authorName.trim() || "Redacción TuPerfil.net",
+      published,
+      published_at: publishDate,
+      featured,
+    };
 
     if (isEditing) {
       const { error: dbError } = await supabase
         .from("articles")
-        .update({
-          title: title.trim(),
-          slug,
-          content,
-          excerpt,
-          image_url: imageUrl || null,
-          category_id: categoryId,
-          published,
-          featured,
-        })
+        .update(articleData)
         .eq("id", article.id);
 
       if (dbError) {
@@ -89,17 +104,9 @@ export default function ArticleForm({ article }: ArticleFormProps) {
         return;
       }
 
-      const { error: dbError } = await supabase.from("articles").insert({
-        title: title.trim(),
-        slug,
-        content,
-        excerpt,
-        image_url: imageUrl || null,
-        category_id: categoryId,
-        published,
-        featured,
-        author_id: user.id,
-      });
+      const { error: dbError } = await supabase
+        .from("articles")
+        .insert({ ...articleData, author_id: user.id });
 
       if (dbError) {
         setError("Error al crear: " + dbError.message);
@@ -131,6 +138,20 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Escribe el título aquí..."
           className="w-full px-4 py-3 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-lg"
+        />
+      </div>
+
+      {/* Autor */}
+      <div>
+        <label className="block text-sm font-medium text-body mb-1">
+          Autor
+        </label>
+        <input
+          type="text"
+          value={authorName}
+          onChange={(e) => setAuthorName(e.target.value)}
+          placeholder="Nombre del autor"
+          className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
         />
       </div>
 
@@ -169,22 +190,29 @@ export default function ArticleForm({ article }: ArticleFormProps) {
         <RichTextEditor content={content} onChange={setContent} />
       </div>
 
-      {/* Toggles + boton */}
-      <div className="flex items-center justify-between pt-4 border-t border-surface-border">
-        <div className="flex items-center gap-6">
+      {/* Toggles + programación + botón */}
+      <div className="space-y-4 pt-4 border-t border-surface-border">
+        <div className="flex items-center gap-6 flex-wrap">
           <label className="flex items-center gap-3 cursor-pointer">
             <div className="relative">
               <input
                 type="checkbox"
                 checked={published}
-                onChange={(e) => setPublished(e.target.checked)}
+                onChange={(e) => {
+                  setPublished(e.target.checked);
+                  if (!e.target.checked) setScheduled(false);
+                }}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-300 peer-checked:bg-green-500 rounded-full transition" />
               <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
             </div>
             <span className="text-sm font-medium text-body">
-              {published ? "Publicada" : "Borrador"}
+              {published
+                ? scheduled && publishedAt
+                  ? "Programada"
+                  : "Publicada"
+                : "Borrador"}
             </span>
           </label>
 
@@ -205,7 +233,54 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           </label>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Programar publicación */}
+        {published && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <label className="flex items-center gap-3 cursor-pointer mb-3">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={scheduled}
+                  onChange={(e) => {
+                    setScheduled(e.target.checked);
+                    if (!e.target.checked) setPublishedAt("");
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-300 peer-checked:bg-blue-500 rounded-full transition" />
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
+              </div>
+              <span className="text-sm font-medium text-body">
+                Programar para después
+              </span>
+            </label>
+
+            {scheduled && (
+              <div>
+                <label className="block text-sm text-body mb-1">
+                  Fecha y hora de publicación
+                </label>
+                <input
+                  type="datetime-local"
+                  value={publishedAt}
+                  onChange={(e) => setPublishedAt(e.target.value)}
+                  className="px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white"
+                />
+                {publishedAt && new Date(publishedAt) > new Date() && (
+                  <p className="text-xs text-blue-600 mt-1.5 font-medium">
+                    Se publicará automáticamente el{" "}
+                    {new Date(publishedAt).toLocaleString("es-ES", {
+                      dateStyle: "long",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center justify-end gap-3">
           {isEditing && (
             <a
               href={`/admin/preview/${article.id}`}

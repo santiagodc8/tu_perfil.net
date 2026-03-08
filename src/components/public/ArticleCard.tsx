@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { formatDateShort } from "@/lib/utils";
+import { smartDateShort, BLUR_DATA_URL } from "@/lib/utils";
 
 interface ArticleCardProps {
   title: string;
@@ -32,6 +32,8 @@ export default function ArticleCard({
               fill
               className="object-cover group-hover:scale-105 transition duration-300"
               sizes="96px"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           )}
         </div>
@@ -40,7 +42,7 @@ export default function ArticleCard({
             {title}
           </h4>
           <time className="text-xs text-muted mt-1 block">
-            {formatDateShort(created_at)}
+            {smartDateShort(created_at)}
           </time>
         </div>
       </Link>
@@ -58,6 +60,8 @@ export default function ArticleCard({
               fill
               className="object-cover group-hover:scale-105 transition duration-300"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
@@ -77,7 +81,7 @@ export default function ArticleCard({
           </h3>
           <p className="text-sm text-muted mt-1 sm:mt-1.5 line-clamp-2 hidden sm:block">{excerpt}</p>
           <time className="text-xs text-muted mt-1.5 sm:mt-2 block">
-            {formatDateShort(created_at)}
+            {smartDateShort(created_at)}
           </time>
         </div>
       </article>

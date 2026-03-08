@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { formatDate } from "@/lib/utils";
+import { smartDate, BLUR_DATA_URL } from "@/lib/utils";
 
 interface HeroSlide {
   title: string;
@@ -61,6 +61,8 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               className="object-cover group-hover:scale-105 transition duration-500"
               priority={i === 0}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1280px"
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-surface-header to-heading" />
@@ -84,7 +86,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               {slide.excerpt}
             </p>
             <time className="text-xs text-gray-400 mt-2 sm:mt-3 block">
-              {formatDate(slide.created_at)}
+              {smartDate(slide.created_at)}
             </time>
           </div>
         </Link>

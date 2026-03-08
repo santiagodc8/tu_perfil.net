@@ -4,6 +4,39 @@ import { useState, useCallback } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 
+const MAX_WIDTH = 1600;
+const QUALITY = 0.82;
+
+function compressImage(file: File): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let { width, height } = img;
+
+      if (width > MAX_WIDTH) {
+        height = Math.round((height * MAX_WIDTH) / width);
+        width = MAX_WIDTH;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject(new Error("No canvas context"));
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (blob) => (blob ? resolve(blob) : reject(new Error("Compression failed"))),
+        "image/webp",
+        QUALITY
+      );
+    };
+    img.onerror = () => reject(new Error("Failed to load image"));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 interface ImageUploadProps {
   imageUrl: string | null;
   onUpload: (url: string) => void;
@@ -23,25 +56,30 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
       }
 
       setUploading(true);
-      const ext = file.name.split(".").pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
-      const { error } = await supabase.storage
-        .from("article-images")
-        .upload(fileName, file);
+      try {
+        const compressed = await compressImage(file);
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
 
-      if (error) {
-        alert("Error al subir la imagen");
-        setUploading(false);
-        return;
+        const { error } = await supabase.storage
+          .from("article-images")
+          .upload(fileName, compressed, { contentType: "image/webp" });
+
+        if (error) {
+          alert("Error al subir la imagen");
+          setUploading(false);
+          return;
+        }
+
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("article-images").getPublicUrl(fileName);
+
+        setPreview(publicUrl);
+        onUpload(publicUrl);
+      } catch {
+        alert("Error al procesar la imagen");
       }
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("article-images").getPublicUrl(fileName);
-
-      setPreview(publicUrl);
-      onUpload(publicUrl);
       setUploading(false);
     },
     [supabase, onUpload]

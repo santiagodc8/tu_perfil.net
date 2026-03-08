@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import { formatDate } from "@/lib/utils";
+import { smartDate, readingTime, BLUR_DATA_URL } from "@/lib/utils";
 import ShareButtons from "@/components/public/ShareButtons";
 import RelatedArticles from "@/components/public/RelatedArticles";
 import ViewCounter from "@/components/public/ViewCounter";
@@ -17,6 +17,7 @@ interface ArticleDetail {
   excerpt: string;
   image_url: string | null;
   category_id: string;
+  author_name: string;
   views: number;
   created_at: string;
   category: { name: string; color: string; slug: string } | null;
@@ -72,7 +73,7 @@ export default async function NoticiaPage({
 
   const { data: article } = await supabase
     .from("articles")
-    .select("id, title, slug, content, excerpt, image_url, category_id, views, created_at, category:categories(name, color, slug)")
+    .select("id, title, slug, content, excerpt, image_url, category_id, author_name, views, created_at, category:categories(name, color, slug)")
     .eq("slug", params.slug)
     .eq("published", true)
     .single()
@@ -101,6 +102,10 @@ export default async function NoticiaPage({
     description: article.excerpt,
     image: article.image_url ?? undefined,
     datePublished: article.created_at,
+    author: {
+      "@type": "Person",
+      name: article.author_name,
+    },
     publisher: {
       "@type": "Organization",
       name: "TuPerfil.net",
@@ -119,8 +124,8 @@ export default async function NoticiaPage({
 
       <article className="container-custom py-4 sm:py-6">
         <div className="max-w-3xl mx-auto">
-          {/* Category + date */}
-          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+          {/* Category + meta */}
+          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
             {article.category && (
               <span
                 className="text-[11px] sm:text-xs font-semibold px-2.5 py-1 rounded-full text-white"
@@ -129,9 +134,17 @@ export default async function NoticiaPage({
                 {article.category.name}
               </span>
             )}
+            <span className="text-xs sm:text-sm text-muted">
+              Por <span className="font-medium text-body">{article.author_name}</span>
+            </span>
+            <span className="text-xs sm:text-sm text-muted">·</span>
             <time className="text-xs sm:text-sm text-muted">
-              {formatDate(article.created_at)}
+              {smartDate(article.created_at)}
             </time>
+            <span className="text-xs sm:text-sm text-muted">·</span>
+            <span className="text-xs sm:text-sm text-muted">
+              {readingTime(article.content)}
+            </span>
           </div>
 
           {/* Title */}
@@ -154,6 +167,8 @@ export default async function NoticiaPage({
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, 768px"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
               />
             </div>
           )}

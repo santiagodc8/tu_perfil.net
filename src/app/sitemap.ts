@@ -25,11 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Articulos publicados
+  // Articulos publicados (excluyendo programados para el futuro)
   const { data: articles } = await supabase
     .from("articles")
     .select("slug, updated_at")
     .eq("published", true)
+    .or("published_at.is.null,published_at.lte." + new Date().toISOString())
     .order("created_at", { ascending: false });
 
   const articlePages: MetadataRoute.Sitemap = (articles ?? []).map((article) => ({
