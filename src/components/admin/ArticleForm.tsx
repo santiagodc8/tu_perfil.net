@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import RichTextEditor from "./RichTextEditor";
 import ImageUpload from "./ImageUpload";
+import GalleryUpload from "./GalleryUpload";
 import { generateSlug } from "@/lib/utils";
 import type { Article, Category } from "@/types";
 
@@ -22,6 +23,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
   const [categoryId, setCategoryId] = useState(article?.category_id ?? "");
   const [content, setContent] = useState(article?.content ?? "");
   const [imageUrl, setImageUrl] = useState(article?.image_url ?? null);
+  const [gallery, setGallery] = useState<string[]>(article?.gallery ?? []);
   const [published, setPublished] = useState(article?.published ?? false);
   const [featured, setFeatured] = useState(article?.featured ?? false);
   const [scheduled, setScheduled] = useState(!!article?.published_at);
@@ -75,6 +77,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
       content,
       excerpt,
       image_url: imageUrl || null,
+      gallery,
       category_id: categoryId,
       author_name: authorName.trim() || "Redacción TuPerfil.net",
       published,
@@ -180,6 +183,14 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           Imagen principal
         </label>
         <ImageUpload imageUrl={imageUrl} onUpload={setImageUrl} />
+      </div>
+
+      {/* Galería */}
+      <div>
+        <label className="block text-sm font-medium text-body mb-1">
+          Galería de imágenes <span className="text-muted font-normal">(opcional)</span>
+        </label>
+        <GalleryUpload images={gallery} onChange={setGallery} />
       </div>
 
       {/* Contenido */}

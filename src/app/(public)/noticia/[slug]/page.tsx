@@ -8,6 +8,7 @@ import { smartDate, readingTime, BLUR_DATA_URL } from "@/lib/utils";
 import ShareButtons from "@/components/public/ShareButtons";
 import RelatedArticles from "@/components/public/RelatedArticles";
 import ViewCounter from "@/components/public/ViewCounter";
+import ImageGallery from "@/components/public/ImageGallery";
 
 interface ArticleDetail {
   id: string;
@@ -16,6 +17,7 @@ interface ArticleDetail {
   content: string;
   excerpt: string;
   image_url: string | null;
+  gallery: string[];
   category_id: string;
   author_name: string;
   views: number;
@@ -73,7 +75,7 @@ export default async function NoticiaPage({
 
   const { data: article } = await supabase
     .from("articles")
-    .select("id, title, slug, content, excerpt, image_url, category_id, author_name, views, created_at, category:categories(name, color, slug)")
+    .select("id, title, slug, content, excerpt, image_url, gallery, category_id, author_name, views, created_at, category:categories(name, color, slug)")
     .eq("slug", params.slug)
     .eq("published", true)
     .single()
@@ -171,6 +173,11 @@ export default async function NoticiaPage({
                 blurDataURL={BLUR_DATA_URL}
               />
             </div>
+          )}
+
+          {/* Gallery */}
+          {article.gallery && article.gallery.length > 0 && (
+            <ImageGallery images={article.gallery} />
           )}
 
           {/* Content */}
