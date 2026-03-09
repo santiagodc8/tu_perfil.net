@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Category } from "@/types";
+import NewsletterForm from "@/components/public/NewsletterForm";
 
 export default function Footer({ categories }: { categories: Category[] }) {
   const year = new Date().getFullYear();
@@ -82,6 +83,11 @@ export default function Footer({ categories }: { categories: Category[] }) {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Newsletter */}
+        <div className="mt-8">
+          <NewsletterForm />
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-6 text-center text-xs">

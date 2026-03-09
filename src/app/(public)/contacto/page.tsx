@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import Breadcrumbs from "@/components/public/Breadcrumbs";
 
 export default function ContactoPage() {
-  const supabase = createClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -17,18 +16,31 @@ export default function ContactoPage() {
     setSending(true);
     setError("");
 
-    const { error: dbError } = await supabase
-      .from("contacts")
-      .insert({ name: name.trim(), email: email.trim(), message: message.trim() });
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
+      });
 
-    if (dbError) {
-      setError("Error al enviar el mensaje. Intenta de nuevo.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "Error al enviar el mensaje. Intenta de nuevo.");
+        setSending(false);
+        return;
+      }
+
+      setSent(true);
+    } catch {
+      setError("Error de conexión. Verifica tu internet e intenta de nuevo.");
+    } finally {
       setSending(false);
-      return;
     }
-
-    setSent(true);
-    setSending(false);
   }
 
   if (sent) {
@@ -50,6 +62,10 @@ export default function ContactoPage() {
   return (
     <div className="container-custom py-6">
       <div className="max-w-lg mx-auto">
+        <div className="mb-4">
+          <Breadcrumbs items={[{ label: "Contacto" }]} />
+        </div>
+
         <h1 className="text-3xl font-extrabold text-heading mb-2">
           Contacto
         </h1>

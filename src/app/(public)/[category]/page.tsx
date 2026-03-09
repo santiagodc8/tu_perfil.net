@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import LoadMoreArticles from "@/components/public/LoadMoreArticles";
+import Breadcrumbs from "@/components/public/Breadcrumbs";
 
 const ARTICLES_PER_PAGE = 12;
 
@@ -29,9 +30,22 @@ export async function generateMetadata({
 
   if (!category) return { title: "Categoría no encontrada" };
 
+  const description = `Noticias de ${category.name} en TuPerfil.net`;
+
   return {
     title: category.name,
-    description: `Noticias de ${category.name} en TuPerfil.net`,
+    description,
+    openGraph: {
+      title: category.name,
+      description,
+      // og:image es generada automáticamente por opengraph-image.tsx
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: category.name,
+      description,
+      // twitter:image es generada automáticamente por opengraph-image.tsx
+    },
   };
 }
 
@@ -63,6 +77,10 @@ export default async function CategoryPage({
 
   return (
     <div className="container-custom py-4 sm:py-6">
+      <div className="mb-4">
+        <Breadcrumbs items={[{ label: category.name }]} />
+      </div>
+
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">

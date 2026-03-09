@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import ArticleCard from "@/components/public/ArticleCard";
+import Breadcrumbs from "@/components/public/Breadcrumbs";
 
 interface SearchArticle {
   title: string;
@@ -40,6 +41,10 @@ export default async function BuscarPage({
 
   return (
     <div className="container-custom py-4 sm:py-6">
+      <div className="mb-4">
+        <Breadcrumbs items={[{ label: "Búsqueda" }]} />
+      </div>
+
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-heading mb-4">
           Buscar noticias

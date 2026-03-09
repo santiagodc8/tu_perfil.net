@@ -7,13 +7,19 @@ import RichTextEditor from "./RichTextEditor";
 import ImageUpload from "./ImageUpload";
 import GalleryUpload from "./GalleryUpload";
 import { generateSlug } from "@/lib/utils";
-import type { Article, Category } from "@/types";
+import type { Article, Category, Tag } from "@/types";
 
 interface ArticleFormProps {
   article?: Article;
+  allTags?: Tag[];
+  selectedTagIds?: string[];
 }
 
-export default function ArticleForm({ article }: ArticleFormProps) {
+export default function ArticleForm({
+  article,
+  allTags = [],
+  selectedTagIds = [],
+}: ArticleFormProps) {
   const router = useRouter();
   const supabase = createClient();
   const isEditing = !!article;
@@ -33,6 +39,7 @@ export default function ArticleForm({ article }: ArticleFormProps) {
       : ""
   );
   const [categories, setCategories] = useState<Category[]>([]);
+  const [pickedTagIds, setPickedTagIds] = useState<string[]>(selectedTagIds);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -48,6 +55,22 @@ export default function ArticleForm({ article }: ArticleFormProps) {
   function extractExcerpt(html: string): string {
     const text = html.replace(/<[^>]+>/g, "").trim();
     return text.length > 200 ? text.slice(0, 200).trimEnd() + "..." : text;
+  }
+
+  function toggleTag(tagId: string) {
+    setPickedTagIds((prev) =>
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+    );
+  }
+
+  async function syncTags(articleId: string) {
+    // Delete all existing tags for this article, then insert selected ones
+    await supabase.from("article_tags").delete().eq("article_id", articleId);
+    if (pickedTagIds.length > 0) {
+      await supabase.from("article_tags").insert(
+        pickedTagIds.map((tagId) => ({ article_id: articleId, tag_id: tagId }))
+      );
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -96,6 +119,8 @@ export default function ArticleForm({ article }: ArticleFormProps) {
         setSaving(false);
         return;
       }
+
+      await syncTags(article.id);
     } else {
       const {
         data: { user },
@@ -107,15 +132,19 @@ export default function ArticleForm({ article }: ArticleFormProps) {
         return;
       }
 
-      const { error: dbError } = await supabase
+      const { data: newArticle, error: dbError } = await supabase
         .from("articles")
-        .insert({ ...articleData, author_id: user.id });
+        .insert({ ...articleData, author_id: user.id })
+        .select("id")
+        .single();
 
-      if (dbError) {
-        setError("Error al crear: " + dbError.message);
+      if (dbError || !newArticle) {
+        setError("Error al crear: " + (dbError?.message ?? "Error desconocido"));
         setSaving(false);
         return;
       }
+
+      await syncTags(newArticle.id);
     }
 
     router.push("/admin/noticias");
@@ -176,6 +205,41 @@ export default function ArticleForm({ article }: ArticleFormProps) {
           ))}
         </select>
       </div>
+
+      {/* Etiquetas */}
+      {allTags.length > 0 && (
+        <div>
+          <label className="block text-sm font-medium text-body mb-2">
+            Etiquetas{" "}
+            <span className="text-muted font-normal">(opcional — tocá para seleccionar)</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {allTags.map((tag) => {
+              const selected = pickedTagIds.includes(tag.id);
+              return (
+                <button
+                  key={tag.id}
+                  type="button"
+                  onClick={() => toggleTag(tag.id)}
+                  className={`px-3 py-1 rounded-full text-sm font-medium border transition ${
+                    selected
+                      ? "bg-primary text-white border-primary"
+                      : "bg-surface-card text-body border-surface-border hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {selected && <span className="mr-1">✓</span>}
+                  {tag.name}
+                </button>
+              );
+            })}
+          </div>
+          {pickedTagIds.length > 0 && (
+            <p className="text-xs text-muted mt-1.5">
+              {pickedTagIds.length} etiqueta{pickedTagIds.length !== 1 ? "s" : ""} seleccionada{pickedTagIds.length !== 1 ? "s" : ""}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Imagen */}
       <div>

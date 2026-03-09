@@ -25,6 +25,7 @@ export interface Article {
   gallery: string[];
   // Joined
   category?: Category;
+  tags?: Tag[];
 }
 
 export interface Contact {
@@ -36,6 +37,18 @@ export interface Contact {
   created_at: string;
 }
 
+export interface Tag {
+  id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+export interface ArticleTag {
+  article_id: string;
+  tag_id: string;
+}
+
 export interface BreakingNews {
   id: string;
   text: string;
@@ -43,4 +56,25 @@ export interface BreakingNews {
   active: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface Comment {
+  id: string;
+  article_id: string;
+  author_name: string;
+  author_email: string;
+  content: string;
+  approved: boolean;
+  created_at: string;
+  // Joined
+  article?: { title: string; slug: string };
+}
+
+export interface Subscriber {
+  id: string;
+  email: string;
+  name: string | null;
+  active: boolean;
+  created_at: string;
+  unsubscribed_at: string | null;
 }
