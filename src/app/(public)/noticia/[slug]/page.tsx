@@ -205,7 +205,7 @@ export default async function NoticiaPage({
 
           {/* Content */}
           <div
-            className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-heading prose-a:text-primary hover:prose-a:text-primary-hover prose-img:rounded-lg"
+            className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-heading prose-a:text-primary hover:prose-a:text-primary-hover prose-img:rounded-lg prose-table:overflow-x-auto"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
 

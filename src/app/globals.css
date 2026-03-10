@@ -31,6 +31,127 @@
   content: attr(data-placeholder);
 }
 
+/* ──────────────────────────────────────────────
+   Blockquotes — editor + public prose
+   ────────────────────────────────────────────── */
+.tiptap blockquote,
+.prose blockquote {
+  border-left: 4px solid #E30613 !important;
+  background: #fdf2f2;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  border-radius: 0 6px 6px 0;
+  font-style: italic;
+  color: #444;
+  margin: 1.25rem 0;
+}
+
+.tiptap blockquote p,
+.prose blockquote p {
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────
+   Tables — editor + public prose
+   ────────────────────────────────────────────── */
+.tiptap table,
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #e2e2e2;
+}
+
+.tiptap table th,
+.prose table th {
+  background: #1A1A1A;
+  color: #ffffff;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid #333;
+}
+
+.tiptap table td,
+.prose table td {
+  padding: 9px 14px;
+  border: 1px solid #e2e2e2;
+  vertical-align: top;
+}
+
+.tiptap table tr:nth-child(even) td,
+.prose table tr:nth-child(even) td {
+  background: #f9f9f9;
+}
+
+/* Selected cell highlight in editor */
+.tiptap .selectedCell {
+  background: #fde8ea !important;
+}
+
+/* Column resize handle */
+.tiptap .column-resize-handle {
+  background: #E30613;
+  width: 3px;
+  cursor: col-resize;
+}
+
+/* Scrollable tables on mobile */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ──────────────────────────────────────────────
+   YouTube embeds — editor + public
+   ────────────────────────────────────────────── */
+.tiptap .youtube-embed,
+.prose .youtube-embed,
+.tiptap iframe[src*="youtube"],
+.prose iframe[src*="youtube"] {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+  border: none;
+  margin: 1.25rem 0;
+}
+
+/* TipTap wraps YouTube in a div with this class */
+.tiptap div[data-youtube-video],
+.prose div[data-youtube-video] {
+  margin: 1.25rem 0;
+}
+
+.tiptap div[data-youtube-video] iframe,
+.prose div[data-youtube-video] iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 8px;
+  border: none;
+}
+
+/* ──────────────────────────────────────────────
+   Twitter/X embeds — editor + public
+   ────────────────────────────────────────────── */
+.twitter-embed-wrapper {
+  margin: 1.25rem 0;
+}
+
+.twitter-embed-wrapper iframe {
+  width: 100%;
+  max-width: 550px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 12px;
+  border: none;
+}
+
 /* Smooth scroll on mobile */
 @media (prefers-reduced-motion: no-preference) {
   html {
