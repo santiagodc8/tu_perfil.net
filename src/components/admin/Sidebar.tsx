@@ -23,6 +23,7 @@ const navItems: NavItem[] = [
   { href: "/admin/ultima-hora", label: "Última Hora", icon: "🚨" },
   { href: "/admin/comentarios", label: "Comentarios", icon: "💬", badge: "pendingComments" },
   { href: "/admin/mensajes", label: "Mensajes", icon: "✉️" },
+  { href: "/admin/publicidad", label: "Publicidad", icon: "📢" },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: "📊" },
   { href: "/admin/suscriptores", label: "Suscriptores", icon: "👥", adminOnly: true },
   { href: "/admin/newsletter", label: "Newsletter", icon: "📧", adminOnly: true },

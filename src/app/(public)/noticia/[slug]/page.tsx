@@ -15,6 +15,8 @@ import CommentList from "@/components/public/CommentList";
 import CommentForm from "@/components/public/CommentForm";
 import ArticleBody from "@/components/public/ArticleBody";
 import FloatingWhatsApp from "@/components/public/FloatingWhatsApp";
+import AdBanner from "@/components/public/AdBanner";
+import type { Ad } from "@/types";
 import { Suspense } from "react";
 
 interface ArticleTag {
@@ -106,6 +108,18 @@ export default async function NoticiaPage({
     .order("created_at", { ascending: false })
     .limit(3)
     .returns<RelatedArticle[]>();
+
+  // Publicidad en artículos (between_articles se reutiliza aquí)
+  const { data: articleAdsData } = await supabase
+    .from("ads")
+    .select("*")
+    .eq("active", true)
+    .in("position", ["between_articles", "header"])
+    .order("sort_order", { ascending: true })
+    .limit(1)
+    .returns<Ad[]>();
+
+  const articleAd = articleAdsData?.[0] ?? null;
 
   const articleUrl = `https://tuperfil.net/noticia/${article.slug}`;
 
@@ -228,6 +242,13 @@ export default async function NoticiaPage({
                   #{tag.name}
                 </Link>
               ))}
+            </div>
+          )}
+
+          {/* Publicidad en artículo */}
+          {articleAd && (
+            <div className="mt-6 sm:mt-8">
+              <AdBanner ad={articleAd} />
             </div>
           )}
 

@@ -1,4 +1,6 @@
 import ArticleCard from "./ArticleCard";
+import AdBanner from "./AdBanner";
+import type { Ad } from "@/types";
 
 interface SidebarArticle {
   title: string;
@@ -11,8 +13,10 @@ interface SidebarArticle {
 
 export default function SidebarPublic({
   popular,
+  sidebarAds = [],
 }: {
   popular: SidebarArticle[];
+  sidebarAds?: Ad[];
 }) {
   return (
     <aside className="space-y-4 sm:space-y-6">
@@ -35,6 +39,9 @@ export default function SidebarPublic({
         </form>
       </div>
 
+      {/* Publicidad sidebar — primer anuncio */}
+      {sidebarAds.length > 0 && <AdBanner ad={sidebarAds[0]} />}
+
       {/* Mas leidas */}
       {popular.length > 0 && (
         <div className="bg-surface-card rounded-xl border border-surface-border p-4">
@@ -51,6 +58,11 @@ export default function SidebarPublic({
           </div>
         </div>
       )}
+
+      {/* Publicidad sidebar — anuncios adicionales después de "más leídas" */}
+      {sidebarAds.slice(1).map((ad) => (
+        <AdBanner key={ad.id} ad={ad} />
+      ))}
     </aside>
   );
 }

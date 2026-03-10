@@ -89,3 +89,17 @@ export interface Profile {
   created_at: string;
   updated_at: string;
 }
+
+export type AdPosition = 'sidebar' | 'header' | 'between_articles';
+
+export interface Ad {
+  id: string;
+  title: string;
+  image_url: string;
+  link_url: string;
+  position: AdPosition;
+  active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
