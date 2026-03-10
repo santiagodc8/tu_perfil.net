@@ -13,6 +13,8 @@ import ImageGallery from "@/components/public/ImageGallery";
 import Breadcrumbs from "@/components/public/Breadcrumbs";
 import CommentList from "@/components/public/CommentList";
 import CommentForm from "@/components/public/CommentForm";
+import ArticleBody from "@/components/public/ArticleBody";
+import FloatingWhatsApp from "@/components/public/FloatingWhatsApp";
 import { Suspense } from "react";
 
 interface ArticleTag {
@@ -203,10 +205,10 @@ export default async function NoticiaPage({
             <ImageGallery images={article.gallery} />
           )}
 
-          {/* Content */}
-          <div
-            className="prose prose-sm sm:prose-lg max-w-none prose-headings:text-heading prose-a:text-primary hover:prose-a:text-primary-hover prose-img:rounded-lg prose-table:overflow-x-auto"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+          {/* Content — includes reading controls + body */}
+          <ArticleBody
+            content={article.content}
+            initialProseClass="prose prose-sm sm:prose-lg"
           />
 
           {/* Share bottom */}
@@ -247,6 +249,9 @@ export default async function NoticiaPage({
           <RelatedArticles articles={relatedData ?? []} />
         </div>
       </article>
+
+      {/* Floating WhatsApp share button — mobile only */}
+      <FloatingWhatsApp title={article.title} slug={article.slug} />
     </>
   );
 }

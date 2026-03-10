@@ -78,3 +78,14 @@ export interface Subscriber {
   created_at: string;
   unsubscribed_at: string | null;
 }
+
+export type UserRole = 'admin' | 'editor';
+
+export interface Profile {
+  id: string;
+  email: string;
+  full_name: string;
+  role: UserRole;
+  created_at: string;
+  updated_at: string;
+}

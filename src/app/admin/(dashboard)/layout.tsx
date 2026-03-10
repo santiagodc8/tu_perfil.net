@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Sidebar from "@/components/admin/Sidebar";
+import type { UserRole } from "@/types";
 
 export default async function DashboardLayout({
   children,
@@ -16,9 +17,17 @@ export default async function DashboardLayout({
     redirect("/admin/login");
   }
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  const role: UserRole = (profile?.role as UserRole) ?? "editor";
+
   return (
     <div className="flex min-h-screen bg-surface">
-      <Sidebar />
+      <Sidebar role={role} />
       <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );

@@ -5,8 +5,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import type { UserRole } from "@/types";
 
-const navItems = [
+interface NavItem {
+  href: string;
+  label: string;
+  icon: string;
+  badge?: string;
+  adminOnly?: boolean;
+}
+
+const navItems: NavItem[] = [
   { href: "/admin", label: "Inicio", icon: "🏠" },
   { href: "/admin/noticias", label: "Noticias", icon: "📰" },
   { href: "/admin/categorias", label: "Categorías", icon: "📂" },
@@ -14,12 +23,13 @@ const navItems = [
   { href: "/admin/ultima-hora", label: "Última Hora", icon: "🚨" },
   { href: "/admin/comentarios", label: "Comentarios", icon: "💬", badge: "pendingComments" },
   { href: "/admin/mensajes", label: "Mensajes", icon: "✉️" },
-  { href: "/admin/suscriptores", label: "Suscriptores", icon: "👥" },
-  { href: "/admin/newsletter", label: "Newsletter", icon: "📧" },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: "📊" },
+  { href: "/admin/suscriptores", label: "Suscriptores", icon: "👥", adminOnly: true },
+  { href: "/admin/newsletter", label: "Newsletter", icon: "📧", adminOnly: true },
+  { href: "/admin/usuarios", label: "Usuarios", icon: "👤", adminOnly: true },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ role }: { role: UserRole }) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
@@ -45,6 +55,10 @@ export default function Sidebar() {
 
   const badges: Record<string, number> = { pendingComments };
 
+  const visibleItems = navItems.filter(
+    (item) => !item.adminOnly || role === "admin"
+  );
+
   return (
     <aside className="w-64 bg-surface-header min-h-screen flex flex-col">
       <div className="p-6">
@@ -61,7 +75,7 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 px-4 space-y-1">
-        {navItems.map((item) => {
+        {visibleItems.map((item) => {
           const isActive =
             item.href === "/admin"
               ? pathname === "/admin"
@@ -91,7 +105,14 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 space-y-1">
+        {role === "editor" && (
+          <div className="px-4 py-2 mb-1">
+            <span className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded-md">
+              Rol: Editor
+            </span>
+          </div>
+        )}
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition w-full"
