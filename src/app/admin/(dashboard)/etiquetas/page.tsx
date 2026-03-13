@@ -69,7 +69,7 @@ export default function EtiquetasPage() {
   return (
     <div>
       <AdminHeader title="Etiquetas" />
-      <div className="p-6 max-w-2xl space-y-6">
+      <div className="p-4 md:p-6 max-w-2xl space-y-6">
         {/* Formulario */}
         <form
           onSubmit={handleSubmit}

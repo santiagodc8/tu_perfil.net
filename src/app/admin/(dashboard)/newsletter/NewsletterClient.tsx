@@ -71,7 +71,7 @@ export default function NewsletterClient() {
   return (
     <div>
       <AdminHeader title="Enviar Newsletter" />
-      <div className="p-6 max-w-2xl space-y-6">
+      <div className="p-4 md:p-6 max-w-2xl space-y-6">
 
         {/* Subscriber count info */}
         <div className="bg-surface-card rounded-xl border border-surface-border px-6 py-4 flex items-center gap-4">

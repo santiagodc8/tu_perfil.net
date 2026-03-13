@@ -82,7 +82,7 @@ export default function NoticiasPage() {
   return (
     <div>
       <AdminHeader title="Noticias" />
-      <div className="p-6 space-y-4">
+      <div className="p-4 md:p-6 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/admin/noticias/nueva"
@@ -107,7 +107,7 @@ export default function NoticiasPage() {
         </div>
 
         {/* Tabs de estado */}
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit overflow-x-auto">
           {([
             { key: "all", label: "Todas" },
             { key: "published", label: "Publicadas" },
@@ -139,7 +139,76 @@ export default function NoticiasPage() {
                 : "No hay noticias con estos filtros."}
             </div>
           ) : (
-            <table className="w-full">
+            <>
+            {/* Mobile: cards */}
+            <div className="md:hidden divide-y divide-surface-border">
+              {filtered.map((article) => {
+                const status = getStatus(article);
+                return (
+                  <div key={article.id} className="p-4 space-y-2">
+                    <div className="flex items-start gap-2">
+                      {article.featured && (
+                        <span className="text-amber-500 flex-shrink-0 mt-0.5">&#9733;</span>
+                      )}
+                      <Link
+                        href={`/admin/noticias/${article.id}`}
+                        className="text-sm font-medium text-heading hover:text-primary leading-snug"
+                      >
+                        {article.title}
+                      </Link>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {article.category && (
+                        <span
+                          className="text-xs px-2 py-0.5 rounded-full text-white"
+                          style={{ backgroundColor: article.category.color }}
+                        >
+                          {article.category.name}
+                        </span>
+                      )}
+                      <span
+                        className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                          status === "scheduled"
+                            ? "bg-blue-100 text-blue-700"
+                            : status === "published"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {status === "scheduled" ? "Programada" : status === "published" ? "Publicada" : "Borrador"}
+                      </span>
+                      <span className="text-xs text-muted">{article.views} vistas</span>
+                      <span className="text-xs text-muted">{formatDateShort(article.created_at)}</span>
+                    </div>
+                    <div className="flex items-center gap-4 pt-1">
+                      <a
+                        href={`/admin/preview/${article.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-muted hover:text-blue-500"
+                      >
+                        Preview
+                      </a>
+                      <Link
+                        href={`/admin/noticias/${article.id}`}
+                        className="text-sm text-muted hover:text-primary"
+                      >
+                        Editar
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(article.id)}
+                        className="text-sm text-muted hover:text-red-500"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop: table */}
+            <table className="w-full hidden md:table">
               <thead>
                 <tr className="border-b border-surface-border text-left text-sm text-muted">
                   <th className="px-6 py-3 font-medium">Título</th>
@@ -235,6 +304,7 @@ export default function NoticiasPage() {
                 })}
               </tbody>
             </table>
+            </>
           )}
         </div>
       </div>

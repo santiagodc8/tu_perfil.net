@@ -152,7 +152,7 @@ export default function ArticleForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 max-w-3xl space-y-6">
+    <form onSubmit={handleSubmit} className="p-4 md:p-6 max-w-3xl space-y-6">
       {error && (
         <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
           {error}

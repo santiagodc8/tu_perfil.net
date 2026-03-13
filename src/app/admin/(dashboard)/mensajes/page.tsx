@@ -44,7 +44,7 @@ export default function MensajesPage() {
   return (
     <div>
       <AdminHeader title="Mensajes de contacto" />
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="bg-surface-card rounded-xl border border-surface-border">
           {loading ? (
             <div className="p-6 text-center text-muted">Cargando...</div>

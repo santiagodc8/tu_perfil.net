@@ -103,7 +103,7 @@ export default function PublicidadPage() {
   return (
     <div>
       <AdminHeader title="Publicidad" />
-      <div className="p-6 max-w-3xl space-y-6">
+      <div className="p-4 md:p-6 max-w-3xl space-y-6">
         {/* Formulario */}
         <form
           onSubmit={handleSubmit}

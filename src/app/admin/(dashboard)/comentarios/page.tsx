@@ -66,7 +66,7 @@ export default function ComentariosPage() {
     <div>
       <AdminHeader title="Comentarios" />
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
           <button

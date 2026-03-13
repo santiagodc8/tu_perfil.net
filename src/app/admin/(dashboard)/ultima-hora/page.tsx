@@ -80,7 +80,7 @@ export default function UltimaHoraPage() {
   return (
     <div>
       <AdminHeader title="Última Hora" />
-      <div className="p-6 max-w-2xl space-y-6">
+      <div className="p-4 md:p-6 max-w-2xl space-y-6">
         {/* Toggle grande */}
         <div
           className={`rounded-xl p-6 border-2 transition ${
