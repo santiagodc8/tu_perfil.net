@@ -16,7 +16,8 @@ export default async function AdminDashboard() {
 
   const { count: totalArticles } = await supabase
     .from("articles")
-    .select("*", { count: "exact", head: true });
+    .select("*", { count: "exact", head: true })
+    .is("deleted_at", null);
 
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
@@ -25,11 +26,13 @@ export default async function AdminDashboard() {
   const { count: monthArticles } = await supabase
     .from("articles")
     .select("*", { count: "exact", head: true })
+    .is("deleted_at", null)
     .gte("created_at", startOfMonth.toISOString());
 
   const { data: recentArticles } = await supabase
     .from("articles")
     .select("id, title, published, created_at, category:categories(name, color)")
+    .is("deleted_at", null)
     .order("created_at", { ascending: false })
     .limit(5)
     .returns<RecentArticle[]>();

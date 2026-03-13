@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { smartDate, readingTime, BLUR_DATA_URL } from "@/lib/utils";
+import { smartDate, readingTime, generateSlug, BLUR_DATA_URL } from "@/lib/utils";
 import ShareButtons from "@/components/public/ShareButtons";
 import RelatedArticles from "@/components/public/RelatedArticles";
 import ViewCounter from "@/components/public/ViewCounter";
@@ -98,16 +98,44 @@ export default async function NoticiaPage({
 
   if (!article) notFound();
 
-  // Noticias relacionadas (misma categoria, excluyendo la actual)
-  const { data: relatedData } = await supabase
-    .from("articles")
-    .select("title, slug, excerpt, image_url, created_at, category:categories(name, color)")
-    .eq("published", true)
-    .eq("category_id", article.category_id)
-    .neq("id", article.id)
-    .order("created_at", { ascending: false })
-    .limit(3)
-    .returns<RelatedArticle[]>();
+  // Noticias relacionadas: primero por tags en común, luego fallback a categoría
+  const { data: tagRelated } = await supabase.rpc("related_articles_by_tags", {
+    p_article_id: article.id,
+    p_category_id: article.category_id,
+    lim: 4,
+  });
+
+  let relatedData: RelatedArticle[] = (tagRelated ?? []).map(
+    (r: { title: string; slug: string; excerpt: string; image_url: string | null; created_at: string; category_name: string | null; category_color: string | null }) => ({
+      title: r.title,
+      slug: r.slug,
+      excerpt: r.excerpt,
+      image_url: r.image_url,
+      created_at: r.created_at,
+      category: r.category_name ? { name: r.category_name, color: r.category_color! } : null,
+    })
+  );
+
+  // Fallback: si no hay suficientes por tags, completar con misma categoría
+  if (relatedData.length < 4) {
+    const existingSlugs = new Set(relatedData.map((a) => a.slug));
+    const { data: catRelated } = await supabase
+      .from("articles")
+      .select("title, slug, excerpt, image_url, created_at, category:categories(name, color)")
+      .eq("published", true)
+      .eq("category_id", article.category_id)
+      .neq("id", article.id)
+      .order("created_at", { ascending: false })
+      .limit(4)
+      .returns<RelatedArticle[]>();
+
+    for (const a of catRelated ?? []) {
+      if (relatedData.length >= 4) break;
+      if (!existingSlugs.has(a.slug)) {
+        relatedData.push(a);
+      }
+    }
+  }
 
   // Publicidad en artículos (between_articles se reutiliza aquí)
   const { data: articleAdsData } = await supabase
@@ -134,6 +162,7 @@ export default async function NoticiaPage({
     author: {
       "@type": "Person",
       name: article.author_name,
+      url: `https://tuperfil.net/autor/${generateSlug(article.author_name)}`,
     },
     publisher: {
       "@type": "Organization",
@@ -176,7 +205,13 @@ export default async function NoticiaPage({
               </span>
             )}
             <span className="text-xs sm:text-sm text-muted">
-              Por <span className="font-medium text-body">{article.author_name}</span>
+              Por{" "}
+              <Link
+                href={`/autor/${generateSlug(article.author_name)}`}
+                className="font-medium text-body hover:text-primary transition"
+              >
+                {article.author_name}
+              </Link>
             </span>
             <span className="text-xs sm:text-sm text-muted">·</span>
             <time className="text-xs sm:text-sm text-muted">

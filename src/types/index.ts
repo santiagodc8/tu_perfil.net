@@ -22,6 +22,7 @@ export interface Article {
   updated_at: string;
   author_id: string;
   author_name: string;
+  deleted_at: string | null;
   gallery: string[];
   // Joined
   category?: Category;

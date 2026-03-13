@@ -75,16 +75,38 @@ export default async function HomePage() {
     })
   );
 
-  // Mas leidas
-  const { data: popularData } = await supabase
-    .from("articles")
-    .select("title, slug, excerpt, image_url, created_at, category:categories(name, color)")
-    .eq("published", true)
-    .order("views", { ascending: false })
-    .limit(5)
-    .returns<PopularArticle[]>();
+  // Mas leidas de la semana (via page_views últimos 7 días)
+  const { data: popularIds } = await supabase.rpc("popular_articles_this_week", {
+    lim: 5,
+  });
 
-  const popular = popularData ?? [];
+  let popular: PopularArticle[] = [];
+  if (popularIds && popularIds.length > 0) {
+    const ids = popularIds.map((r: { article_id: string }) => r.article_id);
+    const { data: popularData } = await supabase
+      .from("articles")
+      .select("id, title, slug, excerpt, image_url, created_at, category:categories(name, color)")
+      .in("id", ids)
+      .returns<(PopularArticle & { id: string })[]>();
+
+    // Ordenar según el ranking de page_views
+    const orderMap = new Map<string, number>(ids.map((id: string, i: number) => [id, i]));
+    popular = (popularData ?? []).sort(
+      (a, b) => (orderMap.get(a.id) ?? 99) - (orderMap.get(b.id) ?? 99)
+    );
+  }
+
+  // Fallback: si no hay datos de la semana, usar vistas totales
+  if (popular.length === 0) {
+    const { data: fallbackData } = await supabase
+      .from("articles")
+      .select("title, slug, excerpt, image_url, created_at, category:categories(name, color)")
+      .eq("published", true)
+      .order("views", { ascending: false })
+      .limit(5)
+      .returns<PopularArticle[]>();
+    popular = fallbackData ?? [];
+  }
 
   // Publicidad
   const { data: adsData } = await supabase

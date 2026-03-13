@@ -68,13 +68,15 @@ export default async function EstadisticasPage() {
     supabase
       .from("articles")
       .select("*", { count: "exact", head: true })
-      .eq("published", true),
+      .eq("published", true)
+      .is("deleted_at", null),
 
     supabase
       .from("articles")
       .select(
         "id, title, slug, views, created_at, published, category:categories(name, color)"
       )
+      .is("deleted_at", null)
       .returns<ArticleRow[]>(),
 
     supabase

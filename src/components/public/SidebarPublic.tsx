@@ -45,7 +45,7 @@ export default function SidebarPublic({
       {/* Mas leidas */}
       {popular.length > 0 && (
         <div className="bg-surface-card rounded-xl border border-surface-border p-4">
-          <h3 className="font-bold text-heading mb-4">Más leídas</h3>
+          <h3 className="font-bold text-heading mb-4">Más leídas de la semana</h3>
           <div className="space-y-4">
             {popular.map((article, i) => (
               <div key={article.slug} className="flex gap-3 items-start">
