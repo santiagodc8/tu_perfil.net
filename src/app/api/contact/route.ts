@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -111,6 +112,17 @@ function buildEmailHtml(
 }
 
 export async function POST(request: NextRequest) {
+  const { allowed } = checkRateLimit(getClientIp(request), "contact", {
+    limit: 5,
+    windowSeconds: 3600,
+  });
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Demasiados mensajes. Intenta de nuevo más tarde." },
+      { status: 429 }
+    );
+  }
+
   let name = "";
   let email = "";
   let message = "";

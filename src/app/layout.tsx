@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ServiceWorkerRegister from "@/components/public/ServiceWorkerRegister";
+import CookieBanner from "@/components/public/CookieBanner";
+import Analytics from "@/components/public/Analytics";
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +44,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        {children}
+        <ServiceWorkerRegister />
+        <CookieBanner />
+        <Analytics />
+      </body>
     </html>
   );
 }

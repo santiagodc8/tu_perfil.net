@@ -3,6 +3,7 @@ export const revalidate = 60; // Revalidar cada 60 segundos
 import { createClient } from "@/lib/supabase/server";
 import HeroCarousel from "@/components/public/HeroCarousel";
 import CategorySection from "@/components/public/CategorySection";
+import TrendingSection from "@/components/public/TrendingSection";
 import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
 import type { Category, Ad } from "@/types";
@@ -22,6 +23,13 @@ interface PopularArticle {
   excerpt: string;
   image_url: string | null;
   created_at: string;
+  category: { name: string; color: string } | null;
+}
+
+interface TrendingArticle {
+  title: string;
+  slug: string;
+  image_url: string | null;
   category: { name: string; color: string } | null;
 }
 
@@ -108,6 +116,26 @@ export default async function HomePage() {
     popular = fallbackData ?? [];
   }
 
+  // Trending últimas 24h
+  const { data: trendingIds } = await supabase.rpc("trending_articles_24h", {
+    lim: 5,
+  });
+
+  let trending: TrendingArticle[] = [];
+  if (trendingIds && trendingIds.length > 0) {
+    const tIds = trendingIds.map((r: { article_id: string }) => r.article_id);
+    const { data: trendingData } = await supabase
+      .from("articles")
+      .select("id, title, slug, image_url, category:categories(name, color)")
+      .in("id", tIds)
+      .returns<(TrendingArticle & { id: string })[]>();
+
+    const tOrderMap = new Map<string, number>(tIds.map((id: string, i: number) => [id, i]));
+    trending = (trendingData ?? []).sort(
+      (a, b) => (tOrderMap.get(a.id) ?? 99) - (tOrderMap.get(b.id) ?? 99)
+    );
+  }
+
   // Publicidad
   const { data: adsData } = await supabase
     .from("ads")
@@ -130,6 +158,9 @@ export default async function HomePage() {
 
       {/* Hero Carousel */}
       {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} />}
+
+      {/* Trending */}
+      {trending.length > 0 && <TrendingSection articles={trending} />}
 
       {/* Content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">

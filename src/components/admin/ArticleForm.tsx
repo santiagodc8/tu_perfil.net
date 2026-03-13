@@ -40,6 +40,7 @@ export default function ArticleForm({
   );
   const [categories, setCategories] = useState<Category[]>([]);
   const [pickedTagIds, setPickedTagIds] = useState<string[]>(selectedTagIds);
+  const [notifySubscribers, setNotifySubscribers] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -145,6 +146,27 @@ export default function ArticleForm({
       }
 
       await syncTags(newArticle.id);
+    }
+
+    // Notificar suscriptores si está marcado y el artículo se publica
+    if (notifySubscribers && published && !scheduled) {
+      const slug = generateSlug(title);
+      try {
+        await fetch("/api/newsletter/notify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: title.trim(),
+            slug,
+            excerpt: extractExcerpt(content),
+            imageUrl: imageUrl || null,
+            categoryName:
+              categories.find((c) => c.id === categoryId)?.name ?? "",
+          }),
+        });
+      } catch {
+        // Non-blocking: article is already saved
+      }
     }
 
     router.push("/admin/noticias");
@@ -306,6 +328,24 @@ export default function ArticleForm({
               {featured ? "Destacada" : "Normal"}
             </span>
           </label>
+
+          {published && !scheduled && (
+            <label className="flex items-center gap-3 cursor-pointer">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={notifySubscribers}
+                  onChange={(e) => setNotifySubscribers(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-300 peer-checked:bg-blue-500 rounded-full transition" />
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
+              </div>
+              <span className="text-sm font-medium text-body">
+                Notificar suscriptores
+              </span>
+            </label>
+          )}
         </div>
 
         {/* Programar publicación */}

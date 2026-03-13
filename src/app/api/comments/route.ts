@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 // GET /api/comments?article_id=<uuid>
 // Retorna comentarios aprobados de un artículo
@@ -32,6 +33,17 @@ export async function GET(request: Request) {
 // POST /api/comments
 // Recibe y guarda un nuevo comentario (pendiente de aprobación)
 export async function POST(request: Request) {
+  const { allowed } = checkRateLimit(getClientIp(request), "comment", {
+    limit: 10,
+    windowSeconds: 3600,
+  });
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Demasiados comentarios. Intenta de nuevo más tarde." },
+      { status: 429 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

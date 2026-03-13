@@ -56,6 +56,16 @@ export default function Footer({ categories }: { categories: Category[] }) {
                   Acerca de nosotros
                 </Link>
               </li>
+              <li>
+                <Link href="/politica-de-privacidad" className="hover:text-white transition inline-block py-0.5">
+                  Política de privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/terminos" className="hover:text-white transition inline-block py-0.5">
+                  Términos y condiciones
+                </Link>
+              </li>
             </ul>
 
             <div className="flex gap-4 mt-4">

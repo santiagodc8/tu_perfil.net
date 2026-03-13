@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
+  const { allowed } = checkRateLimit(getClientIp(request), "subscribe", {
+    limit: 5,
+    windowSeconds: 3600,
+  });
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Demasiados intentos. Intenta de nuevo más tarde." },
+      { status: 429 }
+    );
+  }
+
   let email = "";
   let name = "";
 
