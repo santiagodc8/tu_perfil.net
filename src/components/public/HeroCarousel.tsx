@@ -38,7 +38,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div
-      className="relative rounded-xl overflow-hidden bg-surface-header aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9]"
+      className="relative rounded-xl overflow-hidden bg-surface-header aspect-[4/3] sm:aspect-[16/9] md:aspect-[19/9]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
