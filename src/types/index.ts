@@ -90,6 +90,16 @@ export interface Profile {
   updated_at: string;
 }
 
+export type ReferrerSource = 'direct' | 'google' | 'facebook' | 'twitter' | 'whatsapp' | 'other';
+
+export interface PageView {
+  id: string;
+  article_id: string;
+  viewed_at: string;
+  referrer: string | null;
+  referrer_source: ReferrerSource | null;
+}
+
 export type AdPosition = 'sidebar' | 'header' | 'between_articles';
 
 export interface Ad {

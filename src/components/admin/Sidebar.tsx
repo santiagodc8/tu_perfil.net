@@ -159,6 +159,17 @@ export default function Sidebar({ role }: { role: UserRole }) {
               </span>
             </div>
           )}
+          <Link
+            href="/admin/perfil"
+            className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition ${
+              pathname === "/admin/perfil"
+                ? "bg-white/10 text-white"
+                : "text-gray-300 hover:bg-white/5 hover:text-white"
+            }`}
+          >
+            <span>⚙️</span>
+            Mi perfil
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white transition w-full"

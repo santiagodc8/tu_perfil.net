@@ -4,7 +4,12 @@ import { useEffect } from "react";
 
 export default function ViewCounter({ articleId }: { articleId: string }) {
   useEffect(() => {
-    fetch(`/api/views/${articleId}`, { method: "POST" });
+    const referrer = document.referrer || "";
+    fetch(`/api/views/${articleId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ referrer }),
+    });
   }, [articleId]);
 
   return null;
