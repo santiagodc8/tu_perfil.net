@@ -13,9 +13,17 @@ const POSITION_LABELS: Record<AdPosition, string> = {
   between_articles: "Entre secciones",
 };
 
+interface AdMetric {
+  ad_id: string;
+  impressions: number;
+  clicks: number;
+}
+
 export default function PublicidadPage() {
   const supabase = createClient();
   const [ads, setAds] = useState<Ad[]>([]);
+  const [metrics, setMetrics] = useState<Map<string, AdMetric>>(new Map());
+  const [metricsDays, setMetricsDays] = useState(30);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -37,10 +45,27 @@ export default function PublicidadPage() {
     setLoading(false);
   }
 
+  async function fetchMetrics(days: number) {
+    const { data } = await supabase.rpc("ad_metrics", { days });
+    const map = new Map<string, AdMetric>();
+    if (data) {
+      for (const row of data as AdMetric[]) {
+        map.set(row.ad_id, row);
+      }
+    }
+    setMetrics(map);
+  }
+
   useEffect(() => {
     fetchAds();
+    fetchMetrics(metricsDays);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    fetchMetrics(metricsDays);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [metricsDays]);
 
   function resetForm() {
     setTitle("");
@@ -210,6 +235,52 @@ export default function PublicidadPage() {
           </div>
         </form>
 
+        {/* Métricas resumen */}
+        {ads.length > 0 && (
+          <div className="bg-surface-card rounded-xl border border-surface-border p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-heading">Rendimiento</h3>
+              <select
+                value={metricsDays}
+                onChange={(e) => setMetricsDays(Number(e.target.value))}
+                className="px-3 py-1.5 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              >
+                <option value={7}>Últimos 7 días</option>
+                <option value={30}>Últimos 30 días</option>
+                <option value={90}>Últimos 90 días</option>
+              </select>
+            </div>
+
+            {/* Cards totales */}
+            {(() => {
+              let totalImpressions = 0;
+              let totalClicks = 0;
+              metrics.forEach((m) => {
+                totalImpressions += m.impressions;
+                totalClicks += m.clicks;
+              });
+              const totalCtr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(1) : "0.0";
+
+              return (
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="bg-surface rounded-lg p-4 text-center">
+                    <p className="text-2xl font-extrabold text-heading">{totalImpressions.toLocaleString()}</p>
+                    <p className="text-xs text-muted mt-1">Impresiones</p>
+                  </div>
+                  <div className="bg-surface rounded-lg p-4 text-center">
+                    <p className="text-2xl font-extrabold text-heading">{totalClicks.toLocaleString()}</p>
+                    <p className="text-xs text-muted mt-1">Clicks</p>
+                  </div>
+                  <div className="bg-surface rounded-lg p-4 text-center">
+                    <p className="text-2xl font-extrabold text-heading">{totalCtr}%</p>
+                    <p className="text-xs text-muted mt-1">CTR promedio</p>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
+
         {/* Listado */}
         <div className="bg-surface-card rounded-xl border border-surface-border">
           <div className="px-6 py-4 border-b border-surface-border">
@@ -255,7 +326,7 @@ export default function PublicidadPage() {
                           {ad.active ? "Activo" : "Inactivo"}
                         </span>
                       </div>
-                      <div className="flex items-center gap-3 text-xs text-muted">
+                      <div className="flex items-center gap-3 text-xs text-muted flex-wrap">
                         <span>{POSITION_LABELS[ad.position]}</span>
                         <span>·</span>
                         <span>Orden: {ad.sort_order}</span>
@@ -273,6 +344,26 @@ export default function PublicidadPage() {
                           </>
                         )}
                       </div>
+                      {/* Métricas inline */}
+                      {(() => {
+                        const m = metrics.get(ad.id);
+                        const impressions = m?.impressions ?? 0;
+                        const clicks = m?.clicks ?? 0;
+                        const ctr = impressions > 0 ? ((clicks / impressions) * 100).toFixed(1) : "0.0";
+                        return (
+                          <div className="flex items-center gap-4 mt-1.5">
+                            <span className="text-xs text-muted">
+                              <span className="font-semibold text-heading">{impressions.toLocaleString()}</span> impresiones
+                            </span>
+                            <span className="text-xs text-muted">
+                              <span className="font-semibold text-heading">{clicks.toLocaleString()}</span> clicks
+                            </span>
+                            <span className="text-xs text-muted">
+                              CTR: <span className="font-semibold text-heading">{ctr}%</span>
+                            </span>
+                          </div>
+                        );
+                      })()}
                     </div>
 
                     {/* Actions */}

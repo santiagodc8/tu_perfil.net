@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import type { Ad, AdPosition } from "@/types";
 import { BLUR_DATA_URL } from "@/lib/utils";
@@ -13,9 +16,46 @@ const SIZES_BY_POSITION: Record<AdPosition, string> = {
   sidebar: "(max-width: 1024px) 100vw, 300px",
 };
 
+function trackEvent(adId: string, eventType: "impression" | "click") {
+  // Use sendBeacon for non-blocking, or fetch as fallback
+  const body = JSON.stringify({ adId, eventType });
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("/api/ads/track", new Blob([body], { type: "application/json" }));
+  } else {
+    fetch("/api/ads/track", { method: "POST", body, headers: { "Content-Type": "application/json" }, keepalive: true });
+  }
+}
+
 export default function AdBanner({ ad, className = "" }: AdBannerProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const tracked = useRef(false);
+
+  // Track impression when ad enters viewport
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !tracked.current) {
+          tracked.current = true;
+          trackEvent(ad.id, "impression");
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ad.id]);
+
+  const handleClick = useCallback(() => {
+    trackEvent(ad.id, "click");
+  }, [ad.id]);
+
   const content = (
     <div
+      ref={ref}
       className={`relative w-full overflow-hidden rounded-xl bg-gray-100 ${className}`}
     >
       <Image
@@ -41,6 +81,7 @@ export default function AdBanner({ ad, className = "" }: AdBannerProps) {
         target="_blank"
         rel="noopener noreferrer nofollow"
         className="block hover:opacity-90 transition"
+        onClick={handleClick}
       >
         {content}
       </a>
