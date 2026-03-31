@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { smartDate, BLUR_DATA_URL } from "@/lib/utils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn, smartDateShort } from "@/lib/utils";
 
 interface HeroSlide {
   title: string;
@@ -14,190 +14,166 @@ interface HeroSlide {
   category: { name: string; color: string; slug: string } | null;
 }
 
-const INTERVAL_MS = 6000;
+interface HeroCarouselProps {
+  slides: HeroSlide[];
+  className?: string;
+}
 
-export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=640&h=480&fit=crop";
 
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  }, [slides.length]);
+const AUTO_SCROLL_MS = 4000;
 
-  const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  }, [slides.length]);
+export default function HeroCarousel({ slides, className }: HeroCarouselProps) {
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(true);
+  const [paused, setPaused] = React.useState(false);
 
-  useEffect(() => {
+  const checkScrollability = React.useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      checkScrollability();
+      container.addEventListener("scroll", checkScrollability);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", checkScrollability);
+      }
+    };
+  }, [slides, checkScrollability]);
+
+  const scroll = (direction: "left" | "right") => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const scrollAmount = container.clientWidth * 0.8;
+      container.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Auto-scroll
+  React.useEffect(() => {
     if (paused || slides.length <= 1) return;
-    const timer = setInterval(next, INTERVAL_MS);
+
+    const timer = setInterval(() => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const atEnd = scrollLeft >= scrollWidth - clientWidth - 1;
+
+      if (atEnd) {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        const cardWidth = container.firstElementChild
+          ? container.firstElementChild.getBoundingClientRect().width +
+            parseFloat(getComputedStyle(container).gap || "16")
+          : clientWidth * 0.8;
+        container.scrollBy({ left: cardWidth, behavior: "smooth" });
+      }
+    }, AUTO_SCROLL_MS);
+
     return () => clearInterval(timer);
-  }, [paused, next, slides.length]);
+  }, [paused, slides.length]);
 
   if (slides.length === 0) return null;
 
   return (
-    <div
-      className="group/carousel relative rounded-2xl overflow-hidden bg-surface-header aspect-[3/4] sm:aspect-[16/9] md:aspect-[21/9] shadow-xl animate-fade-in"
+    <section
+      className={cn("w-full max-w-7xl mx-auto animate-fade-in", className)}
+      aria-label="Noticias destacadas"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Slides */}
-      {slides.map((slide, i) => (
-        <Link
-          key={slide.slug}
-          href={`/noticia/${slide.slug}`}
-          className={`group absolute inset-0 transition-[opacity,transform] duration-700 ease-out cursor-pointer ${
-            i === current
-              ? "opacity-100 z-10 scale-100"
-              : "opacity-0 z-0 scale-[1.02]"
-          }`}
-          aria-hidden={i !== current}
-          tabIndex={i === current ? 0 : -1}
-        >
-          {slide.image_url ? (
-            <Image
-              src={slide.image_url}
-              alt={slide.title}
-              fill
-              className="object-cover group-hover:scale-[1.03] transition-transform duration-[800ms] ease-out"
-              priority={i === 0}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1280px"
-              placeholder="blur"
-              blurDataURL={BLUR_DATA_URL}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-surface-header to-heading" />
-          )}
-
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/5" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/10" />
-
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10 lg:p-12">
-            {slide.category && (
-              <span
-                className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full text-white mb-3 sm:mb-4 backdrop-blur-[2px] shadow-md"
-                style={{ backgroundColor: slide.category.color }}
-              >
-                {slide.category.name}
-              </span>
-            )}
-            <h2 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-white leading-[1.1] mb-2 sm:mb-3 group-hover:text-primary-hover transition-colors duration-300 line-clamp-3 sm:line-clamp-2 max-w-4xl tracking-tight">
-              {slide.title}
-            </h2>
-            <p className="text-gray-300/90 text-sm sm:text-base line-clamp-2 max-w-2xl hidden sm:block leading-relaxed">
-              {slide.excerpt}
-            </p>
-            <div className="flex items-center gap-3 mt-3 sm:mt-4">
-              <time className="text-xs sm:text-sm text-gray-400">
-                {smartDate(slide.created_at)}
-              </time>
-              <span className="text-xs sm:text-sm text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:inline-flex items-center gap-1">
-                Leer más
-                <svg
-                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </span>
-            </div>
-          </div>
-        </Link>
-      ))}
-
-      {/* Arrow buttons — hidden on mobile, visible on hover on desktop */}
-      {slides.length > 1 && (
-        <>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-display text-display-sm sm:text-display-md text-heading">
+          Destacadas
+        </h2>
+        <div className="hidden sm:flex items-center gap-2">
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              prev();
-            }}
-            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 transition-all active:scale-95 border border-white/10 cursor-pointer sm:opacity-0 sm:group-hover/carousel:opacity-100"
+            onClick={() => scroll("left")}
+            disabled={!canScrollLeft}
             aria-label="Anterior"
+            className="pressable p-2 rounded-full border border-surface-border bg-white text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
           >
-            <svg
-              className="w-4 h-4 sm:w-5 sm:h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            <ChevronLeft className="h-5 w-5" />
           </button>
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              next();
-            }}
-            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 transition-all active:scale-95 border border-white/10 cursor-pointer sm:opacity-0 sm:group-hover/carousel:opacity-100"
+            onClick={() => scroll("right")}
+            disabled={!canScrollRight}
             aria-label="Siguiente"
+            className="pressable p-2 rounded-full border border-surface-border bg-white text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
           >
-            <svg
-              className="w-4 h-4 sm:w-5 sm:h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <ChevronRight className="h-5 w-5" />
           </button>
-        </>
-      )}
-
-      {/* Slide indicators */}
-      {slides.length > 1 && (
-        <div className="absolute bottom-3 sm:bottom-4 right-5 sm:right-8 md:right-10 z-20 flex items-center gap-1.5 sm:gap-2">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={(e) => {
-                e.preventDefault();
-                setCurrent(i);
-              }}
-              className={`rounded-full transition-all duration-300 cursor-pointer ${
-                i === current
-                  ? "w-6 sm:w-8 h-2 bg-primary"
-                  : "w-2 h-2 bg-white/40 hover:bg-white/70"
-              }`}
-              aria-label={`Ir a noticia ${i + 1}`}
-            />
-          ))}
         </div>
-      )}
+      </div>
 
-      {/* Progress bar */}
-      {slides.length > 1 && !paused && (
-        <div className="absolute bottom-0 left-0 right-0 z-20 h-[3px] bg-white/5">
-          <div
-            className="h-full bg-gradient-to-r from-primary to-primary-hover"
-            style={{
-              animation: `progress ${INTERVAL_MS}ms linear`,
-              animationIterationCount: 1,
-            }}
-            key={current}
-          />
-        </div>
-      )}
-    </div>
+      {/* Scroll container */}
+      <div
+        ref={scrollContainerRef}
+        className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 md:gap-5 pb-2 scrollbar-hide"
+      >
+        {slides.map((slide, i) => (
+          <Link
+            key={slide.slug}
+            href={`/noticia/${slide.slug}`}
+            className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[340px] snap-start group"
+            style={{ animationDelay: `${i * 60}ms` }}
+          >
+            <div className="relative overflow-hidden rounded-card bg-white border border-surface-border/50 shadow-card card-hover">
+              <div className="relative w-full h-[320px] sm:h-[380px] md:h-[400px] overflow-hidden">
+                <img
+                  src={slide.image_url || FALLBACK_IMAGE}
+                  alt={slide.title}
+                  className="w-full h-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  style={{ transform: "scale(1)" }}
+                  loading={i < 2 ? "eager" : "lazy"}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                />
+                {/* Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
+
+                {/* Content */}
+                <div className="absolute inset-0 p-4 sm:p-5 flex flex-col justify-between text-white">
+                  <div>
+                    {slide.category && (
+                      <span
+                        className="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-white backdrop-blur-[2px] shadow-sm transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-active:scale-95"
+                        style={{ backgroundColor: slide.category.color }}
+                      >
+                        {slide.category.name}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-lg sm:text-xl leading-snug text-white line-clamp-3 mb-2 transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:text-primary-hover">
+                      {slide.title}
+                    </h3>
+                    <time className="text-[11px] text-white/60">
+                      {smartDateShort(slide.created_at)}
+                    </time>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }

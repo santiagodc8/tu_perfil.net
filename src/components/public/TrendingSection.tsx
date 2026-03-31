@@ -36,7 +36,7 @@ export default function TrendingSection({ articles }: TrendingSectionProps) {
           <Link
             key={article.slug}
             href={`/noticia/${article.slug}`}
-            className="group relative flex sm:flex-col items-start gap-3 sm:gap-0 bg-surface-card rounded-card border border-surface-border/50 overflow-hidden shadow-card card-hover cursor-pointer"
+            className="group relative flex sm:flex-col items-start gap-3 sm:gap-0 bg-surface-card rounded-card border border-surface-border/50 overflow-hidden shadow-card card-hover pressable cursor-pointer"
           >
             {/* Image */}
             <div className="relative w-20 h-20 sm:w-full sm:h-0 sm:pb-[60%] flex-shrink-0 overflow-hidden">
@@ -46,7 +46,7 @@ export default function TrendingSection({ articles }: TrendingSectionProps) {
                   alt={article.title}
                   fill
                   sizes="(max-width: 640px) 80px, (max-width: 1024px) 50vw, 20vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
                   placeholder="blur"
                   blurDataURL={BLUR_DATA_URL}
                 />
@@ -69,7 +69,7 @@ export default function TrendingSection({ articles }: TrendingSectionProps) {
                   {article.category.name}
                 </span>
               )}
-              <h3 className="text-sm font-bold text-heading leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200 mt-0.5">
+              <h3 className="text-sm font-bold text-heading leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] mt-0.5">
                 {article.title}
               </h3>
             </div>

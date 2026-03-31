@@ -4,29 +4,37 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+/* ──────────────────────────────────────────────
+   Custom easing curves (Emil Kowalski philosophy)
+   ────────────────────────────────────────────── */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 @layer base {
   body {
     @apply font-sans text-body bg-surface antialiased;
   }
 
-  /* Better tap targets on mobile */
   button, a {
     @apply touch-manipulation;
   }
 
-  /* Smooth reveal animations */
+  /* ── Keyframes ────────────────────────────── */
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(8px) scale(0.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
   }
 
   @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-8px); }
+    from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -39,6 +47,12 @@
     from { width: 0%; }
     to { width: 100%; }
   }
+
+  /* Scroll-triggered reveal */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
 }
 
 @layer components {
@@ -46,22 +60,32 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
-  /* Editorial animated reveal */
+  /* Hide scrollbar for carousel */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Animated reveals with custom easing ──── */
   .animate-fade-in-up {
-    animation: fadeInUp 0.5s ease-out both;
+    animation: fadeInUp 0.4s var(--ease-out) both;
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.4s ease-out both;
+    animation: fadeIn 0.35s var(--ease-out) both;
   }
 
   .animate-slide-down {
-    animation: slideDown 0.3s ease-out both;
+    animation: slideDown 0.25s var(--ease-out) both;
   }
 
-  /* Staggered children animation */
+  /* ── Stagger children (50ms gap) ──────────── */
   .stagger-children > * {
-    animation: fadeInUp 0.4s ease-out both;
+    opacity: 0;
+    animation: fadeInUp 0.35s var(--ease-out) both;
   }
   .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
   .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
@@ -71,22 +95,40 @@
   .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
   .stagger-children > *:nth-child(7) { animation-delay: 300ms; }
   .stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+  .stagger-children > *:nth-child(9) { animation-delay: 400ms; }
+  .stagger-children > *:nth-child(10) { animation-delay: 450ms; }
+  .stagger-children > *:nth-child(11) { animation-delay: 500ms; }
+  .stagger-children > *:nth-child(12) { animation-delay: 550ms; }
 
-  /* Card hover lift effect */
+  /* ── Card interactions ────────────────────── */
   .card-hover {
-    @apply transition-all duration-300 will-change-transform;
+    transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    will-change: transform;
   }
-  .card-hover:hover {
-    transform: translateY(-2px);
-    @apply shadow-card-hover;
+  .card-hover:active {
+    transform: scale(0.97) !important;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      transform: translateY(-3px);
+      @apply shadow-card-hover;
+    }
   }
 
-  /* Focus ring utility */
+  /* ── Pressable feedback ───────────────────── */
+  .pressable {
+    transition: transform 120ms var(--ease-out);
+  }
+  .pressable:active {
+    transform: scale(0.97);
+  }
+
+  /* ── Focus ring ───────────────────────────── */
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2;
   }
 
-  /* Skeleton loader */
+  /* ── Skeleton loader ──────────────────────── */
   .skeleton {
     @apply bg-gray-200 rounded animate-pulse;
   }
@@ -97,7 +139,7 @@
     @apply skeleton aspect-video w-full rounded-card;
   }
 
-  /* Section divider */
+  /* ── Section divider ──────────────────────── */
   .section-divider {
     @apply relative;
   }
@@ -106,7 +148,7 @@
     @apply absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-surface-border to-transparent;
   }
 
-  /* Subtle noise texture overlay */
+  /* ── Noise texture overlay ────────────────── */
   .noise-overlay {
     position: relative;
   }
@@ -186,19 +228,16 @@
   background: #f9f9f9;
 }
 
-/* Selected cell highlight in editor */
 .tiptap .selectedCell {
   background: #fde8ea !important;
 }
 
-/* Column resize handle */
 .tiptap .column-resize-handle {
   background: #E30613;
   width: 3px;
   cursor: col-resize;
 }
 
-/* Scrollable tables on mobile */
 .prose table {
   display: block;
   overflow-x: auto;
@@ -221,7 +260,6 @@
   margin: 1.25rem 0;
 }
 
-/* TipTap wraps YouTube in a div with this class */
 .tiptap div[data-youtube-video],
 .prose div[data-youtube-video] {
   margin: 1.25rem 0;
@@ -259,15 +297,20 @@
   }
 }
 
-/* Reduced motion: disable animations */
+/* ──────────────────────────────────────────────
+   Reduced motion: respect user preference
+   ────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-in-up,
-  .animate-fade-in,
-  .animate-slide-down,
-  .stagger-children > * {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  .card-hover:hover {
+  .card-hover:hover,
+  .card-hover:active,
+  .pressable:active {
     transform: none !important;
   }
 }

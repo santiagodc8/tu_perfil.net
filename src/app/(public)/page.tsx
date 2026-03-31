@@ -6,6 +6,7 @@ import { BlogSection } from "@/components/ui/blog-section";
 import TrendingSection from "@/components/public/TrendingSection";
 import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
+import ScrollReveal from "@/components/public/ScrollReveal";
 import { readingTime } from "@/lib/utils";
 import type { Ad } from "@/types";
 
@@ -165,35 +166,43 @@ export default async function HomePage() {
       {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} />}
 
       {/* Trending */}
-      {trending.length > 0 && <TrendingSection articles={trending} />}
+      {trending.length > 0 && (
+        <ScrollReveal>
+          <TrendingSection articles={trending} />
+        </ScrollReveal>
+      )}
 
       {/* Publicidad entre secciones */}
       {betweenAds[0] && (
-        <div className="mb-2">
+        <ScrollReveal delay={100}>
           <AdBanner ad={betweenAds[0]} />
-        </div>
+        </ScrollReveal>
       )}
 
       {/* Sección principal — últimas noticias (blog grid) */}
       {(latestArticles ?? []).length > 0 && (
-        <BlogSection articles={latestArticles ?? []} />
+        <ScrollReveal>
+          <BlogSection articles={latestArticles ?? []} />
+        </ScrollReveal>
       )}
 
       {/* Publicidad + Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
-        <div className="lg:col-span-2">
-          {betweenAds.slice(1).map((ad) => (
-            <div key={ad.id} className="mb-8">
-              <AdBanner ad={ad} />
+      <ScrollReveal>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
+          <div className="lg:col-span-2">
+            {betweenAds.slice(1).map((ad) => (
+              <div key={ad.id} className="mb-8">
+                <AdBanner ad={ad} />
+              </div>
+            ))}
+          </div>
+          <div className="lg:col-span-1">
+            <div className="lg:sticky lg:top-20">
+              <SidebarPublic popular={popular} sidebarAds={sidebarAds} />
             </div>
-          ))}
-        </div>
-        <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-20">
-            <SidebarPublic popular={popular} sidebarAds={sidebarAds} />
           </div>
         </div>
-      </div>
+      </ScrollReveal>
     </div>
   );
 }
