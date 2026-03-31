@@ -8,7 +8,7 @@ import { smartDateShort } from '@/lib/utils';
 interface BlogArticle {
     title: string;
     slug: string;
-    excerpt: string;
+    excerpt?: string;
     image_url: string | null;
     created_at: string;
     author_name?: string;
@@ -81,9 +81,6 @@ export function BlogSection({ articles, title = 'Últimas Noticias', description
                                 <h3 className="line-clamp-2 text-lg leading-5 font-semibold tracking-tight text-heading group-hover:text-primary transition-colors">
                                     {article.title}
                                 </h3>
-                                <p className="text-muted line-clamp-3 text-sm">
-                                    {article.excerpt}
-                                </p>
                             </div>
                         </Link>
                     );
