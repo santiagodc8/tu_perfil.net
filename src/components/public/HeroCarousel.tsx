@@ -38,7 +38,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div
-      className="relative rounded-xl overflow-hidden bg-surface-header aspect-[4/3] sm:aspect-[16/9] md:aspect-[19/9]"
+      className="relative rounded-2xl overflow-hidden bg-surface-header aspect-[4/3] sm:aspect-[16/9] md:aspect-[19/9] shadow-xl animate-fade-in"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -58,7 +58,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               src={slide.image_url}
               alt={slide.title}
               fill
-              className="object-cover group-hover:scale-105 transition duration-500"
+              className="object-cover group-hover:scale-[1.03] transition-transform duration-[800ms] ease-out"
               priority={i === 0}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1280px"
               placeholder="blur"
@@ -68,36 +68,46 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             <div className="absolute inset-0 bg-gradient-to-br from-surface-header to-heading" />
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          {/* Gradient overlay — more dramatic */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/5" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10">
             {slide.category && (
               <span
-                className="inline-block text-[11px] sm:text-xs font-semibold px-2.5 py-1 rounded-full text-white mb-2 sm:mb-3"
+                className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 rounded text-white mb-3 sm:mb-4"
                 style={{ backgroundColor: slide.category.color }}
               >
                 {slide.category.name}
               </span>
             )}
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-extrabold text-white leading-tight mb-1 sm:mb-2 group-hover:text-primary transition line-clamp-3 sm:line-clamp-2">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white leading-[1.15] mb-2 sm:mb-3 group-hover:text-primary-hover transition-colors duration-300 line-clamp-3 sm:line-clamp-2 max-w-4xl">
               {slide.title}
             </h2>
-            <p className="text-gray-300 text-sm line-clamp-2 max-w-2xl hidden sm:block">
+            <p className="text-gray-300/90 text-sm sm:text-base line-clamp-2 max-w-2xl hidden sm:block leading-relaxed">
               {slide.excerpt}
             </p>
-            <time className="text-xs text-gray-400 mt-2 sm:mt-3 block">
-              {smartDate(slide.created_at)}
-            </time>
+            <div className="flex items-center gap-3 mt-3 sm:mt-4">
+              <time className="text-xs sm:text-sm text-gray-400">
+                {smartDate(slide.created_at)}
+              </time>
+              <span className="text-xs sm:text-sm text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:inline-flex items-center gap-1">
+                Leer más
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </div>
           </div>
         </Link>
       ))}
 
-      {/* Flechas - ocultas en mobile, visibles en hover en desktop */}
+      {/* Arrow buttons */}
       {slides.length > 1 && (
         <>
           <button
             onClick={(e) => { e.preventDefault(); prev(); }}
-            className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition active:bg-black/70"
+            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all active:scale-95 border border-white/10"
             aria-label="Anterior"
           >
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +116,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           </button>
           <button
             onClick={(e) => { e.preventDefault(); next(); }}
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60 transition active:bg-black/70"
+            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all active:scale-95 border border-white/10"
             aria-label="Siguiente"
           >
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,15 +126,17 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </>
       )}
 
-      {/* Indicadores */}
+      {/* Slide indicators */}
       {slides.length > 1 && (
-        <div className="absolute bottom-2 sm:bottom-3 right-4 sm:right-6 md:right-8 z-20 flex items-center gap-1.5 sm:gap-2">
+        <div className="absolute bottom-3 sm:bottom-4 right-5 sm:right-8 md:right-10 z-20 flex items-center gap-1.5 sm:gap-2">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={(e) => { e.preventDefault(); setCurrent(i); }}
-              className={`h-1.5 rounded-full transition-all ${
-                i === current ? "w-5 sm:w-6 bg-primary" : "w-2.5 sm:w-3 bg-white/50 hover:bg-white/80"
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-6 sm:w-7 h-2 bg-primary"
+                  : "w-2 h-2 bg-white/40 hover:bg-white/70"
               }`}
               aria-label={`Ir a noticia ${i + 1}`}
             />
@@ -132,11 +144,11 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </div>
       )}
 
-      {/* Barra de progreso */}
+      {/* Progress bar */}
       {slides.length > 1 && !paused && (
-        <div className="absolute bottom-0 left-0 right-0 z-20 h-0.5 bg-white/10">
+        <div className="absolute bottom-0 left-0 right-0 z-20 h-[3px] bg-white/5">
           <div
-            className="h-full bg-primary"
+            className="h-full bg-gradient-to-r from-primary to-primary-hover"
             style={{
               animation: `progress ${INTERVAL_MS}ms linear`,
               animationIterationCount: 1,
