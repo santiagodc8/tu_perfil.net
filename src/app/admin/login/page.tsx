@@ -39,11 +39,11 @@ export default function LoginPage() {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-8">
             <Image
-              src="/logo-icon-120.png"
+              src="/logo_sin_fondo_ok.png"
               alt="TuPerfil.net"
-              width={120}
-              height={120}
-              className="mx-auto mb-3 w-16 h-auto"
+              width={240}
+              height={240}
+              className="mx-auto mb-3 w-32 h-auto"
             />
             <h1 className="text-2xl font-bold text-primary">TuPerfil.net</h1>
             <p className="text-muted mt-1">Panel de Administración</p>

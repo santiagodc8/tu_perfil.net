@@ -79,19 +79,19 @@ export default function Header({ categories }: { categories: Category[] }) {
           {/* Center: logo */}
           <Link href="/" className="flex-shrink-0 relative group">
             <Image
-              src="/tuperfil_logo_recortado.png"
+              src="/logo_sin_fondo_ok.png"
               alt="TuPerfil.net"
-              width={320}
-              height={100}
-              className="h-11 w-auto sm:hidden transition-opacity group-hover:opacity-90"
+              width={400}
+              height={120}
+              className="h-16 w-auto sm:hidden transition-opacity group-hover:opacity-90"
               priority
             />
             <Image
-              src="/tuperfil_logo_recortado.png"
+              src="/logo_sin_fondo_ok.png"
               alt="TuPerfil.net"
-              width={500}
-              height={150}
-              className="hidden sm:block h-14 w-auto transition-opacity group-hover:opacity-90"
+              width={600}
+              height={180}
+              className="hidden sm:block h-20 w-auto transition-opacity group-hover:opacity-90"
               priority
             />
           </Link>

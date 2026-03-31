@@ -21,11 +21,11 @@ export default function Footer({ categories }: { categories: Category[] }) {
           {/* About */}
           <div className="lg:col-span-1">
             <Image
-              src="/logo-footer.png"
+              src="/logo_sin_fondo_ok.png"
               alt="TuPerfil.net"
-              width={200}
-              height={60}
-              className="h-8 w-auto mb-5"
+              width={300}
+              height={90}
+              className="h-14 w-auto mb-5"
             />
             <p className="text-sm leading-relaxed text-gray-500">
               Portal de noticias regional. Información veraz y oportuna sobre

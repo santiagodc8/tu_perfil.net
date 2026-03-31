@@ -110,11 +110,11 @@ export default function Sidebar({ role }: { role: UserRole }) {
         <div className="p-6">
           <Link href="/admin" className="block">
             <Image
-              src="/tuperfil_logo_recortado.png"
+              src="/logo_sin_fondo_ok.png"
               alt="TuPerfil.net"
-              width={200}
-              height={60}
-              className="h-12 w-auto mb-1"
+              width={250}
+              height={75}
+              className="h-16 w-auto mb-1"
             />
             <span className="text-xs text-silver">Panel de Administración</span>
           </Link>
