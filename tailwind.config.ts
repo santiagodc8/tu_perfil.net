@@ -36,6 +36,33 @@ const config: Config = {
         sans: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
         display: ["'DM Serif Display'", "Georgia", "serif"],
       },
+      boxShadow: {
+        card: "0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04)",
+        "card-hover":
+          "0 20px 40px -12px rgb(0 0 0 / 0.1), 0 4px 12px -2px rgb(0 0 0 / 0.05)",
+        header: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.06)",
+      },
+      borderRadius: {
+        card: "0.875rem",
+      },
+      fontSize: {
+        "display-xl": [
+          "3.25rem",
+          { lineHeight: "1.1", letterSpacing: "-0.02em" },
+        ],
+        "display-lg": [
+          "2.5rem",
+          { lineHeight: "1.15", letterSpacing: "-0.015em" },
+        ],
+        "display-md": [
+          "1.875rem",
+          { lineHeight: "1.2", letterSpacing: "-0.01em" },
+        ],
+        "display-sm": [
+          "1.5rem",
+          { lineHeight: "1.25", letterSpacing: "-0.005em" },
+        ],
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

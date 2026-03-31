@@ -180,10 +180,10 @@ export default async function NoticiaPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="container-custom py-4 sm:py-6">
+      <article className="container-custom py-5 sm:py-8">
         <div className="max-w-3xl mx-auto">
           {/* Breadcrumbs */}
-          <div className="mb-4">
+          <div className="mb-5">
             <Breadcrumbs
               items={[
                 ...(article.category
@@ -194,17 +194,24 @@ export default async function NoticiaPage({
             />
           </div>
 
-          {/* Category + meta */}
-          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
-            {article.category && (
-              <span
-                className="text-[11px] sm:text-xs font-semibold px-2.5 py-1 rounded-full text-white"
-                style={{ backgroundColor: article.category.color }}
-              >
-                {article.category.name}
-              </span>
-            )}
-            <span className="text-xs sm:text-sm text-muted">
+          {/* Category badge */}
+          {article.category && (
+            <span
+              className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full text-white mb-4"
+              style={{ backgroundColor: article.category.color }}
+            >
+              {article.category.name}
+            </span>
+          )}
+
+          {/* Title */}
+          <h1 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-heading leading-[1.1] tracking-tight mb-4 sm:mb-5">
+            {article.title}
+          </h1>
+
+          {/* Meta line */}
+          <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6 flex-wrap text-sm text-muted">
+            <span>
               Por{" "}
               <Link
                 href={`/autor/${generateSlug(article.author_name)}`}
@@ -213,29 +220,20 @@ export default async function NoticiaPage({
                 {article.author_name}
               </Link>
             </span>
-            <span className="text-xs sm:text-sm text-muted">·</span>
-            <time className="text-xs sm:text-sm text-muted">
-              {smartDate(article.created_at)}
-            </time>
-            <span className="text-xs sm:text-sm text-muted">·</span>
-            <span className="text-xs sm:text-sm text-muted">
-              {readingTime(article.content)}
-            </span>
+            <span className="text-surface-border">|</span>
+            <time>{smartDate(article.created_at)}</time>
+            <span className="text-surface-border">|</span>
+            <span>{readingTime(article.content)}</span>
           </div>
 
-          {/* Title */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-heading leading-tight mb-4 sm:mb-6">
-            {article.title}
-          </h1>
-
           {/* Share */}
-          <div className="mb-4 sm:mb-6">
+          <div className="mb-5 sm:mb-6">
             <ShareButtons title={article.title} url={articleUrl} />
           </div>
 
           {/* Image */}
           {article.image_url && (
-            <div className="relative aspect-video rounded-lg sm:rounded-xl overflow-hidden mb-6 sm:mb-8 -mx-4 sm:mx-0">
+            <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8 -mx-4 sm:mx-0 shadow-card">
               <Image
                 src={article.image_url}
                 alt={article.title}
@@ -254,25 +252,25 @@ export default async function NoticiaPage({
             <ImageGallery images={article.gallery} />
           )}
 
-          {/* Content — includes reading controls + body */}
+          {/* Content */}
           <ArticleBody
             content={article.content}
-            initialProseClass="prose prose-sm sm:prose-lg"
+            initialProseClass="prose prose-sm sm:prose-lg prose-headings:font-display prose-p:leading-[1.8]"
           />
 
           {/* Share bottom */}
-          <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-surface-border">
+          <div className="mt-8 sm:mt-10 pt-5 sm:pt-6 border-t border-surface-border">
             <ShareButtons title={article.title} url={articleUrl} />
           </div>
 
           {/* Etiquetas */}
           {article.article_tags && article.article_tags.length > 0 && (
-            <div className="mt-4 sm:mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 sm:mt-6 flex flex-wrap gap-2">
               {article.article_tags.map(({ tag }) => (
                 <Link
                   key={tag.id}
                   href={`/etiqueta/${tag.slug}`}
-                  className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-surface-border text-body hover:bg-primary hover:text-white transition"
+                  className="inline-block px-3.5 py-1.5 rounded-full text-xs font-medium bg-surface border border-surface-border text-body hover:bg-primary hover:text-white hover:border-primary transition-colors cursor-pointer"
                 >
                   #{tag.name}
                 </Link>
@@ -282,19 +280,19 @@ export default async function NoticiaPage({
 
           {/* Publicidad en artículo */}
           {articleAd && (
-            <div className="mt-6 sm:mt-8">
+            <div className="mt-8 sm:mt-10">
               <AdBanner ad={articleAd} />
             </div>
           )}
 
           {/* Comentarios */}
-          <div className="mt-10 sm:mt-12 pt-6 border-t border-surface-border">
-            <h2 className="text-xl font-bold text-heading mb-6">Comentarios</h2>
-            <Suspense fallback={<div className="text-sm text-muted">Cargando comentarios...</div>}>
+          <div className="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-surface-border">
+            <h2 className="font-display text-display-sm text-heading mb-6">Comentarios</h2>
+            <Suspense fallback={<div className="text-sm text-muted animate-pulse">Cargando comentarios...</div>}>
               <CommentList articleId={article.id} />
             </Suspense>
             <div className="mt-8">
-              <h3 className="text-base font-semibold text-heading mb-4">Dejá tu comentario</h3>
+              <h3 className="font-display text-lg text-heading mb-4">Dejá tu comentario</h3>
               <CommentForm articleId={article.id} />
             </div>
           </div>

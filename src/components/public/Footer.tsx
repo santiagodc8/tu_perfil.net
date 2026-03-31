@@ -11,9 +11,9 @@ export default function Footer({ categories }: { categories: Category[] }) {
       {/* Top decorative line */}
       <div className="h-[3px] bg-gradient-to-r from-primary via-primary-hover to-primary" />
 
-      <div className="container-custom py-10 sm:py-14 relative z-10">
-        {/* Newsletter — prominent placement */}
-        <div className="mb-10 sm:mb-14">
+      <div className="container-custom py-10 sm:py-16 relative z-10">
+        {/* Newsletter */}
+        <div className="mb-12 sm:mb-16 pb-10 sm:pb-12 border-b border-white/[0.06]">
           <NewsletterForm />
         </div>
 
@@ -25,7 +25,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
               alt="TuPerfil.net"
               width={200}
               height={60}
-              className="h-8 w-auto mb-4"
+              className="h-8 w-auto mb-5"
             />
             <p className="text-sm leading-relaxed text-gray-500">
               Portal de noticias regional. Información veraz y oportuna sobre
@@ -37,7 +37,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 text-gray-500 hover:bg-primary hover:text-white transition-all duration-200"
+                className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 text-gray-500 hover:bg-primary hover:text-white hover:scale-110 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                 aria-label="Facebook"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 text-gray-500 hover:bg-primary hover:text-white transition-all duration-200"
+                className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/5 text-gray-500 hover:bg-primary hover:text-white hover:scale-110 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
                 aria-label="Twitter"
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -60,13 +60,14 @@ export default function Footer({ categories }: { categories: Category[] }) {
 
           {/* Categories */}
           <div>
-            <h4 className="font-display text-white text-lg mb-4">Categorías</h4>
+            <h4 className="font-display text-white text-lg mb-1.5">Categorías</h4>
+            <div className="w-8 h-0.5 bg-primary rounded-full mb-4" />
             <ul className="space-y-2.5">
               {categories.map((cat) => (
                 <li key={cat.id}>
                   <Link
                     href={`/${cat.slug}`}
-                    className="text-sm hover:text-white transition inline-flex items-center gap-2 group py-0.5"
+                    className="text-sm hover:text-white hover:translate-x-1 transition-all inline-flex items-center gap-2 group py-0.5 cursor-pointer"
                   >
                     <span
                       className="w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 transition"
@@ -81,25 +82,26 @@ export default function Footer({ categories }: { categories: Category[] }) {
 
           {/* Links */}
           <div>
-            <h4 className="font-display text-white text-lg mb-4">Enlaces</h4>
+            <h4 className="font-display text-white text-lg mb-1.5">Enlaces</h4>
+            <div className="w-8 h-0.5 bg-primary rounded-full mb-4" />
             <ul className="space-y-2.5 text-sm">
               <li>
-                <Link href="/contacto" className="hover:text-white transition inline-block py-0.5">
+                <Link href="/contacto" className="hover:text-white hover:translate-x-1 transition-all inline-block py-0.5 cursor-pointer">
                   Formulario de contacto
                 </Link>
               </li>
               <li>
-                <Link href="/acerca-de" className="hover:text-white transition inline-block py-0.5">
+                <Link href="/acerca-de" className="hover:text-white hover:translate-x-1 transition-all inline-block py-0.5 cursor-pointer">
                   Acerca de nosotros
                 </Link>
               </li>
               <li>
-                <Link href="/politica-de-privacidad" className="hover:text-white transition inline-block py-0.5">
+                <Link href="/politica-de-privacidad" className="hover:text-white hover:translate-x-1 transition-all inline-block py-0.5 cursor-pointer">
                   Política de privacidad
                 </Link>
               </li>
               <li>
-                <Link href="/terminos" className="hover:text-white transition inline-block py-0.5">
+                <Link href="/terminos" className="hover:text-white hover:translate-x-1 transition-all inline-block py-0.5 cursor-pointer">
                   Términos y condiciones
                 </Link>
               </li>
@@ -108,13 +110,14 @@ export default function Footer({ categories }: { categories: Category[] }) {
 
           {/* Contact info */}
           <div>
-            <h4 className="font-display text-white text-lg mb-4">Contacto</h4>
+            <h4 className="font-display text-white text-lg mb-1.5">Contacto</h4>
+            <div className="w-8 h-0.5 bg-primary rounded-full mb-4" />
             <p className="text-sm leading-relaxed text-gray-500">
               ¿Tenés una noticia o querés comunicarte con nosotros?
             </p>
             <Link
               href="/contacto"
-              className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-primary hover:bg-primary-hover active:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors hover:shadow-lg hover:shadow-primary/20 cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -124,11 +127,11 @@ export default function Footer({ categories }: { categories: Category[] }) {
           </div>
         </div>
 
-        <div className="border-t border-white/[0.06] mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+        <div className="border-t border-white/[0.06] mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>&copy; {year} TuPerfil.net — Todos los derechos reservados.</span>
           <div className="flex gap-4">
-            <Link href="/politica-de-privacidad" className="hover:text-gray-400 transition">Privacidad</Link>
-            <Link href="/terminos" className="hover:text-gray-400 transition">Términos</Link>
+            <Link href="/politica-de-privacidad" className="hover:text-gray-300 transition cursor-pointer">Privacidad</Link>
+            <Link href="/terminos" className="hover:text-gray-300 transition cursor-pointer">Términos</Link>
           </div>
         </div>
       </div>

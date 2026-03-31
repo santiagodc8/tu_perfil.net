@@ -38,7 +38,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-surface-header aspect-[4/3] sm:aspect-[16/9] md:aspect-[19/9] shadow-xl animate-fade-in"
+      className="group/carousel relative rounded-2xl overflow-hidden bg-surface-header aspect-[3/4] sm:aspect-[16/9] md:aspect-[21/9] shadow-xl animate-fade-in"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -47,8 +47,10 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <Link
           key={slide.slug}
           href={`/noticia/${slide.slug}`}
-          className={`group absolute inset-0 transition-opacity duration-700 ${
-            i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+          className={`group absolute inset-0 transition-[opacity,transform] duration-700 ease-out cursor-pointer ${
+            i === current
+              ? "opacity-100 z-10 scale-100"
+              : "opacity-0 z-0 scale-[1.02]"
           }`}
           aria-hidden={i !== current}
           tabIndex={i === current ? 0 : -1}
@@ -68,20 +70,20 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             <div className="absolute inset-0 bg-gradient-to-br from-surface-header to-heading" />
           )}
 
-          {/* Gradient overlay — more dramatic */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/5" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/5" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/10" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10">
+          <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10 lg:p-12">
             {slide.category && (
               <span
-                className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 rounded text-white mb-3 sm:mb-4"
+                className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full text-white mb-3 sm:mb-4 backdrop-blur-[2px] shadow-md"
                 style={{ backgroundColor: slide.category.color }}
               >
                 {slide.category.name}
               </span>
             )}
-            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white leading-[1.15] mb-2 sm:mb-3 group-hover:text-primary-hover transition-colors duration-300 line-clamp-3 sm:line-clamp-2 max-w-4xl">
+            <h2 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-white leading-[1.1] mb-2 sm:mb-3 group-hover:text-primary-hover transition-colors duration-300 line-clamp-3 sm:line-clamp-2 max-w-4xl tracking-tight">
               {slide.title}
             </h2>
             <p className="text-gray-300/90 text-sm sm:text-base line-clamp-2 max-w-2xl hidden sm:block leading-relaxed">
@@ -93,8 +95,18 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               </time>
               <span className="text-xs sm:text-sm text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:inline-flex items-center gap-1">
                 Leer más
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </span>
             </div>
@@ -102,25 +114,51 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         </Link>
       ))}
 
-      {/* Arrow buttons */}
+      {/* Arrow buttons — hidden on mobile, visible on hover on desktop */}
       {slides.length > 1 && (
         <>
           <button
-            onClick={(e) => { e.preventDefault(); prev(); }}
-            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all active:scale-95 border border-white/10"
+            onClick={(e) => {
+              e.preventDefault();
+              prev();
+            }}
+            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 transition-all active:scale-95 border border-white/10 cursor-pointer sm:opacity-0 sm:group-hover/carousel:opacity-100"
             aria-label="Anterior"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-4 h-4 sm:w-5 sm:h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
           <button
-            onClick={(e) => { e.preventDefault(); next(); }}
-            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all active:scale-95 border border-white/10"
+            onClick={(e) => {
+              e.preventDefault();
+              next();
+            }}
+            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 transition-all active:scale-95 border border-white/10 cursor-pointer sm:opacity-0 sm:group-hover/carousel:opacity-100"
             aria-label="Siguiente"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg
+              className="w-4 h-4 sm:w-5 sm:h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
         </>
@@ -132,10 +170,13 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           {slides.map((_, i) => (
             <button
               key={i}
-              onClick={(e) => { e.preventDefault(); setCurrent(i); }}
-              className={`rounded-full transition-all duration-300 ${
+              onClick={(e) => {
+                e.preventDefault();
+                setCurrent(i);
+              }}
+              className={`rounded-full transition-all duration-300 cursor-pointer ${
                 i === current
-                  ? "w-6 sm:w-7 h-2 bg-primary"
+                  ? "w-6 sm:w-8 h-2 bg-primary"
                   : "w-2 h-2 bg-white/40 hover:bg-white/70"
               }`}
               aria-label={`Ir a noticia ${i + 1}`}
@@ -157,13 +198,6 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           />
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes progress {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-      `}</style>
     </div>
   );
 }

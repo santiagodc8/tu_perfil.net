@@ -76,25 +76,31 @@ export default async function CategoryPage({
   const total = count ?? 0;
 
   return (
-    <div className="container-custom py-4 sm:py-6">
-      <div className="mb-4">
+    <div className="container-custom py-5 sm:py-8">
+      {/* Decorative category gradient */}
+      <div
+        className="h-1 rounded-full mb-6 sm:mb-8 opacity-20"
+        style={{ background: `linear-gradient(to right, ${category.color}, transparent)` }}
+      />
+
+      <div className="mb-4 sm:mb-5">
         <Breadcrumbs items={[{ label: category.name }]} />
       </div>
 
       {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+      <div className="mb-8 sm:mb-10">
+        <div className="flex items-center gap-3 mb-2 sm:mb-3">
           <span
-            className="w-1 sm:w-1.5 h-6 sm:h-8 rounded-full"
+            className="w-1.5 h-8 sm:h-10 rounded-full"
             style={{ backgroundColor: category.color }}
           />
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-heading">
+          <h1 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-heading tracking-tight">
             {category.name}
           </h1>
         </div>
-        <p className="text-muted text-sm sm:text-base">
+        <span className="inline-block bg-surface-card border border-surface-border rounded-full px-3.5 py-1 text-xs font-medium text-muted">
           {total} {total === 1 ? "noticia" : "noticias"}
-        </p>
+        </span>
       </div>
 
       {/* Articles */}

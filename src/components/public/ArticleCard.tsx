@@ -9,7 +9,7 @@ interface ArticleCardProps {
   image_url: string | null;
   created_at: string;
   category: { name: string; color: string } | null;
-  size?: "default" | "small";
+  size?: "default" | "small" | "featured";
 }
 
 export default function ArticleCard({
@@ -23,15 +23,15 @@ export default function ArticleCard({
 }: ArticleCardProps) {
   if (size === "small") {
     return (
-      <Link href={`/noticia/${slug}`} className="group flex gap-3">
-        <div className="relative w-20 h-16 sm:w-24 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+      <Link href={`/noticia/${slug}`} className="group flex gap-3 cursor-pointer">
+        <div className="relative w-24 h-20 sm:w-28 sm:h-[4.5rem] rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
           {image_url && (
             <Image
               src={image_url}
               alt={title}
               fill
               className="object-cover group-hover:scale-105 transition duration-300"
-              sizes="96px"
+              sizes="112px"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
             />
@@ -41,7 +41,7 @@ export default function ArticleCard({
           <h4 className="text-sm font-semibold text-heading group-hover:text-primary transition line-clamp-2 leading-snug">
             {title}
           </h4>
-          <time className="text-xs text-muted mt-1 block">
+          <time className="text-xs text-muted mt-1.5 block">
             {smartDateShort(created_at)}
           </time>
         </div>
@@ -49,16 +49,73 @@ export default function ArticleCard({
     );
   }
 
+  if (size === "featured") {
+    return (
+      <Link href={`/noticia/${slug}`} className="group block cursor-pointer">
+        <article className="bg-surface-card rounded-card overflow-hidden shadow-card card-hover h-full border border-surface-border/50">
+          {/* Category color accent line */}
+          {category && (
+            <div
+              className="h-[3px]"
+              style={{ backgroundColor: category.color }}
+            />
+          )}
+          <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+            {image_url ? (
+              <Image
+                src={image_url}
+                alt={title}
+                fill
+                className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 50vw"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
+            )}
+            {category && (
+              <span
+                className="absolute top-3 left-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white shadow-sm backdrop-blur-[2px]"
+                style={{ backgroundColor: category.color }}
+              >
+                {category.name}
+              </span>
+            )}
+          </div>
+          <div className="p-5 sm:p-6">
+            <h3 className="font-display text-lg sm:text-xl text-heading group-hover:text-primary transition-colors duration-200 line-clamp-3 leading-snug group-hover:underline decoration-primary/30 decoration-2 underline-offset-4">
+              {title}
+            </h3>
+            <p className="text-sm text-muted mt-2 line-clamp-3 leading-relaxed">
+              {excerpt}
+            </p>
+            <time className="text-xs text-muted mt-3 block">
+              {smartDateShort(created_at)}
+            </time>
+          </div>
+        </article>
+      </Link>
+    );
+  }
+
   return (
-    <Link href={`/noticia/${slug}`} className="group block">
-      <article className="bg-surface-card rounded-2xl overflow-hidden border border-surface-border card-hover h-full">
+    <Link href={`/noticia/${slug}`} className="group block cursor-pointer">
+      <article className="bg-surface-card rounded-card overflow-hidden shadow-card card-hover h-full border border-surface-border/50">
+        {/* Category color accent line */}
+        {category && (
+          <div
+            className="h-[3px]"
+            style={{ backgroundColor: category.color }}
+          />
+        )}
         <div className="relative aspect-video bg-gray-100 overflow-hidden">
           {image_url ? (
             <Image
               src={image_url}
               alt={title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
@@ -66,10 +123,9 @@ export default function ArticleCard({
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
           )}
-          {/* Category badge overlaid on image */}
           {category && (
             <span
-              className="absolute top-3 left-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded text-white shadow-sm"
+              className="absolute top-3 left-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white shadow-sm backdrop-blur-[2px]"
               style={{ backgroundColor: category.color }}
             >
               {category.name}
@@ -77,21 +133,15 @@ export default function ArticleCard({
           )}
         </div>
         <div className="p-4 sm:p-5">
-          <h3 className="font-display text-base sm:text-lg text-heading group-hover:text-primary transition-colors duration-200 line-clamp-2 leading-snug">
+          <h3 className="font-display text-base sm:text-lg text-heading group-hover:text-primary transition-colors duration-200 line-clamp-2 leading-snug group-hover:underline decoration-primary/30 decoration-2 underline-offset-4">
             {title}
           </h3>
-          <p className="text-sm text-muted mt-2 line-clamp-2 hidden sm:block leading-relaxed">{excerpt}</p>
-          <div className="flex items-center justify-between mt-3">
-            <time className="text-xs text-muted">
-              {smartDateShort(created_at)}
-            </time>
-            <span className="text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 inline-flex items-center gap-0.5">
-              Leer
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
+          <p className="text-sm text-muted mt-2 line-clamp-2 hidden sm:block leading-relaxed">
+            {excerpt}
+          </p>
+          <time className="text-xs text-muted mt-3 block">
+            {smartDateShort(created_at)}
+          </time>
         </div>
       </article>
     </Link>

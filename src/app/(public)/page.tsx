@@ -150,7 +150,7 @@ export default async function HomePage() {
   const betweenAds = allAds.filter((a) => a.position === "between_articles");
 
   return (
-    <div className="container-custom py-4 sm:py-6 space-y-6 sm:space-y-10">
+    <div className="container-custom py-5 sm:py-8 space-y-8 sm:space-y-12">
       {/* Banner superior — publicidad */}
       {headerAds.map((ad) => (
         <AdBanner key={ad.id} ad={ad} />
@@ -163,9 +163,9 @@ export default async function HomePage() {
       {trending.length > 0 && <TrendingSection articles={trending} />}
 
       {/* Content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
         {/* Main content */}
-        <div className="lg:col-span-2 space-y-8 sm:space-y-10">
+        <div className="lg:col-span-2 space-y-2">
           {categoryArticles.map((cat, index) => (
             <div key={cat.id}>
               <CategorySection
@@ -176,7 +176,7 @@ export default async function HomePage() {
               />
               {/* Publicidad entre secciones */}
               {betweenAds[index] && (
-                <div className="mt-8 sm:mt-10">
+                <div className="mb-8 sm:mb-10">
                   <AdBanner ad={betweenAds[index]} />
                 </div>
               )}
@@ -186,7 +186,7 @@ export default async function HomePage() {
 
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-16">
+          <div className="lg:sticky lg:top-20">
             <SidebarPublic popular={popular} sidebarAds={sidebarAds} />
           </div>
         </div>
