@@ -1,5 +1,11 @@
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { es } from "date-fns/locale";
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export function generateSlug(title: string): string {
   return title

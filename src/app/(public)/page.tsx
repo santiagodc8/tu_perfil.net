@@ -2,11 +2,12 @@ export const revalidate = 60; // Revalidar cada 60 segundos
 
 import { createClient } from "@/lib/supabase/server";
 import HeroCarousel from "@/components/public/HeroCarousel";
-import CategorySection from "@/components/public/CategorySection";
+import { BlogSection } from "@/components/ui/blog-section";
 import TrendingSection from "@/components/public/TrendingSection";
 import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
-import type { Category, Ad } from "@/types";
+import { readingTime } from "@/lib/utils";
+import type { Ad } from "@/types";
 
 interface HomeArticle {
   title: string;
@@ -14,6 +15,17 @@ interface HomeArticle {
   excerpt: string;
   image_url: string | null;
   created_at: string;
+  category: { name: string; color: string; slug: string } | null;
+}
+
+interface BlogArticle {
+  title: string;
+  slug: string;
+  excerpt: string;
+  image_url: string | null;
+  created_at: string;
+  author_name: string;
+  content: string;
   category: { name: string; color: string; slug: string } | null;
 }
 
@@ -61,27 +73,20 @@ export default async function HomePage() {
     heroSlides = latestData ?? [];
   }
 
-  // Categorias con sus noticias recientes (hasta 3 por categoria)
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("*")
-    .order("name");
+  // Últimas noticias para la sección principal (blog grid)
+  const { data: latestRaw } = await supabase
+    .from("articles")
+    .select("title, slug, excerpt, image_url, created_at, author_name, content, category:categories(name, color, slug)")
+    .eq("published", true)
+    .order("created_at", { ascending: false })
+    .limit(12)
+    .returns<BlogArticle[]>();
 
-  const cats: Category[] = categories ?? [];
-
-  const categoryArticles = await Promise.all(
-    cats.map(async (cat) => {
-      const { data } = await supabase
-        .from("articles")
-        .select("title, slug, excerpt, image_url, created_at")
-        .eq("published", true)
-        .eq("category_id", cat.id)
-        .order("created_at", { ascending: false })
-        .limit(3);
-
-      return { ...cat, articles: data ?? [] };
-    })
-  );
+  // Calcular readingTime en servidor para no pasar content al cliente
+  const latestArticles = (latestRaw ?? []).map(({ content, ...rest }) => ({
+    ...rest,
+    readTime: content ? readingTime(content) : null,
+  }));
 
   // Mas leidas de la semana (via page_views últimos 7 días)
   const { data: popularIds } = await supabase.rpc("popular_articles_this_week", {
@@ -162,29 +167,27 @@ export default async function HomePage() {
       {/* Trending */}
       {trending.length > 0 && <TrendingSection articles={trending} />}
 
-      {/* Content grid */}
+      {/* Publicidad entre secciones */}
+      {betweenAds[0] && (
+        <div className="mb-2">
+          <AdBanner ad={betweenAds[0]} />
+        </div>
+      )}
+
+      {/* Sección principal — últimas noticias (blog grid) */}
+      {(latestArticles ?? []).length > 0 && (
+        <BlogSection articles={latestArticles ?? []} />
+      )}
+
+      {/* Publicidad + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
-        {/* Main content */}
-        <div className="lg:col-span-2 space-y-2">
-          {categoryArticles.map((cat, index) => (
-            <div key={cat.id}>
-              <CategorySection
-                name={cat.name}
-                slug={cat.slug}
-                color={cat.color}
-                articles={cat.articles}
-              />
-              {/* Publicidad entre secciones */}
-              {betweenAds[index] && (
-                <div className="mb-8 sm:mb-10">
-                  <AdBanner ad={betweenAds[index]} />
-                </div>
-              )}
+        <div className="lg:col-span-2">
+          {betweenAds.slice(1).map((ad) => (
+            <div key={ad.id} className="mb-8">
+              <AdBanner ad={ad} />
             </div>
           ))}
         </div>
-
-        {/* Sidebar */}
         <div className="lg:col-span-1">
           <div className="lg:sticky lg:top-20">
             <SidebarPublic popular={popular} sidebarAds={sidebarAds} />
