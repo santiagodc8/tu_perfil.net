@@ -16,146 +16,123 @@ export default function Header({ categories }: { categories: Category[] }) {
   });
 
   return (
-    <header className="sticky top-0 z-40">
-      {/* Top accent line */}
-      <div className="h-[3px] bg-gradient-to-r from-primary via-primary-hover to-primary" />
-
+    <header className="bg-surface-header text-white sticky top-0 z-40">
       {/* Main header */}
-      <div className="bg-surface-header text-white">
-        <div className="container-custom py-3 sm:py-4 flex items-center justify-between gap-4">
-          {/* Left: date */}
-          <div className="hidden sm:flex items-center gap-2 flex-1">
-            <svg className="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span className="text-xs text-gray-400 capitalize whitespace-nowrap tracking-wide">{today}</span>
-          </div>
+      <div className="container-custom py-1 flex items-center justify-between gap-3">
+        {/* Left: date */}
+        <span className="hidden sm:block text-xs text-gray-400 capitalize whitespace-nowrap flex-1">{today}</span>
 
-          {/* Center: logo */}
-          <Link href="/" className="flex-shrink-0 relative group">
-            {/* Mobile logo */}
-            <Image
-              src="/tuperfil_logo_recortado.png"
-              alt="TuPerfil.net"
-              width={320}
-              height={100}
-              className="h-12 w-auto sm:hidden transition-opacity group-hover:opacity-90"
-              priority
+        {/* Center: logo */}
+        <Link href="/" className="flex-shrink-0">
+          {/* Mobile logo */}
+          <Image
+            src="/tuperfil_logo_recortado.png"
+            alt="TuPerfil.net"
+            width={320}
+            height={100}
+            className="h-14 w-auto sm:hidden"
+            priority
+          />
+          {/* Desktop logo */}
+          <Image
+            src="/tuperfil_logo_recortado.png"
+            alt="TuPerfil.net"
+            width={500}
+            height={150}
+            className="hidden sm:block h-16 w-auto"
+            priority
+          />
+        </Link>
+
+        {/* Right side */}
+        <div className="flex-1 flex items-center justify-end gap-2">
+          {/* Desktop search */}
+          <form action="/buscar" className="hidden md:flex items-center">
+            <input
+              name="q"
+              type="text"
+              placeholder="Buscar noticias..."
+              className="px-4 py-2 rounded-l-lg bg-white/10 text-white placeholder-gray-400 text-sm focus:outline-none focus:bg-white/20 w-56 transition"
             />
-            {/* Desktop logo */}
-            <Image
-              src="/tuperfil_logo_recortado.png"
-              alt="TuPerfil.net"
-              width={500}
-              height={150}
-              className="hidden sm:block h-14 w-auto transition-opacity group-hover:opacity-90"
-              priority
-            />
-          </Link>
-
-          {/* Right side */}
-          <div className="flex-1 flex items-center justify-end gap-3">
-            {/* Desktop search */}
-            <form action="/buscar" className="hidden md:flex items-center group">
-              <div className="relative flex items-center">
-                <input
-                  name="q"
-                  type="text"
-                  placeholder="Buscar noticias..."
-                  className="px-4 py-2 pr-10 rounded-full bg-white/8 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:bg-white/12 focus:border-primary/50 w-52 transition-all focus:w-64"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-1 p-1.5 text-gray-400 hover:text-primary transition rounded-full"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              </div>
-            </form>
-
-            {/* Mobile menu toggle */}
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden p-2 -mr-2 text-gray-300 hover:text-white active:bg-white/10 rounded-lg transition"
-              aria-label="Menú"
+              type="submit"
+              className="px-4 py-2 bg-primary hover:bg-primary-hover rounded-r-lg text-sm font-medium transition"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {menuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              Buscar
             </button>
-          </div>
+          </form>
+
+          {/* Mobile menu toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 -mr-2 text-gray-300 hover:text-white active:bg-white/10 rounded-lg"
+            aria-label="Menú"
+          >
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {menuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
-
-        {/* Navigation */}
-        <nav className="border-t border-white/[0.06] bg-surface-header/95 backdrop-blur-sm">
-          <div className={`container-custom ${menuOpen ? "block animate-slide-down" : "hidden"} md:block`}>
-            <ul className="flex flex-col md:flex-row md:items-center md:justify-center gap-0 md:gap-0 py-1 md:py-0 -mx-2 md:mx-0">
-              <li>
-                <Link
-                  href="/"
-                  className="block px-4 py-3 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider text-gray-400 hover:text-white md:hover:text-primary transition relative group"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Inicio
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left hidden md:block" />
-                </Link>
-              </li>
-              {categories.map((cat) => (
-                <li key={cat.id}>
-                  <Link
-                    href={`/${cat.slug}`}
-                    className="flex items-center gap-2 px-4 py-3 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider text-gray-400 hover:text-white md:hover:text-primary transition relative group"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full md:hidden flex-shrink-0"
-                      style={{ backgroundColor: cat.color }}
-                    />
-                    {cat.name}
-                    <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left hidden md:block" />
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/contacto"
-                  className="block px-4 py-3 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider text-gray-400 hover:text-white md:hover:text-primary transition relative group"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Contacto
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left hidden md:block" />
-                </Link>
-              </li>
-            </ul>
-
-            {/* Mobile search */}
-            <form action="/buscar" className="md:hidden pb-3 px-2">
-              <div className="relative flex items-center">
-                <input
-                  name="q"
-                  type="text"
-                  placeholder="Buscar noticias..."
-                  className="w-full px-4 py-2.5 pr-10 rounded-full bg-white/8 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-primary/50"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 p-1.5 text-gray-400 active:text-primary"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              </div>
-            </form>
-          </div>
-        </nav>
       </div>
+
+      {/* Navigation */}
+      <nav className="border-t border-white/10">
+        <div className={`container-custom ${menuOpen ? "block" : "hidden"} md:block`}>
+          <ul className="flex flex-col md:flex-row md:items-center gap-0 md:gap-0.5 py-1 md:py-0 -mx-2 md:mx-0">
+            <li>
+              <Link
+                href="/"
+                className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
+                onClick={() => setMenuOpen(false)}
+              >
+                Inicio
+              </Link>
+            </li>
+            {categories.map((cat) => (
+              <li key={cat.id}>
+                <Link
+                  href={`/${cat.slug}`}
+                  className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {cat.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/contacto"
+                className="block px-4 py-3 md:py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 md:rounded-lg transition active:bg-white/10"
+                onClick={() => setMenuOpen(false)}
+              >
+                Contacto
+              </Link>
+            </li>
+          </ul>
+
+          {/* Mobile search */}
+          <form action="/buscar" className="md:hidden pb-3 px-2">
+            <div className="flex">
+              <input
+                name="q"
+                type="text"
+                placeholder="Buscar noticias..."
+                className="flex-1 px-4 py-2.5 rounded-l-lg bg-white/10 text-white placeholder-gray-400 text-sm focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="px-5 py-2.5 bg-primary rounded-r-lg text-sm font-medium active:bg-primary-dark"
+              >
+                Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+      </nav>
     </header>
   );
 }

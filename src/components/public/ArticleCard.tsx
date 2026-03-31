@@ -51,14 +51,14 @@ export default function ArticleCard({
 
   return (
     <Link href={`/noticia/${slug}`} className="group block">
-      <article className="bg-surface-card rounded-2xl overflow-hidden border border-surface-border card-hover h-full">
-        <div className="relative aspect-video bg-gray-100 overflow-hidden">
+      <article className="bg-surface-card rounded-xl overflow-hidden border border-surface-border hover:shadow-lg transition h-full">
+        <div className="relative aspect-video bg-gray-100">
           {image_url ? (
             <Image
               src={image_url}
               alt={title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              className="object-cover group-hover:scale-105 transition duration-300"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               placeholder="blur"
               blurDataURL={BLUR_DATA_URL}
@@ -66,32 +66,23 @@ export default function ArticleCard({
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
           )}
-          {/* Category badge overlaid on image */}
+        </div>
+        <div className="p-3 sm:p-4">
           {category && (
             <span
-              className="absolute top-3 left-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded text-white shadow-sm"
+              className="inline-block text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-full text-white mb-1.5 sm:mb-2"
               style={{ backgroundColor: category.color }}
             >
               {category.name}
             </span>
           )}
-        </div>
-        <div className="p-4 sm:p-5">
-          <h3 className="font-display text-base sm:text-lg text-heading group-hover:text-primary transition-colors duration-200 line-clamp-2 leading-snug">
+          <h3 className="font-bold text-heading group-hover:text-primary transition line-clamp-2 leading-snug text-sm sm:text-base">
             {title}
           </h3>
-          <p className="text-sm text-muted mt-2 line-clamp-2 hidden sm:block leading-relaxed">{excerpt}</p>
-          <div className="flex items-center justify-between mt-3">
-            <time className="text-xs text-muted">
-              {smartDateShort(created_at)}
-            </time>
-            <span className="text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200 inline-flex items-center gap-0.5">
-              Leer
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-              </svg>
-            </span>
-          </div>
+          <p className="text-sm text-muted mt-1 sm:mt-1.5 line-clamp-2 hidden sm:block">{excerpt}</p>
+          <time className="text-xs text-muted mt-1.5 sm:mt-2 block">
+            {smartDateShort(created_at)}
+          </time>
         </div>
       </article>
     </Link>
