@@ -72,7 +72,7 @@ export default function Header({ categories }: { categories: Category[] }) {
             <span className="hidden sm:inline text-xs text-gray-400 capitalize whitespace-nowrap tracking-wide">
               {today}
             </span>
-            <span className="sm:hidden text-xs text-gray-400 capitalize whitespace-nowrap tracking-wide">
+            <span className="sm:hidden text-[11px] text-gray-400 capitalize truncate tracking-wide">
               {shortDate}
             </span>
           </div>
@@ -84,7 +84,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               alt="TuPerfil.net"
               width={400}
               height={120}
-              className="h-16 w-auto sm:hidden transition-opacity group-hover:opacity-90"
+              className="h-10 w-auto sm:hidden transition-opacity group-hover:opacity-90"
               priority
             />
             <Image
