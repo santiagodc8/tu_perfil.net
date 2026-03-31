@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
+import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/public/ServiceWorkerRegister";
 import CookieBanner from "@/components/public/CookieBanner";
 import Analytics from "@/components/public/Analytics";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -51,7 +64,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body className={`${outfit.variable} ${playfair.variable}`}>
         {children}
         <ServiceWorkerRegister />
         <CookieBanner />
