@@ -17,7 +17,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
           <NewsletterForm />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-10">
           {/* About */}
           <div className="lg:col-span-1">
             <Image

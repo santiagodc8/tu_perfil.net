@@ -139,8 +139,8 @@ export default function NewsletterClient() {
 
           {/* Send button */}
           {showConfirm ? (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
-              <p className="text-sm font-medium text-amber-800">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 rounded-lg p-4 space-y-3">
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
                 ¿Confirmás el envío a{" "}
                 <strong>{activeCount} suscriptor{activeCount === 1 ? "" : "es"}</strong>?
                 Esta acción no se puede deshacer.
@@ -175,15 +175,15 @@ export default function NewsletterClient() {
 
           {/* Result message */}
           {sendStatus === "success" && resultMsg && (
-            <div className="flex items-start gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+            <div className="flex items-start gap-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/30 rounded-lg px-4 py-3">
               <span className="text-green-500 font-bold flex-shrink-0">✓</span>
-              <p className="text-green-700 text-sm">{resultMsg}</p>
+              <p className="text-green-700 dark:text-green-300 text-sm">{resultMsg}</p>
             </div>
           )}
           {sendStatus === "error" && resultMsg && (
-            <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+            <div className="flex items-start gap-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/30 rounded-lg px-4 py-3">
               <span className="text-red-500 font-bold flex-shrink-0">✕</span>
-              <p className="text-red-700 text-sm">{resultMsg}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">{resultMsg}</p>
             </div>
           )}
         </div>

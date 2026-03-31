@@ -51,7 +51,7 @@ export default function TrendingSection({ articles }: TrendingSectionProps) {
                   blurDataURL={BLUR_DATA_URL}
                 />
               ) : (
-                <div className="absolute inset-0 bg-gray-200" />
+                <div className="absolute inset-0 bg-surface-border" />
               )}
               {/* Rank number */}
               <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center bg-primary text-white font-extrabold text-sm sm:text-base rounded-lg shadow-lg">

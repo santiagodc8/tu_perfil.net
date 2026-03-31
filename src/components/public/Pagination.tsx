@@ -32,7 +32,7 @@ export default function Pagination({ currentPage, totalPages, basePath }: Pagina
       {currentPage > 1 && (
         <Link
           href={getHref(currentPage - 1)}
-          className="px-3 py-2 text-sm text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100 transition"
+          className="px-3 py-2 text-sm text-muted hover:text-primary rounded-lg hover:bg-surface transition"
         >
           Anterior
         </Link>
@@ -40,7 +40,7 @@ export default function Pagination({ currentPage, totalPages, basePath }: Pagina
 
       {pages.map((page, i) =>
         page === "..." ? (
-          <span key={`dots-${i}`} className="px-2 py-2 text-gray-400 text-sm">
+          <span key={`dots-${i}`} className="px-2 py-2 text-muted text-sm">
             ...
           </span>
         ) : (
@@ -50,7 +50,7 @@ export default function Pagination({ currentPage, totalPages, basePath }: Pagina
             className={`px-3 py-2 text-sm rounded-lg transition ${
               page === currentPage
                 ? "bg-primary text-white font-semibold"
-                : "text-gray-600 hover:bg-gray-100 hover:text-primary"
+                : "text-body hover:bg-surface hover:text-primary"
             }`}
           >
             {page}
@@ -61,7 +61,7 @@ export default function Pagination({ currentPage, totalPages, basePath }: Pagina
       {currentPage < totalPages && (
         <Link
           href={getHref(currentPage + 1)}
-          className="px-3 py-2 text-sm text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100 transition"
+          className="px-3 py-2 text-sm text-muted hover:text-primary rounded-lg hover:bg-surface transition"
         >
           Siguiente
         </Link>

@@ -85,8 +85,8 @@ export default function UltimaHoraPage() {
         <div
           className={`rounded-xl p-6 border-2 transition ${
             active
-              ? "bg-red-50 border-red-300"
-              : "bg-gray-50 border-surface-border"
+              ? "bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700/30"
+              : "bg-surface border-surface-border"
           }`}
         >
           <div className="flex items-center justify-between">
@@ -103,7 +103,7 @@ export default function UltimaHoraPage() {
             <button
               onClick={handleToggle}
               className={`relative w-16 h-9 rounded-full transition ${
-                active ? "bg-red-500" : "bg-gray-300"
+                active ? "bg-red-500" : "bg-gray-300 dark:bg-gray-600"
               }`}
             >
               <span

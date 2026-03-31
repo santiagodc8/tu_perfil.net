@@ -56,7 +56,7 @@ export default function AdBanner({ ad, className = "" }: AdBannerProps) {
   const content = (
     <div
       ref={ref}
-      className={`relative w-full overflow-hidden rounded-xl bg-gray-100 ${className}`}
+      className={`relative w-full overflow-hidden rounded-xl bg-surface ${className}`}
     >
       <Image
         src={ad.image_url}

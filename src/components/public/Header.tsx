@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Category } from "@/types";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header({ categories }: { categories: Category[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -97,7 +98,10 @@ export default function Header({ categories }: { categories: Category[] }) {
           </Link>
 
           {/* Right side */}
-          <div className="flex-1 flex items-center justify-end gap-3">
+          <div className="flex-1 flex items-center justify-end gap-2 sm:gap-3">
+            {/* Theme toggle */}
+            <ThemeToggle variant="dark-bg" />
+
             {/* Desktop search */}
             <form action="/buscar" className="hidden md:flex items-center">
               <div className="relative flex items-center">

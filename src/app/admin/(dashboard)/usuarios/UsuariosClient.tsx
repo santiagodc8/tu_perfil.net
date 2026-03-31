@@ -12,7 +12,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 const ROLE_STYLES: Record<UserRole, string> = {
   admin: "bg-primary/10 text-primary font-semibold",
-  editor: "bg-gray-100 text-gray-600",
+  editor: "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300",
 };
 
 export default function UsuariosClient({
@@ -103,9 +103,9 @@ export default function UsuariosClient({
 
       {/* Success message */}
       {inviteSuccess && (
-        <div className="flex items-start gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+        <div className="flex items-start gap-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/30 rounded-lg px-4 py-3">
           <span className="text-green-500 font-bold flex-shrink-0">✓</span>
-          <p className="text-green-700 text-sm">{inviteSuccess}</p>
+          <p className="text-green-700 dark:text-green-300 text-sm">{inviteSuccess}</p>
         </div>
       )}
 
@@ -135,7 +135,7 @@ export default function UsuariosClient({
           <h3 className="font-semibold text-heading">Crear nuevo usuario</h3>
 
           {inviteError && (
-            <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-lg border border-red-200 dark:border-red-700/30">
               {inviteError}
             </div>
           )}
@@ -258,7 +258,7 @@ export default function UsuariosClient({
                     onChange={(e) =>
                       handleRoleChange(profile.id, e.target.value as UserRole)
                     }
-                    className="text-sm border border-surface-border rounded-lg px-3 py-1.5 bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none disabled:opacity-50 cursor-pointer"
+                    className="text-sm border border-surface-border rounded-lg px-3 py-1.5 bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none disabled:opacity-50 cursor-pointer"
                   >
                     <option value="editor">Editor</option>
                     <option value="admin">Admin</option>

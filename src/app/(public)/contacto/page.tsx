@@ -75,7 +75,7 @@ export default function ContactoPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {error && (
-            <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-lg border border-red-200 dark:border-red-700/30">
               {error}
             </div>
           )}
@@ -90,7 +90,7 @@ export default function ContactoPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
               placeholder="Tu nombre"
             />
           </div>
@@ -105,7 +105,7 @@ export default function ContactoPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
               placeholder="tu@email.com"
             />
           </div>
@@ -120,7 +120,7 @@ export default function ContactoPage() {
               onChange={(e) => setMessage(e.target.value)}
               required
               rows={5}
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
+              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
               placeholder="Escribe tu mensaje..."
             />
           </div>

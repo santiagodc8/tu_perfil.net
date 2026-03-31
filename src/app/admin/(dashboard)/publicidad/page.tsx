@@ -243,7 +243,7 @@ export default function PublicidadPage() {
               <select
                 value={metricsDays}
                 onChange={(e) => setMetricsDays(Number(e.target.value))}
-                className="px-3 py-1.5 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                className="px-3 py-1.5 border border-surface-border rounded-lg text-sm bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
               >
                 <option value={7}>Últimos 7 días</option>
                 <option value={30}>Últimos 30 días</option>
@@ -301,7 +301,7 @@ export default function PublicidadPage() {
                 <li key={ad.id} className="px-6 py-4">
                   <div className="flex gap-4 items-start">
                     {/* Thumbnail */}
-                    <div className="relative w-24 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                    <div className="relative w-24 h-16 rounded-lg overflow-hidden bg-surface flex-shrink-0">
                       <Image
                         src={ad.image_url}
                         alt={ad.title}
@@ -319,8 +319,8 @@ export default function PublicidadPage() {
                         <span
                           className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                             ad.active
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-500"
+                              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                           }`}
                         >
                           {ad.active ? "Activo" : "Inactivo"}
@@ -372,8 +372,8 @@ export default function PublicidadPage() {
                         onClick={() => handleToggleActive(ad)}
                         className={`text-xs px-3 py-1.5 rounded-lg border transition ${
                           ad.active
-                            ? "border-gray-300 text-muted hover:bg-gray-50"
-                            : "border-green-300 text-green-600 hover:bg-green-50"
+                            ? "border-surface-border text-muted hover:bg-surface"
+                            : "border-green-300 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                         }`}
                       >
                         {ad.active ? "Desactivar" : "Activar"}
@@ -399,9 +399,9 @@ export default function PublicidadPage() {
         </div>
 
         {/* Guía rápida */}
-        <div className="bg-blue-50 rounded-xl p-4 text-sm text-blue-800 space-y-2">
+        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 text-sm text-blue-800 dark:text-blue-300 space-y-2">
           <p className="font-semibold">Ubicaciones disponibles:</p>
-          <ul className="list-disc list-inside space-y-1 text-blue-700">
+          <ul className="list-disc list-inside space-y-1 text-blue-700 dark:text-blue-400">
             <li>
               <strong>Barra lateral</strong> — se muestra en la columna derecha del sitio
             </li>

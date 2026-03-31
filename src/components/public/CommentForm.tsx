@@ -64,13 +64,13 @@ export default function CommentForm({ articleId }: CommentFormProps) {
 
   if (success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-xl p-5 text-center">
-        <p className="text-green-700 font-medium text-sm">
+      <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700/30 rounded-xl p-5 text-center">
+        <p className="text-green-700 dark:text-green-300 font-medium text-sm">
           Tu comentario fue enviado y será publicado luego de ser aprobado.
         </p>
         <button
           onClick={() => setSuccess(false)}
-          className="mt-3 text-xs text-green-600 underline hover:no-underline"
+          className="mt-3 text-xs text-green-600 dark:text-green-400 underline hover:no-underline"
         >
           Escribir otro comentario
         </button>
@@ -92,7 +92,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
             onChange={(e) => setName(e.target.value)}
             placeholder="Tu nombre"
             maxLength={100}
-            className="w-full border border-surface-border rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+            className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
           />
         </div>
         <div>
@@ -106,7 +106,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@email.com"
             maxLength={200}
-            className="w-full border border-surface-border rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+            className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
           />
           <p className="mt-1 text-xs text-muted">No será publicado.</p>
         </div>
@@ -123,13 +123,13 @@ export default function CommentForm({ articleId }: CommentFormProps) {
           placeholder="Escribí tu comentario..."
           rows={4}
           maxLength={2000}
-          className="w-full border border-surface-border rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none"
+          className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none"
         />
         <p className="text-xs text-muted text-right mt-0.5">{content.length}/2000</p>
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+        <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700/30 rounded-lg px-4 py-2">
           {error}
         </p>
       )}

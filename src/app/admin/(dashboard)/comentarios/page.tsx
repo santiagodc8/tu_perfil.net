@@ -150,14 +150,14 @@ export default function ComentariosPage() {
                       {tab === "pendientes" && (
                         <button
                           onClick={() => handleApprove(comment.id)}
-                          className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition"
+                          className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition"
                         >
                           Aprobar
                         </button>
                       )}
                       <button
                         onClick={() => handleDelete(comment.id)}
-                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition"
+                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition"
                       >
                         Eliminar
                       </button>

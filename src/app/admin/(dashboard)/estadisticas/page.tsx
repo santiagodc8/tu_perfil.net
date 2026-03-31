@@ -247,19 +247,19 @@ export default async function EstadisticasPage() {
 
         {/* ── Views: today / yesterday / week ── */}
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-surface-border shadow-sm p-4 text-center">
+          <div className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10 p-4 text-center">
             <p className="text-xs text-muted">Hoy</p>
             <p className="text-2xl font-bold text-primary tabular-nums mt-1">
               {(viewsToday ?? 0).toLocaleString("es-AR")}
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-surface-border shadow-sm p-4 text-center">
+          <div className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10 p-4 text-center">
             <p className="text-xs text-muted">Ayer</p>
             <p className="text-2xl font-bold text-heading tabular-nums mt-1">
               {(viewsYesterday ?? 0).toLocaleString("es-AR")}
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-surface-border shadow-sm p-4 text-center">
+          <div className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10 p-4 text-center">
             <p className="text-xs text-muted">Últimos 7 días</p>
             <p className="text-2xl font-bold text-heading tabular-nums mt-1">
               {(viewsWeek ?? 0).toLocaleString("es-AR")}
@@ -268,7 +268,7 @@ export default async function EstadisticasPage() {
         </div>
 
         {/* ── Views per day chart (last 30 days) ── */}
-        <section className="bg-white rounded-xl border border-surface-border shadow-sm">
+        <section className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10">
           <div className="px-6 py-4 border-b border-surface-border">
             <h3 className="font-semibold text-heading text-base">
               Vistas por día (últimos 30 días)
@@ -315,7 +315,7 @@ export default async function EstadisticasPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* Fuentes de tráfico */}
-          <section className="bg-white rounded-xl border border-surface-border shadow-sm">
+          <section className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10">
             <div className="px-6 py-4 border-b border-surface-border">
               <h3 className="font-semibold text-heading text-base">
                 Fuentes de tráfico (30 días)
@@ -364,7 +364,7 @@ export default async function EstadisticasPage() {
           </section>
 
           {/* Top 10 most-read */}
-          <section className="bg-white rounded-xl border border-surface-border shadow-sm">
+          <section className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10">
             <div className="px-6 py-4 border-b border-surface-border">
               <h3 className="font-semibold text-heading text-base">
                 Top 10 artículos más leídos
@@ -419,7 +419,7 @@ export default async function EstadisticasPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* Artículos por categoría */}
-          <section className="bg-white rounded-xl border border-surface-border shadow-sm">
+          <section className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10">
             <div className="px-6 py-4 border-b border-surface-border">
               <h3 className="font-semibold text-heading text-base">
                 Artículos por categoría
@@ -470,7 +470,7 @@ export default async function EstadisticasPage() {
           </section>
 
           {/* Artículos publicados por mes */}
-          <section className="bg-white rounded-xl border border-surface-border shadow-sm">
+          <section className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10">
             <div className="px-6 py-4 border-b border-surface-border">
               <h3 className="font-semibold text-heading text-base">
                 Artículos por mes (últimos 6 meses)
@@ -531,7 +531,7 @@ function SummaryCard({
   accent: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-surface-border shadow-sm p-5 flex flex-col gap-3">
+    <div className="bg-surface-card rounded-xl border border-surface-border shadow-sm dark:shadow-black/10 p-5 flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted leading-tight">{label}</span>
         <span className="text-xl leading-none">{icon}</span>

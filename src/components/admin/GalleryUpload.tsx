@@ -114,7 +114,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
                   <button
                     type="button"
                     onClick={() => handleMove(i, -1)}
-                    className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-sm shadow hover:bg-gray-100"
+                    className="w-8 h-8 bg-surface-card rounded-full flex items-center justify-center text-sm shadow hover:bg-surface"
                     title="Mover antes"
                   >
                     ←
@@ -132,7 +132,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
                   <button
                     type="button"
                     onClick={() => handleMove(i, 1)}
-                    className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-sm shadow hover:bg-gray-100"
+                    className="w-8 h-8 bg-surface-card rounded-full flex items-center justify-center text-sm shadow hover:bg-surface"
                     title="Mover después"
                   >
                     →
@@ -149,7 +149,7 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
       )}
 
       {/* Botón para agregar */}
-      <div className="relative border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-lg transition cursor-pointer">
+      <div className="relative border-2 border-dashed border-surface-border hover:border-gray-400 dark:hover:border-gray-500 rounded-lg transition cursor-pointer">
         <input
           type="file"
           accept="image/*"
@@ -160,13 +160,13 @@ export default function GalleryUpload({ images, onChange }: GalleryUploadProps) 
         />
         <div className="py-6 text-center">
           {uploading ? (
-            <p className="text-gray-500 text-sm">Subiendo imágenes...</p>
+            <p className="text-muted text-sm">Subiendo imágenes...</p>
           ) : (
             <>
-              <p className="text-gray-500 text-sm">
+              <p className="text-muted text-sm">
                 Haz click o arrastra imágenes para agregar a la galería
               </p>
-              <p className="text-gray-400 text-xs mt-1">
+              <p className="text-muted text-xs mt-1">
                 Puedes seleccionar varias a la vez
               </p>
             </>

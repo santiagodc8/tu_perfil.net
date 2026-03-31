@@ -97,7 +97,7 @@ export default async function BuscarPage({
               type="text"
               defaultValue={query}
               placeholder="Escribe tu búsqueda..."
-              className="flex-1 px-4 py-3 border border-surface-border rounded-l-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="flex-1 min-w-0 px-4 py-3 border border-surface-border rounded-l-lg text-sm bg-surface-card focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <button
               type="submit"
@@ -112,7 +112,7 @@ export default async function BuscarPage({
             <select
               name="cat"
               defaultValue={catFilter}
-              className="px-3 py-2 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="px-3 py-2 border border-surface-border rounded-lg text-sm bg-surface-card text-body focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             >
               <option value="">Todas las categorías</option>
               {categories.map((cat) => (
@@ -125,7 +125,7 @@ export default async function BuscarPage({
             <select
               name="sort"
               defaultValue={sortBy}
-              className="px-3 py-2 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="px-3 py-2 border border-surface-border rounded-lg text-sm bg-surface-card text-body focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             >
               {(Object.keys(sortLabels) as SortOption[]).map((key) => (
                 <option key={key} value={key}>

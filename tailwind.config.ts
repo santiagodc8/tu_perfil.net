@@ -6,6 +6,7 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -16,15 +17,15 @@ const config: Config = {
         },
         silver: "#C0C0C0",
         surface: {
-          DEFAULT: "#F5F5F5",
-          card: "#FFFFFF",
-          header: "#1A1A1A",
-          footer: "#111111",
-          border: "#E2E2E2",
+          DEFAULT: "rgb(var(--color-surface) / <alpha-value>)",
+          card: "rgb(var(--color-surface-card) / <alpha-value>)",
+          header: "rgb(var(--color-surface-header) / <alpha-value>)",
+          footer: "rgb(var(--color-surface-footer) / <alpha-value>)",
+          border: "rgb(var(--color-surface-border) / <alpha-value>)",
         },
-        heading: "#111111",
-        body: "#333333",
-        muted: "#888888",
+        heading: "rgb(var(--color-heading) / <alpha-value>)",
+        body: "rgb(var(--color-body) / <alpha-value>)",
+        muted: "rgb(var(--color-muted) / <alpha-value>)",
         // Legacy aliases for accent (used throughout components)
         accent: {
           DEFAULT: "#E30613",

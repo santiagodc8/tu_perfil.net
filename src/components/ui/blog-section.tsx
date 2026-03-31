@@ -27,8 +27,8 @@ const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1504711434969-e3388616
 export function BlogSection({ articles, title = 'Últimas Noticias', description = 'Las noticias más recientes de tu región y el mundo.' }: BlogSectionProps) {
     return (
         <div className="mx-auto w-full max-w-5xl grow">
-            <div className="space-y-1 px-4 py-8">
-                <h2 className="font-display text-display-md sm:text-display-lg tracking-wide text-heading">
+            <div className="space-y-1 px-4 py-5 sm:py-8">
+                <h2 className="font-display text-display-sm sm:text-display-md lg:text-display-lg tracking-wide text-heading">
                     {title}
                 </h2>
                 <p className="text-muted text-base">
@@ -36,12 +36,12 @@ export function BlogSection({ articles, title = 'Últimas Noticias', description
                 </p>
             </div>
             <div className="h-px w-full border-b border-dashed border-surface-border" />
-            <div className="grid p-4 md:grid-cols-2 lg:grid-cols-3 z-10 stagger-children">
+            <div className="grid gap-1 p-3 sm:p-4 sm:gap-0 md:grid-cols-2 lg:grid-cols-3 z-10 stagger-children">
                 {articles.map((article) => (
                     <Link
                         href={`/noticia/${article.slug}`}
                         key={article.slug}
-                        className="group flex flex-col gap-2 rounded-lg p-2 transition-[background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-surface active:scale-[0.98] active:bg-gray-100"
+                        className="group flex flex-col gap-2 rounded-lg p-2 transition-[background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-surface active:scale-[0.98] active:bg-surface-border/30"
                         style={{ transition: 'background-color 150ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1)' }}
                     >
                         <div className="relative overflow-hidden rounded-lg">
@@ -78,7 +78,7 @@ export function BlogSection({ articles, title = 'Últimas Noticias', description
                                     </>
                                 )}
                             </div>
-                            <h3 className="line-clamp-2 text-lg leading-5 font-semibold tracking-tight text-heading transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:text-primary">
+                            <h3 className="line-clamp-2 text-base sm:text-lg leading-5 sm:leading-6 font-semibold tracking-tight text-heading transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:text-primary">
                                 {article.title}
                             </h3>
                         </div>

@@ -24,7 +24,7 @@ export default function ArticleCard({
   if (size === "small") {
     return (
       <Link href={`/noticia/${slug}`} className="group flex gap-3 cursor-pointer">
-        <div className="relative w-24 h-20 sm:w-28 sm:h-[4.5rem] rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+        <div className="relative w-24 h-20 sm:w-28 sm:h-[4.5rem] rounded-xl overflow-hidden flex-shrink-0 bg-surface">
           {image_url && (
             <Image
               src={image_url}
@@ -60,7 +60,7 @@ export default function ArticleCard({
               style={{ backgroundColor: category.color }}
             />
           )}
-          <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+          <div className="relative aspect-[4/3] bg-surface overflow-hidden">
             {image_url ? (
               <Image
                 src={image_url}
@@ -72,7 +72,7 @@ export default function ArticleCard({
                 blurDataURL={BLUR_DATA_URL}
               />
             ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
+              <div className="absolute inset-0 bg-gradient-to-br from-surface-border to-surface" />
             )}
             {category && (
               <span
@@ -109,7 +109,7 @@ export default function ArticleCard({
             style={{ backgroundColor: category.color }}
           />
         )}
-        <div className="relative aspect-video bg-gray-100 overflow-hidden">
+        <div className="relative aspect-video bg-surface overflow-hidden">
           {image_url ? (
             <Image
               src={image_url}
@@ -121,7 +121,7 @@ export default function ArticleCard({
               blurDataURL={BLUR_DATA_URL}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-100" />
+            <div className="absolute inset-0 bg-gradient-to-br from-surface-border to-surface" />
           )}
           {category && (
             <span

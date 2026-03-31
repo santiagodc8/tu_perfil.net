@@ -156,7 +156,7 @@ export default async function HomePage() {
   const betweenAds = allAds.filter((a) => a.position === "between_articles");
 
   return (
-    <div className="container-custom py-5 sm:py-8 space-y-8 sm:space-y-12">
+    <div className="container-custom py-4 sm:py-6 lg:py-8 space-y-6 sm:space-y-8 lg:space-y-12">
       {/* Banner superior — publicidad */}
       {headerAds.map((ad) => (
         <AdBanner key={ad.id} ad={ad} />
@@ -188,7 +188,7 @@ export default async function HomePage() {
 
       {/* Publicidad + Sidebar */}
       <ScrollReveal>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
           <div className="lg:col-span-2">
             {betweenAds.slice(1).map((ad) => (
               <div key={ad.id} className="mb-8">

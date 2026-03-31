@@ -107,7 +107,7 @@ export default function HeroCarousel({ slides, className }: HeroCarouselProps) {
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
             aria-label="Anterior"
-            className="pressable p-2 rounded-full border border-surface-border bg-white text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
+            className="pressable p-2 rounded-full border border-surface-border bg-surface-card text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -115,7 +115,7 @@ export default function HeroCarousel({ slides, className }: HeroCarouselProps) {
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
             aria-label="Siguiente"
-            className="pressable p-2 rounded-full border border-surface-border bg-white text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
+            className="pressable p-2 rounded-full border border-surface-border bg-surface-card text-heading transition-opacity duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -131,11 +131,11 @@ export default function HeroCarousel({ slides, className }: HeroCarouselProps) {
           <Link
             key={slide.slug}
             href={`/noticia/${slide.slug}`}
-            className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[340px] snap-start group"
+            className="flex-shrink-0 w-[75vw] sm:w-[320px] md:w-[340px] snap-start group"
             style={{ animationDelay: `${i * 60}ms` }}
           >
-            <div className="relative overflow-hidden rounded-card bg-white border border-surface-border/50 shadow-card card-hover">
-              <div className="relative w-full h-[320px] sm:h-[380px] md:h-[400px] overflow-hidden">
+            <div className="relative overflow-hidden rounded-card bg-surface-card border border-surface-border/50 shadow-card card-hover">
+              <div className="relative w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[400px] overflow-hidden">
                 <img
                   src={slide.image_url || FALLBACK_IMAGE}
                   alt={slide.title}

@@ -184,7 +184,7 @@ export default function NoticiasPage() {
         </div>
 
         {/* Tabs de estado */}
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit overflow-x-auto">
+        <div className="flex gap-1 bg-surface p-1 rounded-lg w-fit overflow-x-auto">
           {([
             { key: "all", label: "Todas" },
             { key: "published", label: "Publicadas" },
@@ -198,8 +198,8 @@ export default function NoticiasPage() {
               className={`px-3 py-1.5 text-sm font-medium rounded-md transition ${
                 statusFilter === key
                   ? key === "trash"
-                    ? "bg-white text-red-600 shadow-sm"
-                    : "bg-white text-heading shadow-sm"
+                    ? "bg-surface-card text-red-600 shadow-sm"
+                    : "bg-surface-card text-heading shadow-sm"
                   : "text-muted hover:text-body"
               }`}
             >
@@ -253,17 +253,17 @@ export default function NoticiasPage() {
                         </span>
                       )}
                       {isTrash ? (
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
                           En papelera
                         </span>
                       ) : (
                         <span
                           className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                             status === "scheduled"
-                              ? "bg-blue-100 text-blue-700"
+                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
                               : status === "published"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-yellow-100 text-yellow-700"
+                              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                              : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
                           }`}
                         >
                           {status === "scheduled" ? "Programada" : status === "published" ? "Publicada" : "Borrador"}
@@ -375,17 +375,17 @@ export default function NoticiasPage() {
                       </td>
                       <td className="px-6 py-3">
                         {isTrash ? (
-                          <span className="text-xs font-medium px-2 py-1 rounded-full bg-red-100 text-red-700">
+                          <span className="text-xs font-medium px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
                             En papelera
                           </span>
                         ) : (
                           <span
                             className={`text-xs font-medium px-2 py-1 rounded-full ${
                               status === "scheduled"
-                                ? "bg-blue-100 text-blue-700"
+                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
                                 : status === "published"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-yellow-100 text-yellow-700"
+                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                                : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
                             }`}
                           >
                             {status === "scheduled"

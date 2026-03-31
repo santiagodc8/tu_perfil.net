@@ -176,7 +176,7 @@ export default function ArticleForm({
   return (
     <form onSubmit={handleSubmit} className="p-4 md:p-6 max-w-3xl space-y-6">
       {error && (
-        <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-lg border border-red-200 dark:border-red-700/30">
           {error}
         </div>
       )}
@@ -191,7 +191,7 @@ export default function ArticleForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Escribe el título aquí..."
-          className="w-full px-4 py-3 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-lg"
+          className="w-full px-4 py-3 border border-surface-border rounded-lg bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-lg"
         />
       </div>
 
@@ -205,7 +205,7 @@ export default function ArticleForm({
           value={authorName}
           onChange={(e) => setAuthorName(e.target.value)}
           placeholder="Nombre del autor"
-          className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+          className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
         />
       </div>
 
@@ -301,7 +301,7 @@ export default function ArticleForm({
                 }}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-green-500 rounded-full transition" />
+              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-checked:bg-green-500 rounded-full transition" />
               <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
             </div>
             <span className="text-sm font-medium text-body">
@@ -321,7 +321,7 @@ export default function ArticleForm({
                 onChange={(e) => setFeatured(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-amber-500 rounded-full transition" />
+              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-checked:bg-amber-500 rounded-full transition" />
               <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
             </div>
             <span className="text-sm font-medium text-body">
@@ -338,7 +338,7 @@ export default function ArticleForm({
                   onChange={(e) => setNotifySubscribers(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-300 peer-checked:bg-blue-500 rounded-full transition" />
+                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-checked:bg-blue-500 rounded-full transition" />
                 <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
               </div>
               <span className="text-sm font-medium text-body">
@@ -350,7 +350,7 @@ export default function ArticleForm({
 
         {/* Programar publicación */}
         {published && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/30 rounded-lg p-4">
             <label className="flex items-center gap-3 cursor-pointer mb-3">
               <div className="relative">
                 <input
@@ -362,7 +362,7 @@ export default function ArticleForm({
                   }}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-300 peer-checked:bg-blue-500 rounded-full transition" />
+                <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-checked:bg-blue-500 rounded-full transition" />
                 <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-surface-card rounded-full shadow peer-checked:translate-x-5 transition" />
               </div>
               <span className="text-sm font-medium text-body">
@@ -379,7 +379,7 @@ export default function ArticleForm({
                   type="datetime-local"
                   value={publishedAt}
                   onChange={(e) => setPublishedAt(e.target.value)}
-                  className="px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white"
+                  className="px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-surface-card"
                 />
                 {publishedAt && new Date(publishedAt) > new Date() && (
                   <p className="text-xs text-blue-600 mt-1.5 font-medium">

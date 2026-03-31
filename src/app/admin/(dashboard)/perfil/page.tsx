@@ -116,13 +116,13 @@ export default function PerfilPage() {
           <h3 className="font-semibold text-heading">Cambiar contraseña</h3>
 
           {error && (
-            <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-200">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-lg border border-red-200 dark:border-red-700/30">
               {error}
             </div>
           )}
 
           {message && (
-            <div className="bg-green-50 text-green-600 text-sm px-4 py-3 rounded-lg border border-green-200">
+            <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-sm px-4 py-3 rounded-lg border border-green-200 dark:border-green-700/30">
               {message}
             </div>
           )}
@@ -136,7 +136,7 @@ export default function PerfilPage() {
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             />
           </div>
 
@@ -150,7 +150,7 @@ export default function PerfilPage() {
               onChange={(e) => setNewPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             />
             <p className="text-xs text-muted mt-1">Mínimo 8 caracteres</p>
           </div>
@@ -165,7 +165,7 @@ export default function PerfilPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-surface-border rounded-lg text-sm bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             />
           </div>
 

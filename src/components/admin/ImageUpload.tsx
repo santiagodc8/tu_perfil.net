@@ -109,7 +109,7 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
         className={`relative border-2 border-dashed rounded-lg transition cursor-pointer ${
           dragOver
             ? "border-accent bg-accent/5"
-            : "border-gray-300 hover:border-gray-400"
+            : "border-surface-border hover:border-gray-400 dark:hover:border-gray-500"
         }`}
       >
         <input
@@ -136,13 +136,13 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
         ) : (
           <div className="py-12 text-center">
             {uploading ? (
-              <p className="text-gray-500">Subiendo imagen...</p>
+              <p className="text-muted">Subiendo imagen...</p>
             ) : (
               <>
-                <p className="text-gray-500 text-sm">
+                <p className="text-muted text-sm">
                   Arrastra una imagen aquí o haz click para seleccionar
                 </p>
-                <p className="text-gray-400 text-xs mt-1">
+                <p className="text-muted text-xs mt-1">
                   JPG, PNG, WebP
                 </p>
               </>

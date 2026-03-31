@@ -8,10 +8,10 @@ export default function Error({
 }) {
   return (
     <div className="container-custom py-16 text-center">
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">
+      <h2 className="text-2xl font-bold text-heading mb-2">
         Algo salió mal
       </h2>
-      <p className="text-gray-500 mb-6">
+      <p className="text-muted mb-6">
         Ocurrió un error al cargar esta página.
       </p>
       <button

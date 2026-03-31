@@ -17,7 +17,7 @@ export default function ImageGallery({ images }: { images: string[] }) {
 
         {/* Imagen principal */}
         <div
-          className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-gray-100"
+          className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-surface"
           onClick={() => setLightbox(true)}
         >
           <Image

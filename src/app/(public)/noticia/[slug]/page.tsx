@@ -205,12 +205,12 @@ export default async function NoticiaPage({
           )}
 
           {/* Title */}
-          <h1 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-heading leading-[1.1] tracking-tight mb-4 sm:mb-5">
+          <h1 className="font-display text-display-sm sm:text-display-md md:text-display-lg lg:text-display-xl text-heading leading-[1.1] tracking-tight mb-4 sm:mb-5">
             {article.title}
           </h1>
 
           {/* Meta line */}
-          <div className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-6 flex-wrap text-sm text-muted">
+          <div className="flex items-center gap-1.5 sm:gap-3 mb-5 sm:mb-6 flex-wrap text-xs sm:text-sm text-muted">
             <span>
               Por{" "}
               <Link
@@ -220,9 +220,11 @@ export default async function NoticiaPage({
                 {article.author_name}
               </Link>
             </span>
-            <span className="text-surface-border">|</span>
+            <span className="text-surface-border hidden sm:inline">|</span>
+            <span className="text-surface-border sm:hidden">&middot;</span>
             <time>{smartDate(article.created_at)}</time>
-            <span className="text-surface-border">|</span>
+            <span className="text-surface-border hidden sm:inline">|</span>
+            <span className="text-surface-border sm:hidden">&middot;</span>
             <span>{readingTime(article.content)}</span>
           </div>
 
@@ -233,7 +235,7 @@ export default async function NoticiaPage({
 
           {/* Image */}
           {article.image_url && (
-            <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8 -mx-4 sm:mx-0 shadow-card">
+            <div className="relative aspect-video rounded-none sm:rounded-xl md:rounded-2xl overflow-hidden mb-6 sm:mb-8 -mx-4 sm:mx-0 shadow-card">
               <Image
                 src={article.image_url}
                 alt={article.title}
@@ -270,7 +272,7 @@ export default async function NoticiaPage({
                 <Link
                   key={tag.id}
                   href={`/etiqueta/${tag.slug}`}
-                  className="inline-block px-3.5 py-1.5 rounded-full text-xs font-medium bg-surface border border-surface-border text-body hover:bg-primary hover:text-white hover:border-primary transition-colors cursor-pointer"
+                  className="inline-block px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-surface border border-surface-border text-body hover:bg-primary hover:text-white hover:border-primary transition-colors cursor-pointer"
                 >
                   #{tag.name}
                 </Link>

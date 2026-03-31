@@ -102,7 +102,7 @@ const TwitterEmbed = Node.create({
 // Helpers
 // ---------------------------------------------------------------------------
 function Divider() {
-  return <div className="w-px h-6 bg-gray-300 mx-1 self-center" />;
+  return <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1 self-center" />;
 }
 
 interface BtnProps {
@@ -123,8 +123,8 @@ function Btn({ active, onClick, title, children, danger }: BtnProps) {
         active
           ? "bg-primary text-white"
           : danger
-          ? "bg-red-50 text-red-600 hover:bg-red-100"
-          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          ? "bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
+          : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
       }`}
     >
       {children}
@@ -179,7 +179,7 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
   }
 
   return (
-    <div className="flex flex-wrap gap-1 border-b border-gray-200 p-2 bg-gray-50 rounded-t-lg">
+    <div className="flex flex-wrap gap-1 border-b border-surface-border p-2 bg-surface rounded-t-lg">
       {/* Grupo: Texto */}
       <Btn
         active={editor.isActive("bold")}
@@ -351,7 +351,7 @@ export default function RichTextEditor({
   });
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent">
+    <div className="border border-surface-border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
     </div>

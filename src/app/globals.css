@@ -5,12 +5,37 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ──────────────────────────────────────────────
-   Custom easing curves (Emil Kowalski philosophy)
+   Theme color tokens (CSS custom properties)
    ────────────────────────────────────────────── */
 :root {
+  /* Surface colors (RGB channels for Tailwind alpha support) */
+  --color-surface: 245 245 245;
+  --color-surface-card: 255 255 255;
+  --color-surface-header: 26 26 26;
+  --color-surface-footer: 17 17 17;
+  --color-surface-border: 226 226 226;
+
+  /* Text colors */
+  --color-heading: 17 17 17;
+  --color-body: 51 51 51;
+  --color-muted: 136 136 136;
+
+  /* Custom easing curves (Emil Kowalski philosophy) */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.dark {
+  --color-surface: 15 15 15;
+  --color-surface-card: 24 24 24;
+  --color-surface-header: 10 10 10;
+  --color-surface-footer: 8 8 8;
+  --color-surface-border: 45 45 45;
+
+  --color-heading: 240 240 240;
+  --color-body: 200 200 200;
+  --color-muted: 153 153 153;
 }
 
 @layer base {
@@ -130,7 +155,7 @@
 
   /* ── Skeleton loader ──────────────────────── */
   .skeleton {
-    @apply bg-gray-200 rounded animate-pulse;
+    @apply bg-gray-200 dark:bg-gray-700 rounded animate-pulse;
   }
   .skeleton-text {
     @apply skeleton h-4 w-full rounded;
@@ -186,6 +211,11 @@
   color: #444;
   margin: 1.25rem 0;
 }
+.dark .prose blockquote,
+.dark .tiptap blockquote {
+  background: rgba(227, 6, 19, 0.08);
+  color: #ccc;
+}
 
 .tiptap blockquote p,
 .prose blockquote p {
@@ -226,6 +256,20 @@
 .tiptap table tr:nth-child(even) td,
 .prose table tr:nth-child(even) td {
   background: #f9f9f9;
+}
+
+.dark .tiptap table,
+.dark .prose table {
+  border-color: #333;
+}
+.dark .tiptap table td,
+.dark .prose table td {
+  border-color: #333;
+  color: #ccc;
+}
+.dark .tiptap table tr:nth-child(even) td,
+.dark .prose table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .tiptap .selectedCell {
@@ -288,6 +332,30 @@
   margin: 0 auto;
   border-radius: 12px;
   border: none;
+}
+
+/* ──────────────────────────────────────────────
+   Dark mode — prose & misc overrides
+   ────────────────────────────────────────────── */
+.dark .prose {
+  --tw-prose-body: rgb(200 200 200);
+  --tw-prose-headings: rgb(240 240 240);
+  --tw-prose-links: #FF1A2A;
+  --tw-prose-bold: rgb(240 240 240);
+  --tw-prose-counters: rgb(153 153 153);
+  --tw-prose-bullets: rgb(153 153 153);
+  --tw-prose-hr: rgb(45 45 45);
+  --tw-prose-quotes: rgb(200 200 200);
+  --tw-prose-code: rgb(240 240 240);
+  --tw-prose-pre-code: rgb(200 200 200);
+  --tw-prose-pre-bg: rgb(15 15 15);
+  --tw-prose-th-borders: rgb(45 45 45);
+  --tw-prose-td-borders: rgb(45 45 45);
+}
+
+/* Dark mode transitions */
+html {
+  transition: background-color 200ms ease, color 200ms ease;
 }
 
 /* Smooth scroll on mobile */

@@ -76,11 +76,11 @@ export default function ReadingControls({ onSizeChange }: ReadingControlsProps) 
 
   return (
     <div
-      className="flex items-center gap-2 py-1.5 px-3 bg-gray-100 rounded-lg w-fit"
+      className="flex items-center gap-2 py-1.5 px-3 bg-surface rounded-lg w-fit"
       role="group"
       aria-label="Tamaño del texto"
     >
-      <span className="text-[11px] text-gray-500 font-medium select-none hidden sm:inline">
+      <span className="text-[11px] text-muted font-medium select-none hidden sm:inline">
         Texto:
       </span>
 
@@ -88,12 +88,12 @@ export default function ReadingControls({ onSizeChange }: ReadingControlsProps) 
         onClick={() => config.prev && changeSize(config.prev)}
         disabled={config.prev === null}
         aria-label="Reducir tamaño de texto"
-        className="w-7 h-7 flex items-center justify-center rounded-md text-sm font-bold text-gray-600 hover:bg-gray-200 active:bg-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="w-7 h-7 flex items-center justify-center rounded-md text-sm font-bold text-body hover:bg-surface-border/40 active:bg-surface-border/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         A<sup className="text-[9px] leading-none">−</sup>
       </button>
 
-      <span className="text-[11px] font-medium text-gray-500 select-none min-w-[56px] text-center">
+      <span className="text-[11px] font-medium text-muted select-none min-w-[56px] text-center">
         {config.label}
       </span>
 
@@ -101,7 +101,7 @@ export default function ReadingControls({ onSizeChange }: ReadingControlsProps) 
         onClick={() => config.next && changeSize(config.next)}
         disabled={config.next === null}
         aria-label="Aumentar tamaño de texto"
-        className="w-7 h-7 flex items-center justify-center rounded-md text-base font-bold text-gray-600 hover:bg-gray-200 active:bg-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="w-7 h-7 flex items-center justify-center rounded-md text-base font-bold text-body hover:bg-surface-border/40 active:bg-surface-border/60 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         A<sup className="text-[9px] leading-none">+</sup>
       </button>

@@ -94,7 +94,7 @@ export default async function CategoryPage({
             className="w-1.5 h-8 sm:h-10 rounded-full"
             style={{ backgroundColor: category.color }}
           />
-          <h1 className="font-display text-display-md sm:text-display-lg md:text-display-xl text-heading tracking-tight">
+          <h1 className="font-display text-display-sm sm:text-display-md md:text-display-lg lg:text-display-xl text-heading tracking-tight">
             {category.name}
           </h1>
         </div>
