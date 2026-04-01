@@ -237,7 +237,7 @@ export default function Header({ categories }: { categories: Category[] }) {
         {/* Navigation */}
         <nav className="border-t border-white/[0.06] bg-surface-header/95 backdrop-blur-md">
           <div
-            className={`container-custom overflow-hidden transition-[max-height,opacity] duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+            className={`container-custom overflow-hidden md:overflow-visible transition-[max-height,opacity] duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] ${
               menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
             } md:max-h-none md:opacity-100`}
           >
