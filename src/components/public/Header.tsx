@@ -7,10 +7,30 @@ import Image from "next/image";
 import type { Category } from "@/types";
 import ThemeToggle from "./ThemeToggle";
 
+// Slugs (o keywords) de categorías visibles por defecto en el nav
+const VISIBLE_KEYWORDS = [
+  "muy-personal",
+  "politico",
+  "nacional",
+  "internacional",
+  "educacion",
+  "cultural",
+  "salud",
+  "deportivo",
+];
+
+function isVisibleCategory(slug: string) {
+  return VISIBLE_KEYWORDS.some((kw) => slug.includes(kw));
+}
+
 export default function Header({ categories }: { categories: Category[] }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  const visibleCategories = categories.filter((c) => isVisibleCategory(c.slug));
+  const hiddenCategories = categories.filter((c) => !isVisibleCategory(c.slug));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -19,10 +39,22 @@ export default function Header({ categories }: { categories: Category[] }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu on route change
+  // Close menus on route change
   useEffect(() => {
     setMenuOpen(false);
+    setMoreOpen(false);
   }, [pathname]);
+
+  // Close "Más" dropdown on outside click
+  useEffect(() => {
+    if (!moreOpen) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-more-menu]")) setMoreOpen(false);
+    };
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, [moreOpen]);
 
   const today = new Date().toLocaleDateString("es-ES", {
     weekday: "long",
@@ -229,28 +261,90 @@ export default function Header({ categories }: { categories: Category[] }) {
                   />
                 </Link>
               </li>
-              {categories.map((cat) => (
-                <li key={cat.id}>
+              {/* Desktop: only visible categories */}
+              {visibleCategories.map((cat) => (
+                <li key={cat.id} className="hidden md:block">
                   <Link
                     href={`/${cat.slug}`}
-                    className={`flex items-center gap-2 px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer border-b border-white/[0.04] md:border-b-0 ${
+                    className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
                       isActive(`/${cat.slug}`)
-                        ? "text-white md:text-primary"
-                        : "text-gray-400 hover:text-white md:hover:text-primary"
+                        ? "text-primary"
+                        : "text-gray-400 hover:text-primary"
                     }`}
                   >
-                    <span
-                      className="w-2 h-2 rounded-full md:hidden flex-shrink-0"
-                      style={{ backgroundColor: cat.color }}
-                    />
                     {cat.name}
                     <span
-                      className={`absolute bottom-0 left-4 right-4 h-[2px] bg-primary transition-transform origin-left hidden md:block ${
+                      className={`absolute bottom-0 left-4 right-4 h-[2px] bg-primary transition-transform origin-left ${
                         isActive(`/${cat.slug}`)
                           ? "scale-x-100"
                           : "scale-x-0 group-hover:scale-x-100"
                       }`}
                     />
+                  </Link>
+                </li>
+              ))}
+
+              {/* Desktop: "Más" dropdown for hidden categories */}
+              {hiddenCategories.length > 0 && (
+                <li className="hidden md:block relative" data-more-menu>
+                  <button
+                    onClick={() => setMoreOpen(!moreOpen)}
+                    className={`flex items-center gap-1 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition cursor-pointer ${
+                      moreOpen || hiddenCategories.some((c) => isActive(`/${c.slug}`))
+                        ? "text-primary"
+                        : "text-gray-400 hover:text-primary"
+                    }`}
+                  >
+                    Más
+                    <svg
+                      className={`w-3.5 h-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {moreOpen && (
+                    <div className="absolute top-full left-0 mt-0 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-xl py-1 min-w-[200px] z-50">
+                      {hiddenCategories.map((cat) => (
+                        <Link
+                          key={cat.id}
+                          href={`/${cat.slug}`}
+                          className={`flex items-center gap-2.5 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition ${
+                            isActive(`/${cat.slug}`)
+                              ? "text-primary bg-white/5"
+                              : "text-gray-400 hover:text-white hover:bg-white/5"
+                          }`}
+                        >
+                          <span
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: cat.color }}
+                          />
+                          {cat.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              )}
+
+              {/* Mobile: all categories */}
+              {categories.map((cat) => (
+                <li key={cat.id} className="md:hidden">
+                  <Link
+                    href={`/${cat.slug}`}
+                    className={`flex items-center gap-2 px-4 py-3.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer border-b border-white/[0.04] ${
+                      isActive(`/${cat.slug}`)
+                        ? "text-white"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: cat.color }}
+                    />
+                    {cat.name}
                   </Link>
                 </li>
               ))}
