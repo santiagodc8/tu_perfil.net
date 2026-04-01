@@ -120,7 +120,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
           id="comment-content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Escribí tu comentario..."
+          placeholder="Escribe tu comentario..."
           rows={4}
           maxLength={2000}
           className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none"

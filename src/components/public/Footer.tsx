@@ -135,7 +135,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
             <h4 className="font-display text-white text-lg mb-1.5">Contacto</h4>
             <div className="w-8 h-0.5 bg-primary rounded-full mb-4" />
             <p className="text-sm leading-relaxed text-gray-500">
-              ¿Tenés una noticia o querés comunicarte con nosotros?
+              ¿Tienes una noticia o quieres comunicarte con nosotros?
             </p>
             <Link
               href="/contacto"
@@ -144,7 +144,7 @@ export default function Footer({ categories }: { categories: Category[] }) {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              Escribinos
+              Escríbenos
             </Link>
           </div>
         </div>

@@ -66,13 +66,13 @@ export default function PoliticaDePrivacidadPage() {
 
         <h2>4. Cookies</h2>
         <p>
-          Podés aceptar o rechazar las cookies no esenciales a través del banner
+          Puedes aceptar o rechazar las cookies no esenciales a través del banner
           que aparece al visitar el sitio. Las cookies técnicas son necesarias
           para el funcionamiento y no requieren consentimiento.
         </p>
 
         <h2>5. Tus derechos</h2>
-        <p>Tenés derecho a:</p>
+        <p>Tienes derecho a:</p>
         <ul>
           <li>Acceder a tus datos personales que tengamos almacenados.</li>
           <li>Solicitar la corrección o eliminación de tus datos.</li>
@@ -84,7 +84,7 @@ export default function PoliticaDePrivacidadPage() {
 
         <h2>6. Contacto</h2>
         <p>
-          Para cualquier consulta sobre privacidad, podés escribirnos a través
+          Para cualquier consulta sobre privacidad, puedes escribirnos a través
           de la{" "}
           <a href="/contacto" className="text-primary hover:underline">
             página de contacto

@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(
       buildHtmlPage(
         "Enlace inválido",
-        "El enlace de desuscripción no es válido. Por favor contactanos si querés darte de baja.",
+        "El enlace de desuscripción no es válido. Por favor contáctanos si quieres darte de baja.",
         true
       ),
       { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(
       buildHtmlPage(
         "Enlace inválido",
-        "El enlace de desuscripción no es válido o ya expiró. Por favor contactanos si querés darte de baja.",
+        "El enlace de desuscripción no es válido o ya expiró. Por favor contáctanos si quieres darte de baja.",
         true
       ),
       { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }

@@ -44,10 +44,10 @@ export default function NewsletterForm() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
         <div className="sm:max-w-md">
           <h3 className="font-display text-white text-xl sm:text-2xl mb-1">
-            Suscribite al newsletter
+            Suscríbete al newsletter
           </h3>
           <p className="text-gray-500 text-sm">
-            Recibí las noticias más importantes en tu email
+            Recibe las noticias más importantes en tu email
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export default function NewsletterForm() {
               )}
 
               <p className="text-gray-700 text-xs mt-3">
-                Sin spam. Podés cancelar cuando quieras.
+                Sin spam. Puedes cancelar cuando quieras.
               </p>
             </form>
           )}

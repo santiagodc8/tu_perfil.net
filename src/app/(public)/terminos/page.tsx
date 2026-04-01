@@ -21,7 +21,7 @@ export default function TerminosPage() {
 
         <h2>1. Aceptación de los términos</h2>
         <p>
-          Al acceder y utilizar <strong>TuPerfil.net</strong>, aceptás estos
+          Al acceder y utilizar <strong>TuPerfil.net</strong>, aceptas estos
           términos y condiciones de uso. Si no estás de acuerdo, te pedimos que
           no utilices el sitio.
         </p>
@@ -76,7 +76,7 @@ export default function TerminosPage() {
 
         <h2>8. Contacto</h2>
         <p>
-          Para consultas sobre estos términos, escribinos a través de la{" "}
+          Para consultas sobre estos términos, escríbenos a través de la{" "}
           <a href="/contacto" className="text-primary hover:underline">
             página de contacto
           </a>

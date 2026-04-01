@@ -127,7 +127,7 @@ export default function NewsletterClient() {
               id="nl-body"
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="Escribí el contenido del newsletter. Podés usar saltos de línea para separar párrafos."
+              placeholder="Escribe el contenido del newsletter. Puedes usar saltos de línea para separar párrafos."
               rows={12}
               disabled={sendStatus === "sending"}
               className="w-full px-4 py-2.5 border border-surface-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm resize-y disabled:opacity-50"
