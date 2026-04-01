@@ -13,18 +13,26 @@ export default function CommentForm({ articleId }: CommentFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const fieldErrors: Record<string, string> = {};
+  if (touched.name && !name.trim()) fieldErrors.name = "El nombre es obligatorio.";
+  if (touched.email && !email.trim()) fieldErrors.email = "El email es obligatorio.";
+  else if (touched.email && !emailRegex.test(email.trim())) fieldErrors.email = "El email no es válido.";
+  if (touched.content && !content.trim()) fieldErrors.content = "El comentario es obligatorio.";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
     // Validación cliente
+    setTouched({ name: true, email: true, content: true });
     if (!name.trim() || !email.trim() || !content.trim()) {
       setError("Todos los campos son requeridos.");
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
       setError("El email no es válido.");
       return;
@@ -47,7 +55,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error ?? "Ocurrió un error. Intentá de nuevo.");
+        setError(json.error ?? "Ocurrió un error. Intenta de nuevo.");
         return;
       }
 
@@ -56,7 +64,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
       setEmail("");
       setContent("");
     } catch {
-      setError("Ocurrió un error. Intentá de nuevo.");
+      setError("Ocurrió un error. Intenta de nuevo.");
     } finally {
       setSubmitting(false);
     }
@@ -90,10 +98,14 @@ export default function CommentForm({ articleId }: CommentFormProps) {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onBlur={() => setTouched((t) => ({ ...t, name: true }))}
             placeholder="Tu nombre"
             maxLength={100}
-            className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+            className={`w-full border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition ${
+              fieldErrors.name ? "border-red-400" : "border-surface-border"
+            }`}
           />
+          {fieldErrors.name && <p className="text-xs text-red-500 mt-1">{fieldErrors.name}</p>}
         </div>
         <div>
           <label htmlFor="comment-email" className="block text-xs font-semibold text-body mb-1">
@@ -104,11 +116,18 @@ export default function CommentForm({ articleId }: CommentFormProps) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => setTouched((t) => ({ ...t, email: true }))}
             placeholder="tu@email.com"
             maxLength={200}
-            className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition"
+            className={`w-full border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition ${
+              fieldErrors.email ? "border-red-400" : "border-surface-border"
+            }`}
           />
-          <p className="mt-1 text-xs text-muted">No será publicado.</p>
+          {fieldErrors.email ? (
+            <p className="text-xs text-red-500 mt-1">{fieldErrors.email}</p>
+          ) : (
+            <p className="mt-1 text-xs text-muted">No será publicado.</p>
+          )}
         </div>
       </div>
 
@@ -120,11 +139,15 @@ export default function CommentForm({ articleId }: CommentFormProps) {
           id="comment-content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          onBlur={() => setTouched((t) => ({ ...t, content: true }))}
           placeholder="Escribe tu comentario..."
           rows={4}
           maxLength={2000}
-          className="w-full border border-surface-border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none"
+          className={`w-full border bg-surface-card rounded-lg px-3 py-2 text-sm text-body placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none ${
+            fieldErrors.content ? "border-red-400" : "border-surface-border"
+          }`}
         />
+        {fieldErrors.content && <p className="text-xs text-red-500 mt-1">{fieldErrors.content}</p>}
         <p className="text-xs text-muted text-right mt-0.5">{content.length}/2000</p>
       </div>
 

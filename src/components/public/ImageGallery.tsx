@@ -1,12 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { BLUR_DATA_URL } from "@/lib/utils";
 
 export default function ImageGallery({ images }: { images: string[] }) {
   const [current, setCurrent] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!lightbox) return;
+      if (e.key === "Escape") setLightbox(false);
+      if (e.key === "ArrowLeft") setCurrent((p) => (p - 1 + images.length) % images.length);
+      if (e.key === "ArrowRight") setCurrent((p) => (p + 1) % images.length);
+    },
+    [lightbox, images.length]
+  );
+
+  useEffect(() => {
+    if (!lightbox) return;
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox, handleKeyDown]);
 
   if (images.length === 0) return null;
 

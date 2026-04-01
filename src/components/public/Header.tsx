@@ -245,7 +245,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               <li>
                 <Link
                   href="/"
-                  className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
+                  className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A1A] rounded ${
                     isActive("/")
                       ? "text-white md:text-primary"
                       : "text-gray-400 hover:text-white md:hover:text-primary"
@@ -266,7 +266,7 @@ export default function Header({ categories }: { categories: Category[] }) {
                 <li key={cat.id} className="hidden md:block">
                   <Link
                     href={`/${cat.slug}`}
-                    className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
+                    className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A1A] rounded ${
                       isActive(`/${cat.slug}`)
                         ? "text-primary"
                         : "text-gray-400 hover:text-primary"
@@ -289,7 +289,10 @@ export default function Header({ categories }: { categories: Category[] }) {
                 <li className="hidden md:block relative" data-more-menu>
                   <button
                     onClick={() => setMoreOpen(!moreOpen)}
-                    className={`flex items-center gap-1 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition cursor-pointer ${
+                    aria-expanded={moreOpen}
+                    aria-haspopup="true"
+                    aria-controls="more-categories-menu"
+                    className={`flex items-center gap-1 px-4 py-2.5 text-[13px] font-semibold uppercase tracking-wider transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A1A] rounded ${
                       moreOpen || hiddenCategories.some((c) => isActive(`/${c.slug}`))
                         ? "text-primary"
                         : "text-gray-400 hover:text-primary"
@@ -306,7 +309,7 @@ export default function Header({ categories }: { categories: Category[] }) {
                     </svg>
                   </button>
                   {moreOpen && (
-                    <div className="absolute top-full left-0 mt-0 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-xl py-1 min-w-[200px] z-50">
+                    <div id="more-categories-menu" role="menu" className="absolute top-full left-0 mt-0 bg-[#1A1A1A] border border-white/10 rounded-lg shadow-xl py-1 min-w-[200px] z-50">
                       {hiddenCategories.map((cat) => (
                         <Link
                           key={cat.id}
@@ -351,7 +354,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               <li>
                 <Link
                   href="/contacto"
-                  className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
+                  className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#1A1A1A] rounded ${
                     isActive("/contacto")
                       ? "text-white md:text-primary"
                       : "text-gray-400 hover:text-white md:hover:text-primary"

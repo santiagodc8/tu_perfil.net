@@ -25,6 +25,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // Etiquetas
+  const { data: tags } = await supabase
+    .from("tags")
+    .select("slug");
+
+  const tagPages: MetadataRoute.Sitemap = (tags ?? []).map((tag) => ({
+    url: `${baseUrl}/etiqueta/${tag.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
+
   // Articulos publicados (excluyendo programados para el futuro)
   const { data: articles } = await supabase
     .from("articles")
@@ -40,5 +52,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...categoryPages, ...articlePages];
+  return [...staticPages, ...categoryPages, ...tagPages, ...articlePages];
 }

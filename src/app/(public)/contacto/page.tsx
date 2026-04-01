@@ -10,6 +10,14 @@ export default function ContactoPage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const validationErrors: Record<string, string> = {};
+  if (touched.name && !name.trim()) validationErrors.name = "El nombre es obligatorio.";
+  if (touched.email && !email.trim()) validationErrors.email = "El email es obligatorio.";
+  else if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+    validationErrors.email = "El email no es válido.";
+  if (touched.message && !message.trim()) validationErrors.message = "El mensaje es obligatorio.";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -89,10 +97,16 @@ export default function ContactoPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, name: true }))}
               required
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className={`w-full px-4 py-2.5 border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                validationErrors.name ? "border-red-400" : "border-surface-border"
+              }`}
               placeholder="Tu nombre"
             />
+            {validationErrors.name && (
+              <p className="text-xs text-red-500 mt-1">{validationErrors.name}</p>
+            )}
           </div>
 
           <div>
@@ -104,10 +118,16 @@ export default function ContactoPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
               required
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+              className={`w-full px-4 py-2.5 border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                validationErrors.email ? "border-red-400" : "border-surface-border"
+              }`}
               placeholder="tu@email.com"
             />
+            {validationErrors.email && (
+              <p className="text-xs text-red-500 mt-1">{validationErrors.email}</p>
+            )}
           </div>
 
           <div>
@@ -118,11 +138,17 @@ export default function ContactoPage() {
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onBlur={() => setTouched((t) => ({ ...t, message: true }))}
               required
               rows={5}
-              className="w-full px-4 py-2.5 border border-surface-border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
+              className={`w-full px-4 py-2.5 border rounded-lg bg-white dark:bg-surface-card focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none ${
+                validationErrors.message ? "border-red-400" : "border-surface-border"
+              }`}
               placeholder="Escribe tu mensaje..."
             />
+            {validationErrors.message && (
+              <p className="text-xs text-red-500 mt-1">{validationErrors.message}</p>
+            )}
           </div>
 
           <button
