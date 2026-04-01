@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import ReadingControls from "@/components/public/ReadingControls";
 
 interface ArticleBodyProps {
@@ -16,6 +17,15 @@ export default function ArticleBody({ content, initialProseClass }: ArticleBodyP
     setProseClass(next);
   }, []);
 
+  const sanitizedContent = useMemo(
+    () =>
+      DOMPurify.sanitize(content, {
+        ADD_TAGS: ["iframe"],
+        ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling", "target"],
+      }),
+    [content]
+  );
+
   return (
     <>
       {/* Reading controls — inline, above the body text */}
@@ -26,7 +36,7 @@ export default function ArticleBody({ content, initialProseClass }: ArticleBodyP
       {/* Article body */}
       <div
         className={`${proseClass} max-w-none prose-headings:text-heading prose-a:text-primary hover:prose-a:text-primary-hover prose-img:rounded-lg prose-table:overflow-x-auto transition-[font-size] duration-200`}
-        dangerouslySetInnerHTML={{ __html: content }}
+        dangerouslySetInnerHTML={{ __html: sanitizedContent }}
       />
     </>
   );

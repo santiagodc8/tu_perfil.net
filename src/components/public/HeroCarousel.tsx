@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn, smartDateShort } from "@/lib/utils";
+import { cn, smartDateShort, BLUR_DATA_URL } from "@/lib/utils";
 
 interface HeroSlide {
   title: string;
@@ -136,14 +137,15 @@ export default function HeroCarousel({ slides, className }: HeroCarouselProps) {
           >
             <div className="relative overflow-hidden rounded-card bg-surface-card border border-surface-border/50 shadow-card card-hover">
               <div className="relative w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[400px] overflow-hidden">
-                <img
+                <Image
                   src={slide.image_url || FALLBACK_IMAGE}
                   alt={slide.title}
-                  className="w-full h-full object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
-                  style={{ transform: "scale(1)" }}
-                  loading={i < 2 ? "eager" : "lazy"}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                  fill
+                  sizes="(max-width: 640px) 75vw, (max-width: 768px) 320px, 340px"
+                  className="object-cover transition-transform duration-[400ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105"
+                  priority={i < 2}
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                 />
                 {/* Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
