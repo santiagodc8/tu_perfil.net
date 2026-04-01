@@ -6,6 +6,7 @@ import { BlogSection } from "@/components/ui/blog-section";
 import TrendingSection from "@/components/public/TrendingSection";
 import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
+import MuyPersonalSection from "@/components/public/MuyPersonalSection";
 import ScrollReveal from "@/components/public/ScrollReveal";
 import { readingTime } from "@/lib/utils";
 import type { Ad } from "@/types";
@@ -44,6 +45,16 @@ interface TrendingArticle {
   slug: string;
   image_url: string | null;
   category: { name: string; color: string } | null;
+}
+
+interface PersonalArticle {
+  title: string;
+  slug: string;
+  excerpt: string;
+  image_url: string | null;
+  video_url: string | null;
+  author_name: string;
+  created_at: string;
 }
 
 export default async function HomePage() {
@@ -142,6 +153,26 @@ export default async function HomePage() {
     );
   }
 
+  // Muy Personal — opiniones y videos
+  const { data: muyPersonalCat } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", "muy-personal")
+    .single();
+
+  let personalArticles: PersonalArticle[] = [];
+  if (muyPersonalCat) {
+    const { data: personalData } = await supabase
+      .from("articles")
+      .select("title, slug, excerpt, image_url, video_url, author_name, created_at")
+      .eq("published", true)
+      .eq("category_id", muyPersonalCat.id)
+      .order("created_at", { ascending: false })
+      .limit(4)
+      .returns<PersonalArticle[]>();
+    personalArticles = personalData ?? [];
+  }
+
   // Publicidad
   const { data: adsData } = await supabase
     .from("ads")
@@ -183,6 +214,13 @@ export default async function HomePage() {
       {(latestArticles ?? []).length > 0 && (
         <ScrollReveal>
           <BlogSection articles={latestArticles ?? []} />
+        </ScrollReveal>
+      )}
+
+      {/* Muy Personal */}
+      {personalArticles.length > 0 && (
+        <ScrollReveal>
+          <MuyPersonalSection articles={personalArticles} />
         </ScrollReveal>
       )}
 

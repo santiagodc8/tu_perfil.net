@@ -25,6 +25,7 @@ export interface Article {
   deleted_at: string | null;
   gallery: string[];
   audio_url: string | null;
+  video_url: string | null;
   // Joined
   category?: Category;
   tags?: Tag[];
