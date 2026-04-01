@@ -8,6 +8,7 @@ import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
 import MuyPersonalSection from "@/components/public/MuyPersonalSection";
 import MuyPersonalBanner from "@/components/public/MuyPersonalBanner";
+import OpinionesSection from "@/components/public/OpinionesSection";
 import ScrollReveal from "@/components/public/ScrollReveal";
 import { readingTime } from "@/lib/utils";
 import type { Ad } from "@/types";
@@ -231,6 +232,11 @@ export default async function HomePage() {
           <MuyPersonalSection articles={personalArticles} />
         </ScrollReveal>
       )}
+
+      {/* Opiniones */}
+      <ScrollReveal>
+        <OpinionesSection />
+      </ScrollReveal>
 
       {/* Publicidad + Sidebar */}
       <ScrollReveal>

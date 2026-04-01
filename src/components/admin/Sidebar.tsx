@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
   { href: "/admin/etiquetas", label: "Etiquetas", icon: "🏷️" },
   { href: "/admin/ultima-hora", label: "Última Hora", icon: "🚨" },
   { href: "/admin/comentarios", label: "Comentarios", icon: "💬", badge: "pendingComments" },
+  { href: "/admin/opiniones", label: "Opiniones", icon: "🗣️", badge: "pendingOpinions" },
   { href: "/admin/mensajes", label: "Mensajes", icon: "✉️" },
   { href: "/admin/publicidad", label: "Publicidad", icon: "📢" },
   { href: "/admin/estadisticas", label: "Estadísticas", icon: "📊" },
@@ -35,15 +36,23 @@ export default function Sidebar({ role }: { role: UserRole }) {
   const router = useRouter();
   const supabase = createClient();
   const [pendingComments, setPendingComments] = useState(0);
+  const [pendingOpinions, setPendingOpinions] = useState(0);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchPending() {
-      const { count } = await supabase
-        .from("comments")
-        .select("id", { count: "exact", head: true })
-        .eq("approved", false);
-      setPendingComments(count ?? 0);
+      const [commentsRes, opinionsRes] = await Promise.all([
+        supabase
+          .from("comments")
+          .select("id", { count: "exact", head: true })
+          .eq("approved", false),
+        supabase
+          .from("opinions")
+          .select("id", { count: "exact", head: true })
+          .eq("approved", false),
+      ]);
+      setPendingComments(commentsRes.count ?? 0);
+      setPendingOpinions(opinionsRes.count ?? 0);
     }
     fetchPending();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +69,7 @@ export default function Sidebar({ role }: { role: UserRole }) {
     router.refresh();
   }
 
-  const badges: Record<string, number> = { pendingComments };
+  const badges: Record<string, number> = { pendingComments, pendingOpinions };
 
   const visibleItems = navItems.filter(
     (item) => !item.adminOnly || role === "admin"

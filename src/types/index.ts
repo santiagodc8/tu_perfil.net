@@ -103,6 +103,15 @@ export interface PageView {
   referrer_source: ReferrerSource | null;
 }
 
+export interface Opinion {
+  id: string;
+  author_name: string;
+  author_email: string;
+  content: string;
+  approved: boolean;
+  created_at: string;
+}
+
 export type AdPosition = 'sidebar' | 'header' | 'between_articles';
 
 export interface Ad {
