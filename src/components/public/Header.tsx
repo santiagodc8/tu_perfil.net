@@ -104,18 +104,36 @@ export default function Header({ categories }: { categories: Category[] }) {
               href="https://laquetegusta.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.1] transition group"
-              title="Escuchar emisora"
+              className="relative flex items-center gap-2 sm:gap-2.5 pl-1.5 pr-3 sm:pl-2 sm:pr-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-purple-600/20 via-orange-500/15 to-yellow-500/10 hover:from-purple-600/30 hover:via-orange-500/25 hover:to-yellow-500/20 border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300 group hover:scale-[1.03] active:scale-[0.98]"
+              title="Escuchar La Que Te Gusta"
             >
-              <Image
-                src="/emisora.png"
-                alt="La Que Te Gusta"
-                width={24}
-                height={24}
-                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full"
-              />
-              <span className="hidden sm:inline text-xs font-medium text-gray-300 group-hover:text-white transition">
-                Escuchar
+              {/* Glow effect */}
+              <span className="absolute inset-0 rounded-full bg-purple-500/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Logo */}
+              <span className="relative flex-shrink-0">
+                <Image
+                  src="/emisora.png"
+                  alt="La Que Te Gusta"
+                  width={40}
+                  height={40}
+                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-full ring-2 ring-purple-400/30 group-hover:ring-purple-400/60 transition-all duration-300"
+                />
+                {/* Live pulse dot */}
+                <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5 sm:h-3 sm:w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-green-400 border border-green-500" />
+                </span>
+              </span>
+
+              {/* Text */}
+              <span className="relative flex flex-col leading-none">
+                <span className="text-[10px] sm:text-[11px] font-bold text-white/90 group-hover:text-white tracking-wide uppercase transition-colors">
+                  En vivo
+                </span>
+                <span className="hidden sm:block text-[10px] text-purple-300/70 group-hover:text-purple-300 font-medium tracking-wider transition-colors mt-0.5">
+                  La Que Te Gusta
+                </span>
               </span>
             </a>
 
