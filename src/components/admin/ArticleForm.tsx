@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import RichTextEditor from "./RichTextEditor";
 import ImageUpload from "./ImageUpload";
 import GalleryUpload from "./GalleryUpload";
+import AudioUpload from "./AudioUpload";
 import { generateSlug } from "@/lib/utils";
 import type { Article, Category, Tag } from "@/types";
 
@@ -30,6 +31,7 @@ export default function ArticleForm({
   const [content, setContent] = useState(article?.content ?? "");
   const [imageUrl, setImageUrl] = useState(article?.image_url ?? null);
   const [gallery, setGallery] = useState<string[]>(article?.gallery ?? []);
+  const [audioUrl, setAudioUrl] = useState<string | null>(article?.audio_url ?? null);
   const [published, setPublished] = useState(article?.published ?? false);
   const [featured, setFeatured] = useState(article?.featured ?? false);
   const [scheduled, setScheduled] = useState(!!article?.published_at);
@@ -102,6 +104,7 @@ export default function ArticleForm({
       excerpt,
       image_url: imageUrl || null,
       gallery,
+      audio_url: audioUrl || null,
       category_id: categoryId,
       author_name: authorName.trim() || "Redacción TuPerfil.net",
       published,
@@ -277,6 +280,14 @@ export default function ArticleForm({
           Galería de imágenes <span className="text-muted font-normal">(opcional)</span>
         </label>
         <GalleryUpload images={gallery} onChange={setGallery} />
+      </div>
+
+      {/* Audio */}
+      <div>
+        <label className="block text-sm font-medium text-body mb-1">
+          Audio de la noticia <span className="text-muted font-normal">(opcional)</span>
+        </label>
+        <AudioUpload audioUrl={audioUrl} onUpload={setAudioUrl} />
       </div>
 
       {/* Contenido */}

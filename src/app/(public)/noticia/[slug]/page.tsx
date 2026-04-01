@@ -14,6 +14,7 @@ import Breadcrumbs from "@/components/public/Breadcrumbs";
 import CommentList from "@/components/public/CommentList";
 import CommentForm from "@/components/public/CommentForm";
 import ArticleBody from "@/components/public/ArticleBody";
+import AudioPlayer from "@/components/public/AudioPlayer";
 import FloatingWhatsApp from "@/components/public/FloatingWhatsApp";
 import AdBanner from "@/components/public/AdBanner";
 import type { Ad } from "@/types";
@@ -31,6 +32,7 @@ interface ArticleDetail {
   excerpt: string;
   image_url: string | null;
   gallery: string[];
+  audio_url: string | null;
   category_id: string;
   author_name: string;
   views: number;
@@ -90,7 +92,7 @@ export default async function NoticiaPage({
 
   const { data: article } = await supabase
     .from("articles")
-    .select("id, title, slug, content, excerpt, image_url, gallery, category_id, author_name, views, created_at, category:categories(name, color, slug), article_tags(tag:tags(id, name, slug))")
+    .select("id, title, slug, content, excerpt, image_url, gallery, audio_url, category_id, author_name, views, created_at, category:categories(name, color, slug), article_tags(tag:tags(id, name, slug))")
     .eq("slug", params.slug)
     .eq("published", true)
     .single()
@@ -246,6 +248,13 @@ export default async function NoticiaPage({
                 placeholder="blur"
                 blurDataURL={BLUR_DATA_URL}
               />
+            </div>
+          )}
+
+          {/* Audio Player */}
+          {article.audio_url && (
+            <div className="mb-6 sm:mb-8">
+              <AudioPlayer src={article.audio_url} title={article.title} />
             </div>
           )}
 
