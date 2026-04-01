@@ -99,6 +99,26 @@ export default function Header({ categories }: { categories: Category[] }) {
 
           {/* Right side */}
           <div className="flex-1 flex items-center justify-end gap-2 sm:gap-3">
+            {/* Emisora */}
+            <a
+              href="https://laquetegusta.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.1] transition group"
+              title="Escuchar emisora"
+            >
+              <Image
+                src="/emisora.png"
+                alt="La Que Te Gusta"
+                width={24}
+                height={24}
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full"
+              />
+              <span className="hidden sm:inline text-xs font-medium text-gray-300 group-hover:text-white transition">
+                Escuchar
+              </span>
+            </a>
+
             {/* Theme toggle */}
             <ThemeToggle variant="dark-bg" />
 
