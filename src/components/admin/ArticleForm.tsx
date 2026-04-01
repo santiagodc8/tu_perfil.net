@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import RichTextEditor from "./RichTextEditor";
@@ -10,6 +10,8 @@ import AudioUpload from "./AudioUpload";
 import VideoUpload from "./VideoUpload";
 import { generateSlug } from "@/lib/utils";
 import type { Article, Category, Tag } from "@/types";
+
+const AUTOSAVE_KEY = "tuperfil_draft";
 
 interface ArticleFormProps {
   article?: Article;
@@ -47,6 +49,8 @@ export default function ArticleForm({
   const [notifySubscribers, setNotifySubscribers] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [draftRestored, setDraftRestored] = useState(false);
+  const autosaveTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     supabase
@@ -56,6 +60,49 @@ export default function ArticleForm({
       .then(({ data }) => setCategories(data ?? []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Restaurar borrador guardado (solo para artículos nuevos)
+  useEffect(() => {
+    if (isEditing) return;
+    try {
+      const saved = localStorage.getItem(AUTOSAVE_KEY);
+      if (saved) {
+        const draft = JSON.parse(saved);
+        if (draft.title) setTitle(draft.title);
+        if (draft.authorName) setAuthorName(draft.authorName);
+        if (draft.categoryId) setCategoryId(draft.categoryId);
+        if (draft.content) setContent(draft.content);
+        if (draft.imageUrl) setImageUrl(draft.imageUrl);
+        setDraftRestored(true);
+      }
+    } catch { /* ignore */ }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Auto-guardar cada 30s (solo para artículos nuevos)
+  const saveDraft = useCallback(() => {
+    if (isEditing) return;
+    if (!title.trim() && !content.trim()) return;
+    try {
+      localStorage.setItem(
+        AUTOSAVE_KEY,
+        JSON.stringify({ title, authorName, categoryId, content, imageUrl })
+      );
+    } catch { /* storage full */ }
+  }, [isEditing, title, authorName, categoryId, content, imageUrl]);
+
+  useEffect(() => {
+    if (isEditing) return;
+    autosaveTimer.current = setInterval(saveDraft, 30000);
+    return () => {
+      if (autosaveTimer.current) clearInterval(autosaveTimer.current);
+    };
+  }, [isEditing, saveDraft]);
+
+  function clearDraft() {
+    try { localStorage.removeItem(AUTOSAVE_KEY); } catch { /* ignore */ }
+    setDraftRestored(false);
+  }
 
   function extractExcerpt(html: string): string {
     const text = html.replace(/<[^>]+>/g, "").trim();
@@ -92,8 +139,21 @@ export default function ArticleForm({
     setSaving(true);
     setError("");
 
-    const slug = generateSlug(title);
+    let slug = generateSlug(title);
     const excerpt = extractExcerpt(content);
+
+    // Validar unicidad del slug (solo para artículos nuevos o si cambió el título)
+    if (!isEditing || slug !== article.slug) {
+      const { data: existing } = await supabase
+        .from("articles")
+        .select("id")
+        .eq("slug", slug)
+        .maybeSingle();
+
+      if (existing && existing.id !== article?.id) {
+        slug = `${slug}-${Date.now().toString(36)}`;
+      }
+    }
     const publishDate =
       published && scheduled && publishedAt
         ? new Date(publishedAt).toISOString()
@@ -175,12 +235,26 @@ export default function ArticleForm({
       }
     }
 
+    clearDraft();
     router.push("/admin/noticias");
     router.refresh();
   }
 
   return (
     <form onSubmit={handleSubmit} className="p-4 md:p-6 max-w-3xl space-y-6">
+      {draftRestored && (
+        <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 text-sm px-4 py-3 rounded-lg border border-blue-200 dark:border-blue-700/30 flex items-center justify-between">
+          <span>Se restauró un borrador guardado automáticamente.</span>
+          <button
+            type="button"
+            onClick={clearDraft}
+            className="text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 font-medium underline text-xs ml-3"
+          >
+            Descartar
+          </button>
+        </div>
+      )}
+
       {error && (
         <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-lg border border-red-200 dark:border-red-700/30">
           {error}
@@ -239,7 +313,7 @@ export default function ArticleForm({
         <div>
           <label className="block text-sm font-medium text-body mb-2">
             Etiquetas{" "}
-            <span className="text-muted font-normal">(opcional — tocá para seleccionar)</span>
+            <span className="text-muted font-normal">(opcional — toca para seleccionar)</span>
           </label>
           <div className="flex flex-wrap gap-2">
             {allTags.map((tag) => {

@@ -23,7 +23,7 @@ export async function POST(
   let referrer = "";
   try {
     const body = await request.json();
-    referrer = typeof body.referrer === "string" ? body.referrer : "";
+    referrer = typeof body.referrer === "string" ? body.referrer.slice(0, 2000) : "";
   } catch {
     // No body or invalid JSON — that's fine
   }
