@@ -7,6 +7,7 @@ import TrendingSection from "@/components/public/TrendingSection";
 import SidebarPublic from "@/components/public/SidebarPublic";
 import AdBanner from "@/components/public/AdBanner";
 import MuyPersonalSection from "@/components/public/MuyPersonalSection";
+import MuyPersonalBanner from "@/components/public/MuyPersonalBanner";
 import ScrollReveal from "@/components/public/ScrollReveal";
 import { readingTime } from "@/lib/utils";
 import type { Ad } from "@/types";
@@ -195,6 +196,13 @@ export default async function HomePage() {
 
       {/* Hero Carousel */}
       {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} />}
+
+      {/* Última publicación de Muy Personal */}
+      {personalArticles.length > 0 && (
+        <ScrollReveal>
+          <MuyPersonalBanner article={personalArticles[0]} />
+        </ScrollReveal>
+      )}
 
       {/* Trending */}
       {trending.length > 0 && (

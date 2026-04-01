@@ -256,25 +256,6 @@ export default function Header({ categories }: { categories: Category[] }) {
               ))}
               <li>
                 <Link
-                  href="/muy-personal"
-                  className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
-                    isActive("/muy-personal")
-                      ? "text-white md:text-primary"
-                      : "text-gray-400 hover:text-white md:hover:text-primary"
-                  }`}
-                >
-                  Muy Personal
-                  <span
-                    className={`absolute bottom-0 left-4 right-4 h-[2px] bg-primary transition-transform origin-left hidden md:block ${
-                      isActive("/muy-personal")
-                        ? "scale-x-100"
-                        : "scale-x-0 group-hover:scale-x-100"
-                    }`}
-                  />
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/contacto"
                   className={`block px-4 py-3.5 md:py-2.5 text-[13px] font-semibold uppercase tracking-wider transition relative group cursor-pointer ${
                     isActive("/contacto")
