@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 interface CommentFormProps {
   articleId: string;
@@ -60,6 +61,7 @@ export default function CommentForm({ articleId }: CommentFormProps) {
       }
 
       setSuccess(true);
+      trackEvent("comment_submit", { article_id: articleId });
       setName("");
       setEmail("");
       setContent("");

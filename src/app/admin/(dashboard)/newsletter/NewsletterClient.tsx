@@ -15,6 +15,7 @@ export default function NewsletterClient() {
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [resultMsg, setResultMsg] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     async function fetchCount() {
@@ -57,7 +58,7 @@ export default function NewsletterClient() {
       setSubject("");
       setBody("");
     } catch {
-      setResultMsg("Error de conexión. Intentá de nuevo.");
+      setResultMsg("Error de conexión. Intenta de nuevo.");
       setSendStatus("error");
     }
   }
@@ -137,11 +138,54 @@ export default function NewsletterClient() {
             </p>
           </div>
 
+          {/* Preview + Send buttons */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setShowPreview(true)}
+              disabled={!subject.trim() || !body.trim()}
+              className="px-5 py-2.5 rounded-lg border border-surface-border text-body font-medium text-sm hover:border-primary hover:text-primary transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Vista previa
+            </button>
+          </div>
+
+          {/* Preview modal */}
+          {showPreview && (
+            <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowPreview(false)}>
+              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-surface-border px-6 py-4 flex items-center justify-between">
+                  <h3 className="font-bold text-heading">Vista previa del email</h3>
+                  <button onClick={() => setShowPreview(false)} className="text-muted hover:text-heading transition">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="p-6">
+                  <div className="mb-4 pb-4 border-b border-surface-border">
+                    <p className="text-xs text-muted mb-1">Asunto:</p>
+                    <p className="font-semibold text-heading">{subject}</p>
+                  </div>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    {body.split("\n").map((line, i) => (
+                      <p key={i}>{line || <br />}</p>
+                    ))}
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-surface-border text-center text-xs text-muted">
+                    <p>TuPerfil.net — Noticias que importan</p>
+                    <p className="mt-1 underline">Cancelar suscripción</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Send button */}
           {showConfirm ? (
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 rounded-lg p-4 space-y-3">
               <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
-                ¿Confirmás el envío a{" "}
+                ¿Confirmas el envío a{" "}
                 <strong>{activeCount} suscriptor{activeCount === 1 ? "" : "es"}</strong>?
                 Esta acción no se puede deshacer.
               </p>

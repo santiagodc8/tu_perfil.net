@@ -1,5 +1,7 @@
 "use client";
 
+import { trackEvent } from "@/lib/analytics";
+
 export default function ShareButtons({ title, url }: { title: string; url: string }) {
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -12,6 +14,7 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent("share", { method: "whatsapp", content_type: "article" })}
         className="w-11 h-11 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 active:bg-green-700 hover:scale-110 transition-all cursor-pointer"
         aria-label="Compartir en WhatsApp"
       >
@@ -24,6 +27,7 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent("share", { method: "facebook", content_type: "article" })}
         className="w-11 h-11 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 hover:scale-110 transition-all cursor-pointer"
         aria-label="Compartir en Facebook"
       >
@@ -36,6 +40,7 @@ export default function ShareButtons({ title, url }: { title: string; url: strin
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent("share", { method: "twitter", content_type: "article" })}
         className="w-11 h-11 flex items-center justify-center rounded-full bg-heading text-white hover:bg-body active:bg-black hover:scale-110 transition-all cursor-pointer"
         aria-label="Compartir en Twitter"
       >

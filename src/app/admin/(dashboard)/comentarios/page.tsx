@@ -18,9 +18,12 @@ export default function ComentariosPage() {
   const [tab, setTab] = useState<Tab>("pendientes");
   const [comments, setComments] = useState<CommentWithArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkLoading, setBulkLoading] = useState(false);
 
   async function fetchComments() {
     setLoading(true);
+    setSelected(new Set());
     const { data } = await supabase
       .from("comments")
       .select("*, article:articles(title, slug)")
@@ -44,6 +47,42 @@ export default function ComentariosPage() {
   async function handleDelete(id: string) {
     if (!confirm("¿Eliminar este comentario?")) return;
     await supabase.from("comments").delete().eq("id", id);
+    setSelected((prev) => { const next = new Set(prev); next.delete(id); return next; });
+    fetchComments();
+  }
+
+  function toggleSelect(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    if (selected.size === comments.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(comments.map((c) => c.id)));
+    }
+  }
+
+  async function handleBulkApprove() {
+    if (selected.size === 0) return;
+    setBulkLoading(true);
+    await supabase.from("comments").update({ approved: true }).in("id", Array.from(selected));
+    setSelected(new Set());
+    setBulkLoading(false);
+    fetchComments();
+  }
+
+  async function handleBulkDelete() {
+    if (selected.size === 0) return;
+    if (!confirm(`¿Eliminar ${selected.size} comentario${selected.size > 1 ? "s" : ""}?`)) return;
+    setBulkLoading(true);
+    await supabase.from("comments").delete().in("id", Array.from(selected));
+    setSelected(new Set());
+    setBulkLoading(false);
     fetchComments();
   }
 
@@ -102,6 +141,44 @@ export default function ComentariosPage() {
           </button>
         </div>
 
+        {/* Acciones masivas */}
+        {comments.length > 0 && (
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <label className="flex items-center gap-2 cursor-pointer text-sm text-body">
+              <input
+                type="checkbox"
+                checked={selected.size === comments.length && comments.length > 0}
+                onChange={toggleSelectAll}
+                className="w-4 h-4 rounded border-surface-border text-primary focus:ring-primary"
+              />
+              Seleccionar todos
+            </label>
+            {selected.size > 0 && (
+              <>
+                <span className="text-xs text-muted">
+                  {selected.size} seleccionado{selected.size > 1 ? "s" : ""}
+                </span>
+                {tab === "pendientes" && (
+                  <button
+                    onClick={handleBulkApprove}
+                    disabled={bulkLoading}
+                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50 transition disabled:opacity-50"
+                  >
+                    Aprobar seleccionados
+                  </button>
+                )}
+                <button
+                  onClick={handleBulkDelete}
+                  disabled={bulkLoading}
+                  className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition disabled:opacity-50"
+                >
+                  Eliminar seleccionados
+                </button>
+              </>
+            )}
+          </div>
+        )}
+
         {/* Lista */}
         <div className="bg-surface-card rounded-xl border border-surface-border">
           {loading ? (
@@ -118,6 +195,13 @@ export default function ComentariosPage() {
                 <div key={comment.id} className="px-6 py-4">
                   {/* Encabezado */}
                   <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <input
+                        type="checkbox"
+                        checked={selected.has(comment.id)}
+                        onChange={() => toggleSelect(comment.id)}
+                        className="w-4 h-4 rounded border-surface-border text-primary focus:ring-primary mt-0.5 flex-shrink-0"
+                      />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-sm font-semibold text-heading">
@@ -143,6 +227,7 @@ export default function ComentariosPage() {
                           </Link>
                         </div>
                       )}
+                    </div>
                     </div>
 
                     {/* Acciones */}

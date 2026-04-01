@@ -41,6 +41,7 @@ export default async function BuscarPage({
   const categories: Category[] = (categoriesData as Category[]) ?? [];
 
   let articles: SearchArticle[] = [];
+  let popularFallback: SearchArticle[] = [];
 
   if (query) {
     let qb = supabase
@@ -71,6 +72,18 @@ export default async function BuscarPage({
 
     const { data } = await qb.limit(30).returns<SearchArticle[]>();
     articles = data ?? [];
+
+    // Si no hay resultados, traer populares como sugerencia
+    if (articles.length === 0) {
+      const { data: popData } = await supabase
+        .from("articles")
+        .select("title, slug, excerpt, image_url, created_at, views, category:categories(name, color)")
+        .eq("published", true)
+        .order("views", { ascending: false })
+        .limit(6)
+        .returns<SearchArticle[]>();
+      popularFallback = popData ?? [];
+    }
   }
 
   const sortLabels: Record<SortOption, string> = {
@@ -163,8 +176,27 @@ export default async function BuscarPage({
           ))}
         </div>
       ) : query ? (
-        <div className="text-center py-16 text-muted">
-          No se encontraron noticias para esta búsqueda.
+        <div className="py-10">
+          <div className="text-center mb-8">
+            <p className="text-muted text-lg mb-2">
+              No se encontraron noticias para esta búsqueda.
+            </p>
+            <p className="text-sm text-muted">
+              Intenta con otras palabras clave o explora las categorías.
+            </p>
+          </div>
+          {popularFallback.length > 0 && (
+            <div>
+              <h2 className="text-lg font-bold text-heading mb-4">
+                Noticias más leídas
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                {popularFallback.map((a) => (
+                  <ArticleCard key={a.slug} {...a} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : null}
     </div>

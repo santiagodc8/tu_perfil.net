@@ -39,6 +39,7 @@ interface ArticleDetail {
   author_name: string;
   views: number;
   created_at: string;
+  updated_at: string;
   category: { name: string; color: string; slug: string } | null;
   article_tags: ArticleTag[];
 }
@@ -94,7 +95,7 @@ export default async function NoticiaPage({
 
   const { data: article } = await supabase
     .from("articles")
-    .select("id, title, slug, content, excerpt, image_url, gallery, audio_url, video_url, category_id, author_name, views, created_at, category:categories(name, color, slug), article_tags(tag:tags(id, name, slug))")
+    .select("id, title, slug, content, excerpt, image_url, gallery, audio_url, video_url, category_id, author_name, views, created_at, updated_at, category:categories(name, color, slug), article_tags(tag:tags(id, name, slug))")
     .eq("slug", params.slug)
     .eq("published", true)
     .single()
@@ -163,6 +164,7 @@ export default async function NoticiaPage({
     description: article.excerpt,
     image: article.image_url ?? undefined,
     datePublished: article.created_at,
+    dateModified: article.updated_at,
     author: {
       "@type": "Person",
       name: article.author_name,
@@ -227,6 +229,15 @@ export default async function NoticiaPage({
             <span className="text-surface-border hidden sm:inline">|</span>
             <span className="text-surface-border sm:hidden">&middot;</span>
             <time>{smartDate(article.created_at)}</time>
+            {/* Mostrar fecha de actualización si difiere más de 1h */}
+            {article.updated_at &&
+              new Date(article.updated_at).getTime() - new Date(article.created_at).getTime() > 3600000 && (
+                <>
+                  <span className="text-surface-border hidden sm:inline">|</span>
+                  <span className="text-surface-border sm:hidden">&middot;</span>
+                  <span className="italic">Actualizado {smartDate(article.updated_at)}</span>
+                </>
+              )}
             <span className="text-surface-border hidden sm:inline">|</span>
             <span className="text-surface-border sm:hidden">&middot;</span>
             <span>{readingTime(article.content)}</span>
@@ -312,7 +323,7 @@ export default async function NoticiaPage({
               <CommentList articleId={article.id} />
             </Suspense>
             <div className="mt-8">
-              <h3 className="font-display text-lg text-heading mb-4">Dejá tu comentario</h3>
+              <h3 className="font-display text-lg text-heading mb-4">Deja tu comentario</h3>
               <CommentForm articleId={article.id} />
             </div>
           </div>

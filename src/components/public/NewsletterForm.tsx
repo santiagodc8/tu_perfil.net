@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -32,6 +33,7 @@ export default function NewsletterForm() {
       }
 
       setStatus("success");
+      trackEvent("newsletter_subscribe");
       setEmail("");
     } catch {
       setErrorMsg("Error de conexión. Intentá de nuevo.");
